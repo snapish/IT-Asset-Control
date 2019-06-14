@@ -1,0 +1,57 @@
+<body>
+add a an alert askign for qty for last restcock qty when reorder button clickerd
+    <div class="" style="padding-left: 42%">
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+<!-- grab data from the variable "items" inside of inventory component -->
+<table mat-table #table [dataSource]="itemsource" matSort> 
+  <!-- column named "name" -->
+  <ng-container matColumnDef="Name">
+    <!-- a table header thats a mat header, and is sortable -->
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="name"> Name </th>
+    <!-- item is an object inside of items -->
+    <td mat-cell *matCellDef="let item"> {{item.Name}}  </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Quantity">
+      <th  mat-header-cell *matHeaderCellDef class="quantity " mat-sort-header > Quantity </th>
+    <td mat-cell *matCellDef="let item" > {{item.Quantity}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Description"> 
+    <th mat-header-cell *matHeaderCellDef class="description"> Description </th>
+    <td mat-cell *matCellDef="let item"> {{item.Description}} </td>
+  </ng-container> 
+  
+  <ng-container matColumnDef="Serial">
+    <th mat-header-cell *matHeaderCellDef class="serial" mat-sort-header > Serial # </th>
+    <td mat-cell *matCellDef="let item" > {{item.Serial}} </td>
+  </ng-container> 
+
+  <ng-container matColumnDef="LastRestockQuantity">
+    <th mat-header-cell *matHeaderCellDef class="lastrestockqty" mat-sort-header > Last Restock Quantity </th>
+    <td mat-cell *matCellDef="let item"> {{item.LastRestockQuantity}} </td>
+  </ng-container> 
+
+  <ng-container matColumnDef="LastRestock">
+    <th mat-header-cell *matHeaderCellDef class="lastrestock" mat-sort-header  > Last Restock </th>
+    <!-- *1000 brings it to a format the date can work with and returns that format to the table   -->
+    <td mat-cell *matCellDef="let item"> {{item.LastRestock.seconds * 1000 | date:'MM-dd-yyyy'}} </td>
+  </ng-container> 
+  <ng-container matColumnDef="Restock">
+    <th mat-header-cell *matHeaderCellDef class="restock" mat-sort-header> Restock </th>
+    <td mat-cell *matCellDef="let item"> <button mat-button (click) = "restock($event)" id="{{item.OrderUrl + ' ' + item.Name}}">Reorder</button>
+      <button mat-button (click) = "queueItem($event)" id="{{item.OrderUrl + ' ' + item.Name}}">Queue Item</button>
+     </td>
+  </ng-container> 
+
+<!-- next 2 lines are determining what rows and columns to display, displayColumns is an array in the component -->
+  <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+
+</table>
+<button mat-raised-button (click)="mapDialog('offices')">Pick one</button>
+
+</body>

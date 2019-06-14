@@ -1,0 +1,17 @@
+#boxesDiv{
+    float:right;
+    margin-top: 20%;
+        margin: auto;
+        width: 90%;
+        /* border: 3px solid green; */
+        padding: 10px;
+      
+    
+}
+.name,.description,.quantity,.serial, .URL,.txt{
+    
+     margin: 5px; 
+    width: 15%;
+    padding: 10px;
+    font-size: 20px;
+}

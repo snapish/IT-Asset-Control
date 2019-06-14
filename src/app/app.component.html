@@ -1,0 +1,77 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<body>
+      
+
+    <mat-tab-group (selectedTabChange) = "addFirstBoxes($event)">
+      <!-- tab icons https://material.io/tools/icons/?style=baseline -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">storage</mat-icon>
+            Inventory
+          </ng-template>
+<!-- <app-map></app-map> -->
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">create</mat-icon>
+            Manage
+          </ng-template>
+
+          <app-add></app-add>
+          
+        </mat-tab>
+      
+        <mat-tab  >
+           
+          <ng-template mat-tab-label >
+            <mat-icon class="example-tab-icon" >add_box</mat-icon>
+            Add To Inventory
+          </ng-template>
+
+          <inventory></inventory>
+     
+        </mat-tab>
+      
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">check_circle</mat-icon>
+            Queue
+          </ng-template>
+          <inventory></inventory>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">phonelink_off</mat-icon>
+            Decomissioned
+          </ng-template>
+          <inventory></inventory>
+        </mat-tab>
+      </mat-tab-group>
+
+
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyDa4HvodLBhScipdlM29xtM6nYIHtzpTJA",
+  authDomain: "it-asset-control.firebaseapp.com",
+  databaseURL: "https://it-asset-control.firebaseio.com",
+  projectId: "it-asset-control",
+  storageBucket: "it-asset-control.appspot.com",
+  messagingSenderId: "92479072203",
+  appId: "1:92479072203:web:549ad23649fe486f"
+};
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDa4HvodLBhScipdlM29xtM6nYIHtzpTJA",
+    authDomain: "it-asset-control.firebaseapp.com",
+    databaseURL: "https://it-asset-control.firebaseio.com",
+    projectId: "it-asset-control",
+    storageBucket: "it-asset-control.appspot.com",
+    messagingSenderId: "92479072203",
+    appId: "1:92479072203:web:549ad23649fe486f"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+ 
+</body>

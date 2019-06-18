@@ -1,9 +1,20 @@
-<div *ngIf="section == 'offices'">
+
+<button mat-raised-button (click) = "openDialogOffices()">Open Offices</button>
+<button mat-raised-button (click) = "production1Map()">Open Production1</button>
+<button mat-raised-button (click) = "production2Map()" >Open Production2</button>
+<button mat-raised-button (click) = "shippingMap()"> Open Shipping</button>
+
+
+
+
+<!-- 
+<div *ngIf="section == 'offices'" >
+<-- <img src="./assets/gridoveroffices2.jpg" alt="" usemap="#Map" /> ->
 <img src="./assets/_officefinal.jpg" alt="" usemap="#Map" />
 <map name="Map" id="Map">
-  <!-- (TOP LEFT, BOTTOM RIGHT) -->
-  <!-- (x1,y1), (x2, y2) -->
-  <!-- rects are ~ 90x70 -->
+  <-- (TOP LEFT, BOTTOM RIGHT) ->
+  <-- (x1,y1), (x2, y2) ->
+  <-- rects are ~ 90x70 >
     <area (click) = "getLocation($event)" alt="" id="a3" href="javascript:void(0);" shape="rect" coords="0,140, 85,210" />
     <area (click) = "getLocation($event)" alt="" id="a4" title="" href="javascript:void(0);" shape="rect" coords="0,210, 85,280" />
     <area (click) = "getLocation($event)" alt="" id="a5" title="" href="javascript:void(0);" shape="rect" coords="0,280, 85,350" />
@@ -206,6 +217,8 @@
 
 </map> 
 </div>
+
+
 <div *ngIf="section == 'production2'">
 <img src="/assets/_production2final.jpg" usemap="#Map"/>
 <map  name="Map" id="Map">
@@ -484,3 +497,5 @@
   <div *ngIf="coordinate != '' " style="font-size: 18px">Confirm {{coordinate}}</div>
   <div  *ngIf="coordinate == '' " style="font-size: 18px"> Pick a coordinate </div> 
   </button>
+ -->
+

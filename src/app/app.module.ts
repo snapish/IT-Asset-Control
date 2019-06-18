@@ -31,7 +31,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
@@ -45,6 +45,11 @@ import {ActivatedRoute} from '@angular/router';
 import {RouterModule} from '@angular/router';
 import { QueueComponent } from './queue/queue.component';
 import { MapComponent } from './map/map.component';
+import { OfficesComponent } from './map/offices/offices.component';
+import { Production1Component } from './map/production1/production1.component';
+import { Production2Component } from './map/production2/production2.component';
+import { ShippingComponent } from './map/shipping/shipping.component';
+//import {ChangeDetectorRef} from '@angular/core'
 
 @NgModule({
   declarations: [
@@ -54,6 +59,10 @@ import { MapComponent } from './map/map.component';
     ScanComponent,
     QueueComponent,
     MapComponent,
+    OfficesComponent,
+    Production1Component,
+    Production2Component,
+    ShippingComponent,
 
   ],
   imports: [
@@ -95,12 +104,11 @@ import { MapComponent } from './map/map.component';
     MatPaginatorModule,
     AngularFireModule.initializeApp(environment.firebase),
  	AngularFirestoreModule,
-   
-   
+      
   ],
-  entryComponents:[MapComponent],
+  entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent],
   exports: [MatButtonModule, MatCheckboxModule, MatCardModule,MatTableModule],
-  providers: [DatePipe, FirestoreService, AddComponent, MapComponent],
+  providers: [DatePipe, FirestoreService, AddComponent, MapComponent, Production1Component, ],
   bootstrap: [AppComponent ]
 })
 export class AppModule { }

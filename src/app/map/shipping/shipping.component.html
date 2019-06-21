@@ -137,3 +137,7 @@
   <div *ngIf="coordinate != '' " style="font-size: 18px">Confirm {{coordinate}}</div>
   <div  *ngIf="coordinate == '' " style="font-size: 18px"> Pick a coordinate </div> 
   </button>
+  <div mat-dialog-actions  >
+    <button mat-button-raised style=" max-height: 20%; width: 15%;height: 60px; font-size: 18px" (click)="onNoClick()">Close</button>
+
+  </div>

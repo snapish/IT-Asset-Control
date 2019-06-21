@@ -9,17 +9,20 @@ import { MatDialogRef } from '@angular/material';
 })
 export class ShippingComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialogRef: MatDialogRef<Production1Component>) { }
 
   ngOnInit() {
   }
   coordinate: string = "";
   getLocation(e){
     this.coordinate = (e.target.id).toUpperCase();
-
+    
   }
   closeDialog(){
-   
+ //   this.queue.coordinateArray.push(this.dialogRef.close(this.coordinate));
+    return console.log(this.dialogRef.close(this.coordinate))
    }
-    
+   onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

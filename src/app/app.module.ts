@@ -31,7 +31,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
@@ -49,6 +49,7 @@ import { OfficesComponent } from './map/offices/offices.component';
 import { Production1Component } from './map/production1/production1.component';
 import { Production2Component } from './map/production2/production2.component';
 import { ShippingComponent } from './map/shipping/shipping.component';
+import { Globals } from './global';
 //import {ChangeDetectorRef} from '@angular/core'
 
 @NgModule({
@@ -108,7 +109,7 @@ import { ShippingComponent } from './map/shipping/shipping.component';
   ],
   entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent],
   exports: [MatButtonModule, MatCheckboxModule, MatCardModule,MatTableModule],
-  providers: [DatePipe, FirestoreService, AddComponent, MapComponent, Production1Component, ],
+  providers: [DatePipe, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals],
   bootstrap: [AppComponent ]
 })
 export class AppModule { }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { Production1Component } from '../production1/production1.component';
 
 @Component({
   selector: 'app-production2',
@@ -9,17 +8,21 @@ import { Production1Component } from '../production1/production1.component';
 })
 export class Production2Component implements OnInit {
 
-  constructor() { }
+  constructor(private dialogRef: MatDialogRef<Production2Component>) { }
 
   ngOnInit() {
   }
   coordinate: string = "";
   getLocation(e){
     this.coordinate = (e.target.id).toUpperCase();
-
+    
   }
   closeDialog(){
-   
+ //   this.queue.coordinateArray.push(this.dialogRef.close(this.coordinate));
+    return console.log(this.dialogRef.close(this.coordinate))
    }
+   onNoClick(): void {
+    this.dialogRef.close();
+  }
     
 }

@@ -1,11 +1,13 @@
 
-<button mat-raised-button (click) = "openDialogOffices()">Open Offices</button>
-<button mat-raised-button (click) = "production1Map()">Open Production1</button>
-<button mat-raised-button (click) = "production2Map()" >Open Production2</button>
-<button mat-raised-button (click) = "shippingMap()"> Open Shipping</button>
+<button mat-raised-button (click) = "newBoxes('offices')">Open Offices</button>
+<button mat-raised-button (click) = "newBoxes('production1')">Open Production1</button>
+<button mat-raised-button (click) = "newBoxes('production2')" >Open Production2</button>
+<button mat-raised-button (click) = "newBoxes('shipping')"> Open Shipping</button>
 
 
-
+<div *ngFor="let a of (coordinateArray )">
+  {{a}}
+</div>
 
 <!-- 
 <div *ngIf="section == 'offices'" >

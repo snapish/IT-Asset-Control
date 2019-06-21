@@ -1,1 +1,5 @@
 <a href="javascript:void(0)" (click) = "newBoxes()">Pick a chunk</a>
+
+<div *ngFor="let item of coordArray">
+    <a href="javascript:void(0)" id="{{item}}" (click) = "newBoxes(item)"> {{item}}</a>
+</div>

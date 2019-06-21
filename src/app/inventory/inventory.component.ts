@@ -8,6 +8,7 @@ import {MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
 import { LocationService } from '../location.service';
+
 @Component({
   selector: 'inventory',
  templateUrl: './inventory.component.html',
@@ -56,7 +57,10 @@ export class InventoryComponent implements OnInit {
   
 
   mapDialog(section:string){
-    this.loc.openMapDialog(section);
+    console.log("f")
+  // var x = this.loc.openMapDialog(section);// each section returns a value when the dialog is closed which the service returns 
+    //console.log(x)
+ 
   }
   
 

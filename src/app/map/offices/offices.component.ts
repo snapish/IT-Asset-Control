@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Production1Component } from '../production1/production1.component';
 import { QueueComponent } from 'src/app/queue/queue.component';
+import { MapComponent } from '../map.component';
+import { LocationService } from 'src/app/location.service';
+//import { LocationService } from 'src/app/location.service';
 
 @Component({
   selector: 'app-offices',
@@ -17,10 +20,11 @@ export class OfficesComponent implements OnInit {
   coordinate: string = "";
   getLocation(e){
     this.coordinate = (e.target.id).toUpperCase();
+    
   }
   closeDialog(){
  //   this.queue.coordinateArray.push(this.dialogRef.close(this.coordinate));
-    return this.dialogRef.close()
+    return console.log(this.dialogRef.close(this.coordinate))
    }
    onNoClick(): void {
     this.dialogRef.close();

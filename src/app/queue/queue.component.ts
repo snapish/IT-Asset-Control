@@ -67,6 +67,14 @@ export class QueueComponent implements OnInit {
 
   }
   sendIt(){
-
+    //decom
+    //manage
+    //queue button to inv
+    //reorder on inv
+    //auto fill mass entry
+    //jquery plug in for map
+    //queue contents to manage tab
+    //url passing
+    //fine tune add tab
   }
 }

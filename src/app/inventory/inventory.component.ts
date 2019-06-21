@@ -27,7 +27,7 @@ export class InventoryComponent implements OnInit {
   ngOnInit() {
     
     this.firebaseService.getInventory().subscribe(data => {this.items = data; this.itemsource = new MatTableDataSource(data);this.itemsource.sort = this.sort;});
-    this.firebaseService.getQueue();
+    //this.firebaseService.getQueue();
   }
 
   queueItem(e):any{

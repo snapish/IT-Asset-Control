@@ -1,5 +1,54 @@
-<a href="javascript:void(0)" (click) = "newBoxes()">Pick a chunk</a>
-
+<!-- <a href="javascript:void(0)" (click) = "newBoxes()">Pick a chunk</a> -->
+<!-- 
 <div *ngFor="let item of coordArray">
     <a href="javascript:void(0)" id="{{item}}" (click) = "newBoxes(item)"> {{item}}</a>
-</div>
+</div> -->
+
+<table mat-table #table [dataSource]="queueSource" matSort> 
+
+    <!-- column named "name" -->
+    <ng-container matColumnDef="Name">
+      <!-- a table header thats a mat header, and is sortable -->
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="name"> Name </th>
+      <!-- item is an object inside of items -->
+      <td mat-cell *matCellDef="let item"> {{item.Name}}  </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Quantity">
+        <th  mat-header-cell *matHeaderCellDef class="quantity " mat-sort-header > Quantity </th>
+      <td mat-cell *matCellDef="let item" > {{item.Quantity}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Location"> 
+      <th mat-header-cell *matHeaderCellDef class="location"> Location </th>
+      <td mat-cell *matCellDef="let item; let i = index"> 
+        
+        <a href="javascript:void(0)" (click) = "newBoxes(i)" class="location" ><div *ngIf="coordArray[i] == null">Pick a Location</div>{{coordArray[i]}}</a> 
+      </td>
+    </ng-container> 
+    
+    <ng-container matColumnDef="User">
+      <th mat-header-cell *matHeaderCellDef class="user" mat-sort-header > User </th>
+      <td mat-cell *matCellDef="let item" > {{item.User}} </td>
+    </ng-container> 
+  
+    <ng-container matColumnDef="Notes">
+      <th mat-header-cell *matHeaderCellDef class="notes" mat-sort-header > Notes </th>
+      <td mat-cell *matCellDef="let item"> {{item.Notes}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Date">
+      <th mat-header-cell *matHeaderCellDef class="date" mat-sort-header > Date </th>
+      <td mat-cell *matCellDef="let item"> {{item.Date.seconds * 1000 | date:'MM-dd-yyyy'}} </td>
+    </ng-container> 
+  
+
+  
+  <!-- next 2 lines are determining what rows and columns to display, displayColumns is an array in the component -->
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+  
+
+  </table>
+  <button mat-raised-button (click) = "fullSend()">send it dawg</button>
+  <button mat-raised-button (click) = "sendIt()">send top</button>

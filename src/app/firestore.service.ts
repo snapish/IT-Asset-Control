@@ -40,7 +40,7 @@ export class FirestoreService {
     this.restockCollection = this.db.collection('Restock');
     this.itemCollection = this.db.collection('Inventory');
     this.queueCollection = this.db.collection('Restock');
-    this.queueItems = this.db.collection('Inventory').valueChanges();
+    this.queueItems = this.db.collection('Queue').valueChanges();
   }
 
   inventoryEntry(name: string, qty: number, desc: string, issn: string, orderUrl: string) {
@@ -81,8 +81,8 @@ export class FirestoreService {
     });
   }
   getQueue(){
-    console.log(this.db.collection('Inventory', ref => ref.where("Name", '==' , 'Test')))
-    console.log(this.db.collection<object>("Invetory", ref => ref.where("Name", "==", "Test")).doc);
+    // console.log(this.db.collection('Inventory', ref => ref.where("Name", '==' , 'Test')))
+    // console.log(this.db.collection<object>("Invetory", ref => ref.where("Name", "==", "Test")).doc);
 
   //this.items.forEach(a => {console.log(a[0].Description)})
      //Array.from(this.db.collection('Inventory' , ref => ref.where('Name', '==', 'Test')).snapshotChanges())

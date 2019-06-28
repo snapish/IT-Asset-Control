@@ -26,8 +26,8 @@ export class AddComponent implements AfterViewInit {
     var node;
     for (let index = 0; index < n; index++) { //make N text boxes
       node = document.createElement("input")//.setAttribute("class","input"); // of type input 
-      node.setAttribute("class", "input");
-      node.setAttribute("value", "");
+     node.setAttribute("class", "input");
+      //node.setAttribute("value", "");
       document.getElementById("boxesDiv").appendChild(node); //slap them onto the element with that ID
       
     }
@@ -36,18 +36,19 @@ export class AddComponent implements AfterViewInit {
     document.getElementsByClassName("input")[2].setAttribute('placeholder', 'Description');
     document.getElementsByClassName("input")[3].setAttribute('placeholder', 'Serial Number');
     document.getElementsByClassName("input")[4].setAttribute('placeholder', 'URL ("g" for google)');
-    // document.getElementsByClassName("input")[0].setAttribute('class', 'name');
-    // document.getElementsByClassName("input")[1].setAttribute('class', 'quantity');
-    // document.getElementsByClassName("input")[2].setAttribute('class', 'description');
-    // document.getElementsByClassName("input")[3].setAttribute('class', 'serial');
-    // document.getElementsByClassName("input")[4].setAttribute('class', 'URL');
-
+  /*  document.getElementsByClassName("input")[0].setAttribute('class', 'input');
+    document.getElementsByClassName("input")[1].setAttribute('class', 'input');
+    document.getElementsByClassName("input")[2].setAttribute('class', 'input');
+    document.getElementsByClassName("input")[3].setAttribute('class', 'input');
+    document.getElementsByClassName("input")[4].setAttribute('class', 'input');
+*/
 
     // on key down events lie below
 
 
     document.addEventListener('keydown', function ($event) { //keydown to make next line work
       var arr = document.getElementsByClassName('input');// make an html collection
+      $('.input').each(function(){console.log($(this).val())} )
       // console.log(arr)
       // console.log(document.getElementsByClassName('input')[4])
       // //add check if its url box
@@ -69,14 +70,15 @@ export class AddComponent implements AfterViewInit {
         var filledCount = 0; // for counting how many text boxes have something in them
         for (let i = 4; i < arr.length; i += 5) { //check every 5th box, starting at the URL box
           if (document.getElementsByClassName('input')[i].getAttribute("value") == "g") {
+            console.log("saw g was in google search box")
             document.getElementsByClassName('input')[i].setAttribute("value", "Google Search"); //filler
           }
         }
 
         for (let index = 0; index < arr.length; index++) { //check every text box
-          console.log(document.getElementsByClassName("input")[0].getAttribute("value"));
+          console.log(document.getElementsByClassName("input")[index].getAttribute("value"));
 
-          if (arr[index].getAttribute("value") != "") { // if it has something in it
+          if (arr[index].getAttribute("value") != null) { // if it has something in it
             filledCount++; // tick this up one
             console.log("count++")
           }

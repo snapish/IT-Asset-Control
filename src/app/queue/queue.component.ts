@@ -60,6 +60,8 @@ export class QueueComponent implements OnInit {
 
   }
   sendIt(name:string, location : string, notes: string, quantity : number){
+    this.coordArray[1] = "lunch"
+    this.noteValue[1] = "is a-comin"
     this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity);
     //manage needs date, user, item name, location, notes
 
@@ -79,5 +81,9 @@ export class QueueComponent implements OnInit {
 //6:20-7:33 
 //7:50-8:19
 
+//1 hr 48 mins
+
 //wednesday
 //7:10-2:20
+
+//7hr 10 mins

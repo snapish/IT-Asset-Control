@@ -103,7 +103,8 @@ export class FirestoreService {
       Quantity: quantity,
       Location: location,
       Notes: notes,
-      User: user
+      User: "salt shaker",
+      Date: this.mydate
     })
   }
   decomEntry(name: string, location :string, user : string, notes: string, date: Date){

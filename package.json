@@ -27,6 +27,7 @@
     "firebase": "^6.1.0",
     "igniteui-angular": "^1.0.4",
     "jquery": "^3.4.1",
+    "ng-maphilight": "^1.0.1",
     "ng2-img-map": "^0.1.2",
     "ngx-cookie-service": "^2.2.0",
     "rxjs": "~6.4.0",

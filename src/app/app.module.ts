@@ -57,6 +57,7 @@ import { CookieService } from 'ngx-cookie-service';
 //import {ChangeDetectorRef} from '@angular/core'
 import { FormsModule } from '@angular/forms';
 import { ManageComponent } from './manage/manage.component';
+import { MaphilightModule } from 'ng-maphilight';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { ManageComponent } from './manage/manage.component';
 
   ],
   imports: [
+    MaphilightModule,
     FormsModule,
     RouterModule.forRoot([]),
     BrowserModule,

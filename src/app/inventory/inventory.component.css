@@ -1,6 +1,9 @@
 body{
     background-color: darkslategrey;
 }
+td{
+    font-size: 20px
+}
 .description{
     
     width: 15%; 

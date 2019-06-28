@@ -10,8 +10,30 @@ import { FormBuilder } from '@angular/forms';
 })
 export class Production1Component implements OnInit {
   constructor(private dialogRef: MatDialogRef<Production1Component>) { }
+  config = {
+    fade: true,
+    alwaysOn: false, //false
+    neverOn: false,
 
+    // fill
+    fill: true,
+    fillColor: '#ffa200',
+    fillOpacity: 0.4, //.4
+
+    // stroke
+    stroke: true,
+    strokeColor: '#4d0ec0',
+    strokeOpacity: 1,
+    strokeWidth: 1,
+
+    // shadow:
+    shadow: true,
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 10
+  }
   ngOnInit() {
+
   }
   coordinate: string = "";
   getLocation(e){
@@ -19,6 +41,7 @@ export class Production1Component implements OnInit {
     
   }
   closeDialog(){
+   
  //   this.queue.coordinateArray.push(this.dialogRef.close(this.coordinate));
     return console.log(this.dialogRef.close(this.coordinate))
    }

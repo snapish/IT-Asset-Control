@@ -68,9 +68,9 @@ export class QueueComponent implements OnInit {
     //queue to manage button ---woo---
     //queue button to inv ---woo---
     //set up manage page ---partial woo---
-    //jquery plug in for map
-    //url passing
-    //fix the adding page
+    //jquery plug in for map ---oh yeah, $ez---
+    //url passing 
+    //fix the adding page ---sad noise---
     //auto fill mass entry 
   }
 }

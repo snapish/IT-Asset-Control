@@ -1,3 +1,4 @@
+<maphilight id="statesMap" [config]="config">
 <img src="/assets/_production2final.jpg" usemap="#Map"/>
 <map  name="Map" id="Map">
   <area (click) = "getLocation($event)" alt="" id="r2" href="javascript:void(0);" shape="rect" coords="0,40, 85,110" />
@@ -126,7 +127,7 @@
   <!-- <area (click) = "getLocation($event)" alt="" id="aa11" href="javascript:void(0);" shape="rect" coords="790,670, 880,740" />
   <area (click) = "getLocation($event)" alt="" id="aa12" href="javascript:void(0);" shape="rect" coords="790,740, 880,810" />  -->
 
-</map> 
+</map> </maphilight>
 <br>
 <button (click) = "closeDialog()" value="{{coordinate}}"  style="max-height: 20%; width: 15%;height: 60px;"> 
   <div *ngIf="coordinate != '' " style="font-size: 18px">Confirm {{coordinate}}</div>

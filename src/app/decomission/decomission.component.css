@@ -2,6 +2,9 @@
     display:flex;
     justify-content:center;
   }
+  td{
+    font-size: 20px
+}
 
 .location{
     width: 10%; 

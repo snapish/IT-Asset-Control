@@ -1,136 +1,139 @@
-<!-- <img src="./assets/gridoveroffices2.jpg" alt="" usemap="#Map" /> -->
+<maphilight id="statesMap" [config]="config">
 
+  <!-- <img src="./assets/gridoveroffices2.jpg" alt="" usemap="#Map" /> -->
+  
  <img src="./assets/_officefinal.jpg" alt="" usemap="#Map" /> 
-<map name="Map" id="Map">
-  <!-- (TOP LEFT, BOTTOM RIGHT) -->
-  <!-- (x1,y1), (x2, y2) -->
-  <!-- rects are ~ 90x70 -->
-
-
-    <area (click) = "getLocation($event)" alt="" id="Office N" title="Office N 108" href="javascript:void(0);" shape="rect" coords="85,175, 152, 224" />
-    <area (click) = "getLocation($event)" alt="" id="Office L" title="Office L 107" href="javascript:void(0);" shape="rect" coords="85,227, 140,280" />
-    <area (click) = "getLocation($event)" alt="" id="Office J" title="Office J 106" href="javascript:void(0);" shape="rect" coords="85,280, 140,315" />
-    <area (click) = "getLocation($event)" alt="" id="Office G" title="Office G 105" href="javascript:void(0);" shape="rect" coords="85,317, 140,379" />
-    <area (click) = "getLocation($event)" alt="" id="Office E" title="Office E 103" href="javascript:void(0);" shape="rect" coords="85,380, 130,436" />
-    <area (click) = "getLocation($event)" alt="" id="Office C" title="Office C 102" href="javascript:void(0);" shape="rect" coords="85,438, 130,490" />
-    <area (click) = "getLocation($event)" alt="" id="Entry A" title="Entry A 101" href="javascript:void(0);" shape="rect" coords="85,491, 115,523" />
-    <area (click) = "getLocation($event)" alt="" id="Front OFfice" title="Front Office" href="javascript:void(0);" shape="rect" coords="115, 491, 180 ,523" />
-
-    <area (click) = "getLocation($event)" alt="" id="Office M" title="Office M" href="javascript:void(0);" shape="rect" coords="153,174, 190,239" />
-    <area (click) = "getLocation($event)" alt="" id="Office K" title="Office K" href="javascript:void(0);" shape="rect" coords="153,240, 190,284" />
-    <area (click) = "getLocation($event)" alt="" id="Office I" title="Office I" href="javascript:void(0);" shape="rect" coords="153,285, 190,331" />
-    <area (click) = "getLocation($event)" alt="" id="Office H" title="Office H" href="javascript:void(0);" shape="rect" coords="153,333, 190,375" />
-    <area (click) = "getLocation($event)" alt="" id="Office F" title="Office F" href="javascript:void(0);" shape="rect" coords="145,390, 190,433" />
-    <area (click) = "getLocation($event)" alt="" id="Office D" title="Office D" href="javascript:void(0);" shape="rect" coords="145,437, 180,485" />
-
-    <area (click) = "getLocation($event)" alt="" id="Conference Room" title="Conference Room O" href="javascript:void(0);" shape="rect" coords="190,173, 260,284" />
-    <area (click) = "getLocation($event)" alt="" id="Office P" title="Office P" href="javascript:void(0);" shape="rect" coords="190,286, 226,375" />
-    <area (click) = "getLocation($event)" alt="" id="Office Q" title="Office Q" href="javascript:void(0);" shape="rect" coords="190,390, 226,431" />
-    <area (click) = "getLocation($event)" alt="" id="Supply Closet 125" title="Supply Closet 125" href="javascript:void(0);" shape="rect" coords="337,365, 353,522" />
-    <area (click) = "getLocation($event)" alt="" id="Break Room" title="Break Room" href="javascript:void(0);" shape="poly" coords="335,455,338,521,236,522,237,455,270,452,267,366,336,367,337,413"  />
-    
-    <area (click) = "getLocation($event)" alt="" id="Office V" title="Office V" href="javascript:void(0);" shape="rect" coords="260,175, 295,212" />
-    <area (click) = "getLocation($event)" alt="" id="Office U" title="Office U" href="javascript:void(0);" shape="rect" coords="260,214, 370,285" />
-    <area (click) = "getLocation($event)" alt="" id="Office S" title="Office S" href="javascript:void(0);" shape="rect" coords="260 ,286  334,326" />
-    <area (click) = "getLocation($event)" alt="" id="Office T" title="Office T" href="javascript:void(0);" shape="rect" coords="334,285, 365,325" />
-    <area (click) = "getLocation($event)" alt="" id="Office W" title="Office W" href="javascript:void(0);" shape="rect" coords="297,173, 331,213" />
-    <area (click) = "getLocation($event)" alt="" id="Office X" title="Office X" href="javascript:void(0);" shape="rect" coords="332,173, 368,211" />
-    <area (click) = "getLocation($event)" alt="" id="Office Y" title="Office Y" href="javascript:void(0);" shape="rect" coords="616,175, 653,224" />
-    <area (click) = "getLocation($event)" alt="" id="Office Z" title="Office Z" href="javascript:void(0);" shape="rect" coords="651,175, 687,224" />
-    <area (click) = "getLocation($event)" alt="" id="Office AA" title="Office AA" href="javascript:void(0);" shape="rect" coords="594,352, 652,396" />
-    <area (click) = "getLocation($event)" alt="" id="Office AB" title="Office AB" href="javascript:void(0);" shape="rect" coords="652,352, 698,409" />
-    <area (click) = "getLocation($event)" alt="" id="Office AC" title="Office AC" href="javascript:void(0);" shape="rect" coords="649,411, 698,451" />
-
-
-    <area (click) = "getLocation($event)" alt="" id="R&D" title="R&D" href="javascript:void(0);" shape="poly" coords="386,175,387,324,587,324,700,322,698,254,698,225,616,225,614,175" />
-    <area (click) = "getLocation($event)" alt="" id="Between Maintenace and Offices" title="Between Maintenace and Offices" href="javascript:void(0);" shape="poly" coords="556,350,593,351,595,398,649,398,648,451,556,450" />
-    <area (click) = "getLocation($event)" alt="" id="Maintenace" title="Maintenace" href="javascript:void(0);" shape="rect" coords="354,351, 556,453" />
-    <area (click) = "getLocation($event)" alt="" id="Old Loading Dock" title="Old Loading Dock" href="javascript:void(0);" shape="rect" coords="528,122, 698,172" />
-    <area (click) = "getLocation($event)" alt="" id="New Testing Area" title="New Testing Area(?)" href="javascript:void(0);" shape="rect" coords="346, 0, 698,109" />
- 
-
-</map> 
-<br>
-<button (click) = "closeDialog()" value="{{coordinate}}"  style="max-height: 20%; width: 15%;height: 60px;"> 
-  <div *ngIf="coordinate != '' " style="font-size: 18px">Confirm {{coordinate}}</div>
-  <div  *ngIf="coordinate == '' " style="font-size: 18px"> Pick a coordinate </div> 
-  </button>
-  <div mat-dialog-actions  >
-    <button mat-button-raised style=" max-height: 20%; width: 15%;height: 60px; font-size: 18px" (click)="onNoClick()">Close</button>
-
-  </div>
-
-
-
-
-
-
-
-
-
-  <!-- OLD COORDINATES
+ <map name="Map" id="Map">
+   <!-- (TOP LEFT, BOTTOM RIGHT) -->
+   <!-- (x1,y1), (x2, y2) -->
+   <!-- rects are ~ 90x70 -->
+   
+   
+   <area (click) = "getLocation($event)" alt="" id="Office N" title="Office N 108" href="javascript:void(0);" shape="rect" coords="85,175, 152, 224" />
+   <area (click) = "getLocation($event)" alt="" id="Office L" title="Office L 107" href="javascript:void(0);" shape="rect" coords="85,227, 140,280" />
+   <area (click) = "getLocation($event)" alt="" id="Office J" title="Office J 106" href="javascript:void(0);" shape="rect" coords="85,280, 140,315" />
+   <area (click) = "getLocation($event)" alt="" id="Office G" title="Office G 105" href="javascript:void(0);" shape="rect" coords="85,317, 140,379" />
+   <area (click) = "getLocation($event)" alt="" id="Office E" title="Office E 103" href="javascript:void(0);" shape="rect" coords="85,380, 130,436" />
+   <area (click) = "getLocation($event)" alt="" id="Office C" title="Office C 102" href="javascript:void(0);" shape="rect" coords="85,438, 130,490" />
+   <area (click) = "getLocation($event)" alt="" id="Entry A" title="Entry A 101" href="javascript:void(0);" shape="rect" coords="85,491, 115,523" />
+   <area (click) = "getLocation($event)" alt="" id="Front OFfice" title="Front Office" href="javascript:void(0);" shape="rect" coords="115, 491, 180 ,523" />
+   
+   <area (click) = "getLocation($event)" alt="" id="Office M" title="Office M" href="javascript:void(0);" shape="rect" coords="153,174, 190,239" />
+   <area (click) = "getLocation($event)" alt="" id="Office K" title="Office K" href="javascript:void(0);" shape="rect" coords="153,240, 190,284" />
+   <area (click) = "getLocation($event)" alt="" id="Office I" title="Office I" href="javascript:void(0);" shape="rect" coords="153,285, 190,331" />
+   <area (click) = "getLocation($event)" alt="" id="Office H" title="Office H" href="javascript:void(0);" shape="rect" coords="153,333, 190,375" />
+   <area (click) = "getLocation($event)" alt="" id="Office F" title="Office F" href="javascript:void(0);" shape="rect" coords="145,390, 190,433" />
+   <area (click) = "getLocation($event)" alt="" id="Office D" title="Office D" href="javascript:void(0);" shape="rect" coords="145,437, 180,485" />
+   
+   <area (click) = "getLocation($event)" alt="" id="Conference Room" title="Conference Room O" href="javascript:void(0);" shape="rect" coords="190,173, 260,284" />
+   <area (click) = "getLocation($event)" alt="" id="Office P" title="Office P" href="javascript:void(0);" shape="rect" coords="190,286, 226,375" />
+   <area (click) = "getLocation($event)" alt="" id="Office Q" title="Office Q" href="javascript:void(0);" shape="rect" coords="190,390, 226,431" />
+   <area (click) = "getLocation($event)" alt="" id="Supply Closet 125" title="Supply Closet 125" href="javascript:void(0);" shape="rect" coords="337,365, 353,522" />
+   <area (click) = "getLocation($event)" alt="" id="Break Room" title="Break Room" href="javascript:void(0);" shape="poly" coords="236,520,236,455,268,455,268,364,336,364,337,520"  />
+   
+   <area (click) = "getLocation($event)" alt="" id="Office V" title="Office V" href="javascript:void(0);" shape="rect" coords="260,175, 295,212" />
+   <area (click) = "getLocation($event)" alt="" id="Office U" title="Office U" href="javascript:void(0);" shape="rect" coords="260,214, 370,285" />
+   <area (click) = "getLocation($event)" alt="" id="Office S" title="Office S" href="javascript:void(0);" shape="rect" coords="260 ,286,  334,326" />
+   <area (click) = "getLocation($event)" alt="" id="Office T" title="Office T" href="javascript:void(0);" shape="rect" coords="334,285, 365,325" />
+   <area (click) = "getLocation($event)" alt="" id="Office W" title="Office W" href="javascript:void(0);" shape="rect" coords="297,173, 331,213" />
+   <area (click) = "getLocation($event)" alt="" id="Office X" title="Office X" href="javascript:void(0);" shape="rect" coords="332,173, 368,211" />
+   <area (click) = "getLocation($event)" alt="" id="Office Y" title="Office Y" href="javascript:void(0);" shape="rect" coords="616,175, 653,224" />
+   <area (click) = "getLocation($event)" alt="" id="Office Z" title="Office Z" href="javascript:void(0);" shape="rect" coords="651,175, 687,224" />
+   <area (click) = "getLocation($event)" alt="" id="Office AA" title="Office AA" href="javascript:void(0);" shape="rect" coords="594,352, 652,396" />
+   <area (click) = "getLocation($event)" alt="" id="Office AB" title="Office AB" href="javascript:void(0);" shape="rect" coords="652,352, 698,409" />
+   <area (click) = "getLocation($event)" alt="" id="Office AC" title="Office AC" href="javascript:void(0);" shape="rect" coords="649,411, 698,451" />
+   
+   
+   <area (click) = "getLocation($event)" alt="" id="R&D" title="R&D" href="javascript:void(0);" shape="poly" coords="386,175,387,324,587,324,700,322,698,254,698,225,616,225,614,175" />
+   <area (click) = "getLocation($event)" alt="" id="Between Maintenace and Offices" title="Between Maintenace and Offices" href="javascript:void(0);" shape="poly" coords="556,350,593,351,595,398,649,398,648,451,556,450" />
+   <area (click) = "getLocation($event)" alt="" id="Maintenace" title="Maintenace" href="javascript:void(0);" shape="rect" coords="354,351, 556,453" />
+   <area (click) = "getLocation($event)" alt="" id="Old Loading Dock" title="Old Loading Dock" href="javascript:void(0);" shape="rect" coords="528,122, 698,172" />
+   <area (click) = "getLocation($event)" alt="" id="New Testing Area" title="New Testing Area(?)" href="javascript:void(0);" shape="rect" coords="346, 0, 698,109" />
+   
+   
+  </map> 
+</maphilight>
+  <br>
+  <button (click) = "closeDialog()" value="{{coordinate}}"  style="max-height: 20%; width: 15%;height: 60px;"> 
+      <div *ngIf="coordinate != '' " style="font-size: 18px">Confirm {{coordinate}}</div>
+      <div  *ngIf="coordinate == '' " style="font-size: 18px"> Pick a coordinate </div> 
+    </button>
+    <div mat-dialog-actions  >
+      <button mat-button-raised style=" max-height: 20%; width: 15%;height: 60px; font-size: 18px" (click)="onNoClick()">Close</button>
+      
+    </div>
     
     
-    <area (click) = "getLocation($event)" alt="" id="a3" href="javascript:void(0);" shape="rect" coords="0,140, 85,210" />
-    <area (click) = "getLocation($event)" alt="" id="a4" title="" href="javascript:void(0);" shape="rect" coords="0,210, 85,280" />
-    <area (click) = "getLocation($event)" alt="" id="a5" title="" href="javascript:void(0);" shape="rect" coords="0,280, 85,350" />
-    <area (click) = "getLocation($event)" alt="" id="a6" title="" href="javascript:void(0);" shape="rect" coords="0,350, 85,420" />
-    <area (click) = "getLocation($event)" alt="" id="a7" title="" href="javascript:void(0);" shape="rect" coords="0,420, 85,490" />
-    <area (click) = "getLocation($event)" alt="" id="a8" title="" href="javascript:void(0);" shape="rect" coords="0,490, 85,560" />
-
-    <area (click) = "getLocation($event)" alt="" id="b3" title="test4" href="javascript:void(0);" shape="rect" coords="85,140, 175,210" />
-    <area (click) = "getLocation($event)" alt="" id="b4" title="test2" href="javascript:void(0);" shape="rect" coords="85,210, 175,280" />
-    <area (click) = "getLocation($event)" alt="" id="b5" title="test3" href="javascript:void(0);" shape="rect" coords="85,280, 175,350" />
-    <area (click) = "getLocation($event)" alt="" id="b6" title="test5" href="javascript:void(0);" shape="rect" coords="85,350, 175,420" />
-    <area (click) = "getLocation($event)" alt="" id="b7" title="test6" href="javascript:void(0);" shape="rect" coords="85,420, 175,490" />
-    <area (click) = "getLocation($event)" alt="" id="b8" title="test7" href="javascript:void(0);" shape="rect" coords="85,490, 175,560" />
-
-    <area (click) = "getLocation($event)" alt="" id="c3" title="test5" href="javascript:void(0);" shape="rect" coords="175,140, 260,210" />
-    <area (click) = "getLocation($event)" alt="" id="c4" title="test2" href="javascript:void(0);" shape="rect" coords="175,210, 260,280" />
-    <area (click) = "getLocation($event)" alt="" id="c5" title="test3" href="javascript:void(0);" shape="rect" coords="175,280, 260,350" />
-    <area (click) = "getLocation($event)" alt="" id="c6" title="test5" href="javascript:void(0);" shape="rect" coords="175,350, 260,420" />
-    <area (click) = "getLocation($event)" alt="" id="c7" title="test6" href="javascript:void(0);" shape="rect" coords="175,420, 260,490" />
-    <area (click) = "getLocation($event)" alt="" id="c8" title="test7" href="javascript:void(0);" shape="rect" coords="175,490, 260,560" />
-
-    <area (click) = "getLocation($event)" alt="" id="d3" title="test4" href="javascript:void(0);" shape="rect" coords="260,140, 350,210" />
-    <area (click) = "getLocation($event)" alt="" id="d4" title="test2" href="javascript:void(0);" shape="rect" coords="260,210, 350,280" />
-    <area (click) = "getLocation($event)" alt="" id="d5" title="test3" href="javascript:void(0);" shape="rect" coords="260,280, 350,350" />
-    <area (click) = "getLocation($event)" alt="" id="d6" title="test5" href="javascript:void(0);" shape="rect" coords="260,350, 350,420" />
-    <area (click) = "getLocation($event)" alt="" id="d7" title="test6" href="javascript:void(0);" shape="rect" coords="260,420, 350,490" />
-    <area (click) = "getLocation($event)" alt="" id="d8" title="test7" href="javascript:void(0);" shape="rect" coords="260,490, 350,560" />
     
-    <area (click) = "getLocation($event)" alt="" id="e1" title="test7" href="javascript:void(0);" shape="rect" coords="355,0,   440,70" />
-    <area (click) = "getLocation($event)" alt="" id="e2" title="test7" href="javascript:void(0);" shape="rect" coords="355,70,  440,140" />
-    <area (click) = "getLocation($event)" alt="" id="e3" title="test4" href="javascript:void(0);" shape="rect" coords="355,140, 440,210" />
-    <area (click) = "getLocation($event)" alt="" id="e4" title="test2" href="javascript:void(0);" shape="rect" coords="355,210, 440,280" />
-    <area (click) = "getLocation($event)" alt="" id="e5" title="test3" href="javascript:void(0);" shape="rect" coords="355,280, 440,350" />
-    <area (click) = "getLocation($event)" alt="" id="e6" title="test5" href="javascript:void(0);" shape="rect" coords="355,350, 440,420" />
-    <area (click) = "getLocation($event)" alt="" id="e7" title="test6" href="javascript:void(0);" shape="rect" coords="355,420, 440,490" />
-    <area (click) = "getLocation($event)" alt="" id="e" title="test7" href="javascript:void(0);" shape="rect" coords="355,490, 440,560" />
+    
+    
+    
+    
+    
+    
+    <!-- OLD COORDINATES
+      
+      
+      <area (click) = "getLocation($event)" alt="" id="a3" href="javascript:void(0);" shape="rect" coords="0,140, 85,210" />
+      <area (click) = "getLocation($event)" alt="" id="a4" title="" href="javascript:void(0);" shape="rect" coords="0,210, 85,280" />
+      <area (click) = "getLocation($event)" alt="" id="a5" title="" href="javascript:void(0);" shape="rect" coords="0,280, 85,350" />
+      <area (click) = "getLocation($event)" alt="" id="a6" title="" href="javascript:void(0);" shape="rect" coords="0,350, 85,420" />
+      <area (click) = "getLocation($event)" alt="" id="a7" title="" href="javascript:void(0);" shape="rect" coords="0,420, 85,490" />
+      <area (click) = "getLocation($event)" alt="" id="a8" title="" href="javascript:void(0);" shape="rect" coords="0,490, 85,560" />
+      
+      <area (click) = "getLocation($event)" alt="" id="b3" title="test4" href="javascript:void(0);" shape="rect" coords="85,140, 175,210" />
+      <area (click) = "getLocation($event)" alt="" id="b4" title="test2" href="javascript:void(0);" shape="rect" coords="85,210, 175,280" />
+      <area (click) = "getLocation($event)" alt="" id="b5" title="test3" href="javascript:void(0);" shape="rect" coords="85,280, 175,350" />
+      <area (click) = "getLocation($event)" alt="" id="b6" title="test5" href="javascript:void(0);" shape="rect" coords="85,350, 175,420" />
+      <area (click) = "getLocation($event)" alt="" id="b7" title="test6" href="javascript:void(0);" shape="rect" coords="85,420, 175,490" />
+      <area (click) = "getLocation($event)" alt="" id="b8" title="test7" href="javascript:void(0);" shape="rect" coords="85,490, 175,560" />
+      
+      <area (click) = "getLocation($event)" alt="" id="c3" title="test5" href="javascript:void(0);" shape="rect" coords="175,140, 260,210" />
+      <area (click) = "getLocation($event)" alt="" id="c4" title="test2" href="javascript:void(0);" shape="rect" coords="175,210, 260,280" />
+      <area (click) = "getLocation($event)" alt="" id="c5" title="test3" href="javascript:void(0);" shape="rect" coords="175,280, 260,350" />
+      <area (click) = "getLocation($event)" alt="" id="c6" title="test5" href="javascript:void(0);" shape="rect" coords="175,350, 260,420" />
+      <area (click) = "getLocation($event)" alt="" id="c7" title="test6" href="javascript:void(0);" shape="rect" coords="175,420, 260,490" />
+      <area (click) = "getLocation($event)" alt="" id="c8" title="test7" href="javascript:void(0);" shape="rect" coords="175,490, 260,560" />
+      
+      <area (click) = "getLocation($event)" alt="" id="d3" title="test4" href="javascript:void(0);" shape="rect" coords="260,140, 350,210" />
+      <area (click) = "getLocation($event)" alt="" id="d4" title="test2" href="javascript:void(0);" shape="rect" coords="260,210, 350,280" />
+      <area (click) = "getLocation($event)" alt="" id="d5" title="test3" href="javascript:void(0);" shape="rect" coords="260,280, 350,350" />
+      <area (click) = "getLocation($event)" alt="" id="d6" title="test5" href="javascript:void(0);" shape="rect" coords="260,350, 350,420" />
+      <area (click) = "getLocation($event)" alt="" id="d7" title="test6" href="javascript:void(0);" shape="rect" coords="260,420, 350,490" />
+      <area (click) = "getLocation($event)" alt="" id="d8" title="test7" href="javascript:void(0);" shape="rect" coords="260,490, 350,560" />
+      
+      <area (click) = "getLocation($event)" alt="" id="e1" title="test7" href="javascript:void(0);" shape="rect" coords="355,0,   440,70" />
+      <area (click) = "getLocation($event)" alt="" id="e2" title="test7" href="javascript:void(0);" shape="rect" coords="355,70,  440,140" />
+      <area (click) = "getLocation($event)" alt="" id="e3" title="test4" href="javascript:void(0);" shape="rect" coords="355,140, 440,210" />
+      <area (click) = "getLocation($event)" alt="" id="e4" title="test2" href="javascript:void(0);" shape="rect" coords="355,210, 440,280" />
+      <area (click) = "getLocation($event)" alt="" id="e5" title="test3" href="javascript:void(0);" shape="rect" coords="355,280, 440,350" />
+      <area (click) = "getLocation($event)" alt="" id="e6" title="test5" href="javascript:void(0);" shape="rect" coords="355,350, 440,420" />
+      <area (click) = "getLocation($event)" alt="" id="e7" title="test6" href="javascript:void(0);" shape="rect" coords="355,420, 440,490" />
+      <area (click) = "getLocation($event)" alt="" id="e" title="test7" href="javascript:void(0);" shape="rect" coords="355,490, 440,560" />
+      
+      
+      <area (click) = "getLocation($event)" alt="" id="f1" title="test7" href="javascript:void(0);" shape="rect" coords="440,0,   530,70" />
+      <area (click) = "getLocation($event)" alt="" id="f2" title="test7" href="javascript:void(0);" shape="rect" coords="440,70,  530,140" />
+      <area (click) = "getLocation($event)" alt="" id="f3" title="test4" href="javascript:void(0);" shape="rect" coords="440,140, 530,210" />
+      <area (click) = "getLocation($event)" alt="" id="f4" title="test2" href="javascript:void(0);" shape="rect" coords="440,210, 530,280" />
+      <area (click) = "getLocation($event)" alt="" id="f5" title="test3" href="javascript:void(0);" shape="rect" coords="440,280, 530,350" />
+      <area (click) = "getLocation($event)" alt="" id="f6" title="test5" href="javascript:void(0);" shape="rect" coords="440,350, 530,420" />
+      <area (click) = "getLocation($event)" alt="" id="f7" title="test6" href="javascript:void(0);" shape="rect" coords="440,420, 530,490" />
+      <area (click) = "getLocation($event)" alt="" id="f8" title="test7" href="javascript:void(0);" shape="rect" coords="440,490, 530,560" />
 
-
-    <area (click) = "getLocation($event)" alt="" id="f1" title="test7" href="javascript:void(0);" shape="rect" coords="440,0,   530,70" />
-    <area (click) = "getLocation($event)" alt="" id="f2" title="test7" href="javascript:void(0);" shape="rect" coords="440,70,  530,140" />
-    <area (click) = "getLocation($event)" alt="" id="f3" title="test4" href="javascript:void(0);" shape="rect" coords="440,140, 530,210" />
-    <area (click) = "getLocation($event)" alt="" id="f4" title="test2" href="javascript:void(0);" shape="rect" coords="440,210, 530,280" />
-    <area (click) = "getLocation($event)" alt="" id="f5" title="test3" href="javascript:void(0);" shape="rect" coords="440,280, 530,350" />
-    <area (click) = "getLocation($event)" alt="" id="f6" title="test5" href="javascript:void(0);" shape="rect" coords="440,350, 530,420" />
-    <area (click) = "getLocation($event)" alt="" id="f7" title="test6" href="javascript:void(0);" shape="rect" coords="440,420, 530,490" />
-    <area (click) = "getLocation($event)" alt="" id="f8" title="test7" href="javascript:void(0);" shape="rect" coords="440,490, 530,560" />
-
-    <area (click) = "getLocation($event)" alt="" id="g1" title="test7" href="javascript:void(0);" shape="rect" coords="530,0,   620,70" />
-    <area (click) = "getLocation($event)" alt="" id="g2" title="test7" href="javascript:void(0);" shape="rect" coords="530,70,  620,140" />
-    <area (click) = "getLocation($event)" alt="" id="g3" title="test4" href="javascript:void(0);" shape="rect" coords="530,140, 620,210" />
-    <area (click) = "getLocation($event)" alt="" id="g4" title="test2" href="javascript:void(0);" shape="rect" coords="530,210, 620,280" />
-    <area (click) = "getLocation($event)" alt="" id="g5" title="test3" href="javascript:void(0);" shape="rect" coords="530,280, 620,350" />
-    <area (click) = "getLocation($event)" alt="" id="g6" title="test5" href="javascript:void(0);" shape="rect" coords="530,350, 620,420" />
-    <area (click) = "getLocation($event)" alt="" id="g7" title="test6" href="javascript:void(0);" shape="rect" coords="530,420, 620,490" />
-    <area (click) = "getLocation($event)" alt="" id="g8" title="test7" href="javascript:void(0);" shape="rect" coords="530,490, 620,560" />
-
-
-    <area (click) = "getLocation($event)" alt="" id="h1" title="test7" href="javascript:void(0);" shape="rect" coords="620,0,   710,70" />
-    <area (click) = "getLocation($event)" alt="" id="h2" title="test7" href="javascript:void(0);" shape="rect" coords="620,70,  710,140" />
-    <area (click) = "getLocation($event)" alt="" id="h3" title="test4" href="javascript:void(0);" shape="rect" coords="620,140, 710,210" />
+      <area (click) = "getLocation($event)" alt="" id="g1" title="test7" href="javascript:void(0);" shape="rect" coords="530,0,   620,70" />
+      <area (click) = "getLocation($event)" alt="" id="g2" title="test7" href="javascript:void(0);" shape="rect" coords="530,70,  620,140" />
+      <area (click) = "getLocation($event)" alt="" id="g3" title="test4" href="javascript:void(0);" shape="rect" coords="530,140, 620,210" />
+      <area (click) = "getLocation($event)" alt="" id="g4" title="test2" href="javascript:void(0);" shape="rect" coords="530,210, 620,280" />
+      <area (click) = "getLocation($event)" alt="" id="g5" title="test3" href="javascript:void(0);" shape="rect" coords="530,280, 620,350" />
+      <area (click) = "getLocation($event)" alt="" id="g6" title="test5" href="javascript:void(0);" shape="rect" coords="530,350, 620,420" />
+      <area (click) = "getLocation($event)" alt="" id="g7" title="test6" href="javascript:void(0);" shape="rect" coords="530,420, 620,490" />
+      <area (click) = "getLocation($event)" alt="" id="g8" title="test7" href="javascript:void(0);" shape="rect" coords="530,490, 620,560" />
+      
+      
+      <area (click) = "getLocation($event)" alt="" id="h1" title="test7" href="javascript:void(0);" shape="rect" coords="620,0,   710,70" />
+      <area (click) = "getLocation($event)" alt="" id="h2" title="test7" href="javascript:void(0);" shape="rect" coords="620,70,  710,140" />
+      <area (click) = "getLocation($event)" alt="" id="h3" title="test4" href="javascript:void(0);" shape="rect" coords="620,140, 710,210" />
     <area (click) = "getLocation($event)" alt="" id="h4" title="test2" href="javascript:void(0);" shape="rect" coords="620,210, 710,280" />
     <area (click) = "getLocation($event)" alt="" id="h5" title="test3" href="javascript:void(0);" shape="rect" coords="620,280, 710,350" />
     <area (click) = "getLocation($event)" alt="" id="h6" title="test5" href="javascript:void(0);" shape="rect" coords="620,350, 710,420" />

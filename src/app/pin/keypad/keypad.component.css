@@ -1,0 +1,16 @@
+button{
+    height: 90px;
+    width: 90px;
+    font-size: 26px
+}
+#entered{
+    align-content: center;
+    align-items: center
+}
+input{
+    width: 100%;
+    padding-top: 20px;
+    align-content: center;
+    text-align: center;
+    font-size: 26px;
+}

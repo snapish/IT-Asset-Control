@@ -10,7 +10,6 @@
             Inventory
           </ng-template>
           <app-queue></app-queue>
-<!-- <app-map></app-map> -->
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
@@ -38,7 +37,8 @@
             <mat-icon class="example-tab-icon">check_circle</mat-icon>
             Queue
           </ng-template>
-          <inventory></inventory>
+          <app-manage></app-manage>
+          <app-pin></app-pin>
         </mat-tab>
 
         <mat-tab>
@@ -46,7 +46,7 @@
             <mat-icon class="example-tab-icon">phonelink_off</mat-icon>
             Decomissioned
           </ng-template>
-          <inventory></inventory>
+       <app-decomission></app-decomission>
         </mat-tab>
       </mat-tab-group>
 

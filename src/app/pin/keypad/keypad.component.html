@@ -1,0 +1,27 @@
+<div id="main">
+  <button mat-raised-button (click) = "addEntry(1)">1</button>
+  <button mat-raised-button (click) = "addEntry(2)">2</button>
+  <button mat-raised-button (click) = "addEntry(3)">3</button>
+  <br>
+  <button mat-raised-button (click) = "addEntry(4)">4</button>
+  <button mat-raised-button (click) = "addEntry(5)">5</button>
+  <button mat-raised-button (click) = "addEntry(6)">6</button>
+  <br>
+  <button mat-raised-button (click) = "addEntry(7)">7</button>
+  <button mat-raised-button (click) = "addEntry(8)">8</button>
+  <button mat-raised-button (click) = "addEntry(9)">9</button>
+  <br>
+  <button mat-raised-button (click) = "addEntry(0)" style="padding-left: 48%; padding-right: 48%">0</button>
+  <br>
+  <br>
+
+  <div id="entered"  >
+    <input type="text" disabled="true" value={{entered}}>
+  </div>
+  <button mat-fab style="float:left" (click) = "back()">
+    <mat-icon>keyboard_backspace</mat-icon>
+  </button>
+  <button mat-fab style="float: right" (click) = "enter()">
+    <mat-icon>done_outline</mat-icon>
+  </button>
+</div>

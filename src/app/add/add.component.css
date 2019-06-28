@@ -8,9 +8,9 @@
       
     
 }
-.name,.description,.quantity,.serial, .URL,.txt{
-    
-     margin: 5px; 
+/*.name,.description,.quantity,.serial, .URL,.txt{*/
+   .input{ 
+    margin: 5px; 
     width: 15%;
     padding: 10px;
     font-size: 20px;

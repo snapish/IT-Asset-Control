@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ElementRef } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
@@ -50,7 +50,13 @@ import { Production1Component } from './map/production1/production1.component';
 import { Production2Component } from './map/production2/production2.component';
 import { ShippingComponent } from './map/shipping/shipping.component';
 import { Globals } from './global';
+import { PinComponent } from './pin/pin.component';
+import { DecomissionComponent } from './decomission/decomission.component';
+import { KeypadComponent } from './pin/keypad/keypad.component';
+import { CookieService } from 'ngx-cookie-service';
 //import {ChangeDetectorRef} from '@angular/core'
+import { FormsModule } from '@angular/forms';
+import { ManageComponent } from './manage/manage.component';
 
 @NgModule({
   declarations: [
@@ -64,10 +70,14 @@ import { Globals } from './global';
     Production1Component,
     Production2Component,
     ShippingComponent,
+    PinComponent,
+    DecomissionComponent,
+    KeypadComponent,
+    ManageComponent,
 
   ],
   imports: [
-    
+    FormsModule,
     RouterModule.forRoot([]),
     BrowserModule,
     BrowserAnimationsModule,
@@ -107,9 +117,9 @@ import { Globals } from './global';
  	AngularFirestoreModule,
       
   ],
-  entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent],
+  entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent, KeypadComponent],
   exports: [MatButtonModule, MatCheckboxModule, MatCardModule,MatTableModule],
-  providers: [DatePipe, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals],
+  providers: [DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
   bootstrap: [AppComponent ]
 })
 export class AppModule { }

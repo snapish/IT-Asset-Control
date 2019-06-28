@@ -1,8 +1,8 @@
 
-<button mat-raised-button (click) = "newBoxes('offices')">Open Offices</button>
-<button mat-raised-button (click) = "newBoxes('production1')">Open Production1</button>
-<button mat-raised-button (click) = "newBoxes('production2')" >Open Production2</button>
-<button mat-raised-button (click) = "newBoxes('shipping')"> Open Shipping</button>
+<button mat-raised-button (click) = "locationPicker('offices')">Open Offices</button>
+<button mat-raised-button (click) = "locationPicker('production1')">Open Production1</button>
+<button mat-raised-button (click) = "locationPicker('production2')" >Open Production2</button>
+<button mat-raised-button (click) = "locationPicker('shipping')"> Open Shipping</button>
 
 
 <div *ngFor="let a of (coordinateArray )">

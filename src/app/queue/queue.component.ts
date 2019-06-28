@@ -4,10 +4,11 @@ import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angu
 //import { MapComponent } from '../map/map.component';
 import { LocationService } from '../location.service';
 import { MapComponent } from '../map/map.component';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material'
 import { FirestoreService } from '../firestore.service';
 import { SelectionModel } from '@angular/cdk/collections';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-queue',
@@ -21,60 +22,62 @@ export class QueueComponent implements OnInit {
   form;
   items;
   coordArray = [];
+  
   displayColumns = [ 'Name', 'Quantity', 'Location', 'User', 'Notes', 'Date',];
   queueSource;
+  user ;
+  noteValue = [];
   selection = new SelectionModel<any>(true, []);
-  constructor(private dialog: MatDialog, private map: MapComponent, private dialogRef: MatDialogRef<QueueComponent>, @Inject(MAT_DIALOG_DATA) data, private firebaseService: FirestoreService, private global: Globals) { this.coords = data.coords; }
+  constructor(private cookie: CookieService, private dialog: MatDialog, private map: MapComponent, private dialogRef: MatDialogRef<QueueComponent>, @Inject(MAT_DIALOG_DATA) data, private firebaseService: FirestoreService, private global: Globals) { this.coords = data.coords; }
 
 
   ngOnInit() {
     this.firebaseService.getQueue().subscribe(data => { this.items = data; this.queueSource = new MatTableDataSource(data); this.queueSource.sort = this.sort; });
+    if(this.cookie.get("User") == "" || this.cookie.get("User") == null){
+      this.user = "Mystery"
+    }
+    else{
+    this.user = this.cookie.get("User");
+    }
   }
-  //   this.form = this.fb.group({
-  //     coords: [this.coords, []],
 
-  // });
-  // }
-
-  // save(){
-  //   this.dialogRef.close(this.form.value)
-  // }
-  //idk why i named it newboxes but its too late now isnt it
-  newBoxes(e) {
+  /**
+   * Pulls up a dialog box, which has some buttons that pull up another dialog box with image-maps of the building
+   * @param e the index being passed, normally from the view, to set the location to
+   */
+  locationPicker(e) {
     const dialogConfig = new MatDialogConfig(); //options for dialog boxes
-    dialogConfig.autoFocus = true;
+    dialogConfig.autoFocus = true; 
     dialogConfig.hasBackdrop = true;
-    // if (e != null) { //if something was passed (will be a coordinate, something is only passed when replacinig)
-    //   this.global.replace = e;  //honestly looking at this now i dont know if i need the global variables but it works so im not ganna touch it
-    //   var replaceIndex = this.coordArray.indexOf(e);// get the index that theyre replacing 
-    //   const dialogRef = this.dialog.open(MapComponent, dialogConfig);//open map dialog
-    //   dialogRef.afterClosed().subscribe(data => {
-    //     if (data != null) { //when the dialog is clsoed
-    //       this.coordArray[replaceIndex] = data
-    //     } //replace that index
-    //   })
-    // }
-    //else { // if youre not replacing something
-      const dialogRef = this.dialog.open(MapComponent, dialogConfig);
+      const dialogRef = this.dialog.open(MapComponent, dialogConfig); //open the map component
       dialogRef.afterClosed().subscribe(data => {
-        if (data != null) {
-          this.coordArray[e] = data
+        if (data != null) { //if the componenet sent back some kind of data
+          this.coordArray[e] = data //e is the index in the coord array that lines up with the queue entry 
         } 
       })
-    //}
   }
   fullSend(){
 
   }
-  sendIt(){
-    //decom
-    //manage
-    //queue button to inv
-    //reorder on inv
-    //auto fill mass entry
+  sendIt(name:string, location : string, notes: string, quantity : number){
+    this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity);
+    //manage needs date, user, item name, location, notes
+
+    //pin authentication ---woo---
+    //decom table+page ---woo---
+    //queue to manage button ---woo---
+    //queue button to inv ---woo---
+    //set up manage page ---partial woo---
     //jquery plug in for map
-    //queue contents to manage tab
     //url passing
-    //fine tune add tab
+    //fix the adding page
+    //auto fill mass entry 
   }
 }
+
+//monday
+//6:20-7:33 
+//7:50-8:19
+
+//wednesday
+//7:10-2:20

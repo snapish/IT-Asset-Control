@@ -8,6 +8,7 @@ import {MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
 import { LocationService } from '../location.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'inventory',
@@ -22,7 +23,7 @@ export class InventoryComponent implements OnInit {
   itemsource;
   displayColumns = ['Name', 'Quantity','Description', 'LastRestock', 'LastRestockQuantity', 'Serial', 'Restock'];
 
-  constructor(public firebaseService: FirestoreService, private dialog: MatDialog, private loc: LocationService) {  }
+  constructor(public firebaseService: FirestoreService, private dialog: MatDialog, private loc: LocationService, private cookie : CookieService) {  }
 
   ngOnInit() {
     
@@ -30,8 +31,9 @@ export class InventoryComponent implements OnInit {
     //this.firebaseService.getQueue();
   }
 
-  queueItem(e):any{
-    
+  queueItem(e, name: string, qty: number):any{
+    console.log("queue item in inventory fired")
+      this.firebaseService.queueEntry(name, qty, this.cookie.get("User"));
   }
   applyFilter(filterValue: string) {
     this.itemsource.filter = filterValue.trim().toLowerCase();

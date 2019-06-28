@@ -36,7 +36,7 @@ export class MapComponent implements OnInit {
     this.dialogRef.close(this.form.value)
   }
 
-  newBoxes(s) {
+  locationPicker(s) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;

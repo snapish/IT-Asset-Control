@@ -13,8 +13,8 @@ export class AddComponent implements AfterViewInit {
 
   //something i wanted to do was get it to auto add values based on the database, not sure if time
   constructor(private Firestore: FirestoreService) {
-    
-   }
+
+  }
 
   ngAfterViewInit() {
 
@@ -26,93 +26,84 @@ export class AddComponent implements AfterViewInit {
     var node;
     for (let index = 0; index < n; index++) { //make N text boxes
       node = document.createElement("input")//.setAttribute("class","input"); // of type input 
-     node.setAttribute("class", "input");
+      node.setAttribute("class", "input");
       //node.setAttribute("value", "");
       document.getElementById("boxesDiv").appendChild(node); //slap them onto the element with that ID
-      
+
     }
     document.getElementsByClassName("input")[0].setAttribute('placeholder', 'Item Name');
     document.getElementsByClassName("input")[1].setAttribute('placeholder', 'Quantity');
     document.getElementsByClassName("input")[2].setAttribute('placeholder', 'Description');
     document.getElementsByClassName("input")[3].setAttribute('placeholder', 'Serial Number');
     document.getElementsByClassName("input")[4].setAttribute('placeholder', 'URL ("g" for google)');
-  /*  document.getElementsByClassName("input")[0].setAttribute('class', 'input');
-    document.getElementsByClassName("input")[1].setAttribute('class', 'input');
-    document.getElementsByClassName("input")[2].setAttribute('class', 'input');
-    document.getElementsByClassName("input")[3].setAttribute('class', 'input');
-    document.getElementsByClassName("input")[4].setAttribute('class', 'input');
-*/
+    document.getElementsByClassName("input")[0].setAttribute('class', 'input');
+      document.getElementsByClassName("input")[1].setAttribute('class', 'input');
+      document.getElementsByClassName("input")[2].setAttribute('class', 'input');
+      document.getElementsByClassName("input")[3].setAttribute('class', 'input');
+      document.getElementsByClassName("input")[4].setAttribute('class', 'input');
+  
 
     // on key down events lie below
 
 
     document.addEventListener('keydown', function ($event) { //keydown to make next line work
       var arr = document.getElementsByClassName('input');// make an html collection
-      $('.input').each(function(){console.log($(this).val())} )
-      // console.log(arr)
-      // console.log(document.getElementsByClassName('input')[4])
-      // //add check if its url box
-      // console.log(arr.length)
-
-
-      /*note to skippy: might be better to do a check if the focused html element thing is on
-      a textbox with the classname URL*/
-      if ($event.key == "Backspace" || $event.key == 'Delete') { // if they pressed a get-rid-of-character-button
-        for (let i = 4; i < arr.length; i += 5) { //check every 5th box, starting at the URL box, for 
-          if (document.getElementsByClassName('input')[i].getAttribute("value") == "Google Search") {
-            document.getElementsByClassName('input')[i].setAttribute("value", ""); //change it to nothing 
-          }
+      $('.input').each(function () {
+        if ($(this).val() == "yeet") {
+          $(this).val("test");
+          console.log($(this).val())
         }
+      })
+ 
+      /*note to skippy: might be better to do a check if the focused html element thing is on
+      a textbox with the classname URL
+      
+      $event.target */
+      if ($event.key == "Backspace" || $event.key == 'Delete') { // if they pressed a get-rid-of-character-button
+        $('.input').each(function () { //for each input box
+          if ($(this).val() == "Google Search") { // if the box text is google search
+            $($event.target).val(""); //set it to nothing
+          }
+        })
       }
-
 
       if ($event.key == "Tab") { // if the key they pressed was tab
         var filledCount = 0; // for counting how many text boxes have something in them
-        for (let i = 4; i < arr.length; i += 5) { //check every 5th box, starting at the URL box
-          if (document.getElementsByClassName('input')[i].getAttribute("value") == "g") {
-            console.log("saw g was in google search box")
-            document.getElementsByClassName('input')[i].setAttribute("value", "Google Search"); //filler
+    
+        $('.input').each(function () {
+         
+          if ($(this).val() == "g" ) { // if the box text is g
+            $(this).val("Google Search"); //set it to google search
           }
-        }
-
-        for (let index = 0; index < arr.length; index++) { //check every text box
-          console.log(document.getElementsByClassName("input")[index].getAttribute("value"));
-
-          if (arr[index].getAttribute("value") != null) { // if it has something in it
-            filledCount++; // tick this up one
-            console.log("count++")
-          }
-        }
-
-
+            if ($(this).val() != "" ) { // if the box text has osmething in it
+              filledCount++; // tick this up one
+            }
+          
+        })
+      }
         if (filledCount == arr.length) { //if all the boxes had something in them
           var br = document.createElement("br");//make a new line node
-          document.getElementById("boxesDiv").appendChild(br); //add it to whatever element
-          var node;
+        
+          $('#boxesDiv').append(br);
           for (let index = 0; index < 5; index++) { //make 5 text boxes
-            node = document.createElement("input"); // of type input 
-            document.getElementById("boxesDiv").appendChild(node); //slap them onto the element with that ID
-          }
+            var node = document.createElement("input"); // of type input
+            $(node).addClass('input');
+            $('#boxesDiv').append(node)
+           }
           //down here is just setting class names and placeholder text
           arr = document.getElementsByClassName('input'); //temp array getting all the text boxes
-          console.log(arr)
           for (let x = 0; x < arr.length; x += 5) {
-            document.getElementsByClassName("input")[x].setAttribute('class', 'name');
             document.getElementsByClassName("input")[x].setAttribute('placeholder', 'Item Name');
-            document.getElementsByClassName("input")[x + 1].setAttribute('class', 'input');
             document.getElementsByClassName("input")[x + 1].setAttribute('placeholder', 'Quantity');
-            document.getElementsByClassName("input")[x + 2].setAttribute('class', 'input');
             document.getElementsByClassName("input")[x + 2].setAttribute('placeholder', 'Description');
-            document.getElementsByClassName("input")[x + 3].setAttribute('class', 'input');
             document.getElementsByClassName("input")[x + 3].setAttribute('placeholder', 'Serial Number');
-            document.getElementsByClassName("input")[x + 4].setAttribute('class', 'input');
             document.getElementsByClassName("input")[x + 4].setAttribute('placeholder', 'Order URL ("g" for google)');
           }
         }
       }
-    }); //end event handeler
-  }
+    ); //end event handeler
 
+    }
   // delays for ms 
   async delay(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => console.log());
@@ -121,7 +112,7 @@ export class AddComponent implements AfterViewInit {
   addToInv() {
     var badEnrtyFlag = false;
     var qtyEntry = 0;
-    var inputArray = document.querySelectorAll('input'); // something to iterate with respect to
+    var inputArray = document.querySelectorAll('input'); // something to iterate (not to be confused with integrate) with respect to
     var textboxContent = []; // array to fill with textbox content
     var query = "";
     var temp = "";
@@ -130,7 +121,8 @@ export class AddComponent implements AfterViewInit {
       if ((inputArray[inputArray.length - 1].value == "" && inputArray[inputArray.length - 2].value == "" && inputArray[inputArray.length - 3].value == "" && inputArray[inputArray.length - 4].value == "" && inputArray[inputArray.length - 5].value == "")) {
         //remove the last 5 boxes on the page before continuing
         for (let ind = 0; ind < 5; ind++) {
-          document.getElementsByClassName('input')[document.getElementsByClassName('input').length - 1].remove();
+         // document.getElementsByClassName('input')[document.getElementsByClassName('input').length - 1].remove();
+          $('.input')[($('.input').length -1)].remove();
         }
       }
     }

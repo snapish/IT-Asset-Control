@@ -44,26 +44,16 @@ export class InventoryComponent implements OnInit {
     var a = s.split(' ');
     var qty;
    qty = prompt("How many are you buying", "1");
-
     if (qty != null && qty != 0 && qty > 0) {
-
      qty = parseInt(qty); // gets number from box
     var url = a[0];
     var name = a[1];
     this.firebaseService.restockEntry(name, qty)
-    window.open(url)
+    //this.firebaseService.getInventory().
+    window.open(url) 
     }
-    alert("Bad entry try again sir")
+    else if(qty != null){ //alert box returns null on cancel
+      alert("Bad entry try again sir")
+    }
   }
-
-  
-
-  mapDialog(section:string){
-    console.log("f")
-  // var x = this.loc.openMapDialog(section);// each section returns a value when the dialog is closed which the service returns 
-    //console.log(x)
- 
-  }
-  
-
 }

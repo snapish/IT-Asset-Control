@@ -13,15 +13,13 @@ export class PinComponent implements OnInit {
   constructor(private dialog: MatDialog, private dialogRef: MatDialogRef<PinComponent>, @Inject(MAT_DIALOG_DATA) data, private cookie : CookieService) {
   }
 
-  pins;
-  users;
+  pins = ["1111", "2222"];//approved pins
+  users= ["Elliot", "Erick"];// users, their index is the same as their pin
   enteredPin: string;
   approved: boolean = false;
   ngOnInit() {
     if(this.cookie.get("User") == ""){ // if the cookie is expired or doesnt exist, prompt keypad
-    this.pins = ["1111", "2222"] //approved pins
-    this.users = ["Elliot", "Erick"]; // users, their index is the same as their pin
-      //not the best way to do ^ that part but it works
+   
     this.enteredPin = "" 
     const dialogConfig = new MatDialogConfig(); //options for dialog boxes
     dialogConfig.autoFocus = true;
@@ -30,10 +28,13 @@ export class PinComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => { this.enteredPin = data; this.checkPin() }); 
 
     }
-
+    else if (this.cookie.get("User") != ""){
+      this.approved = true;
+      console.log(this.approved)
+    }
   }
   /**
-   * Checks if the pin entered from the keypad is approved or not
+   * Checks if the pin entered from the keypad is an approved pin or not
    */
   checkPin() {
     for (let ind = 0; ind < this.pins.length; ind++) {

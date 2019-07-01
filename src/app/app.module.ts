@@ -121,7 +121,7 @@ import { MaphilightModule } from 'ng-maphilight';
   ],
   entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent, KeypadComponent],
   exports: [MatButtonModule, MatCheckboxModule, MatCardModule,MatTableModule],
-  providers: [DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
+  providers: [PinComponent, DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
   bootstrap: [AppComponent ]
 })
 export class AppModule { }

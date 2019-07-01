@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewEncapsulation, HostBinding, Directive, ElementRef, AfterViewInit } from '@angular/core';
 import { FirestoreService } from '../firestore.service';
 import { delay } from 'q';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -25,22 +25,17 @@ export class AddComponent implements AfterViewInit {
     document.getElementById("boxesDiv").appendChild(br); //add it to whatever element
     var node;
     for (let index = 0; index < n; index++) { //make N text boxes
-      node = document.createElement("input")//.setAttribute("class","input"); // of type input 
+      node = document.createElement("input")// of type input 
       node.setAttribute("class", "input");
-      //node.setAttribute("value", "");
-      document.getElementById("boxesDiv").appendChild(node); //slap them onto the element with that ID
+      $('#boxesDiv').append(node); //slap them onto the element with that ID
 
     }
-    document.getElementsByClassName("input")[0].setAttribute('placeholder', 'Item Name');
-    document.getElementsByClassName("input")[1].setAttribute('placeholder', 'Quantity');
-    document.getElementsByClassName("input")[2].setAttribute('placeholder', 'Description');
-    document.getElementsByClassName("input")[3].setAttribute('placeholder', 'Serial Number');
-    document.getElementsByClassName("input")[4].setAttribute('placeholder', 'URL ("g" for google)');
-    document.getElementsByClassName("input")[0].setAttribute('class', 'input');
-      document.getElementsByClassName("input")[1].setAttribute('class', 'input');
-      document.getElementsByClassName("input")[2].setAttribute('class', 'input');
-      document.getElementsByClassName("input")[3].setAttribute('class', 'input');
-      document.getElementsByClassName("input")[4].setAttribute('class', 'input');
+    $('.input')[0].setAttribute('placeholder', 'Item Name');
+    $('.input')[1].setAttribute('placeholder', 'Quantity');
+    $('.input')[2].setAttribute('placeholder', 'Description');
+    $('.input')[3].setAttribute('placeholder', 'Serial Number');
+    $('.input')[4].setAttribute('placeholder', 'URL ("g" for google)');
+  
   
 
     // on key down events lie below
@@ -48,17 +43,6 @@ export class AddComponent implements AfterViewInit {
 
     document.addEventListener('keydown', function ($event) { //keydown to make next line work
       var arr = document.getElementsByClassName('input');// make an html collection
-      $('.input').each(function () {
-        if ($(this).val() == "yeet") {
-          $(this).val("test");
-          console.log($(this).val())
-        }
-      })
- 
-      /*note to skippy: might be better to do a check if the focused html element thing is on
-      a textbox with the classname URL
-      
-      $event.target */
       if ($event.key == "Backspace" || $event.key == 'Delete') { // if they pressed a get-rid-of-character-button
         $('.input').each(function () { //for each input box
           if ($(this).val() == "Google Search") { // if the box text is google search
@@ -93,11 +77,12 @@ export class AddComponent implements AfterViewInit {
           //down here is just setting class names and placeholder text
           arr = document.getElementsByClassName('input'); //temp array getting all the text boxes
           for (let x = 0; x < arr.length; x += 5) {
-            document.getElementsByClassName("input")[x].setAttribute('placeholder', 'Item Name');
-            document.getElementsByClassName("input")[x + 1].setAttribute('placeholder', 'Quantity');
-            document.getElementsByClassName("input")[x + 2].setAttribute('placeholder', 'Description');
-            document.getElementsByClassName("input")[x + 3].setAttribute('placeholder', 'Serial Number');
-            document.getElementsByClassName("input")[x + 4].setAttribute('placeholder', 'Order URL ("g" for google)');
+           
+             $('.input')[x].setAttribute('placeholder', 'Item Name');
+             $('.input')[x + 1].setAttribute('placeholder', 'Quantity');
+             $('.input')[x + 2].setAttribute('placeholder', 'Description');
+             $('.input')[x + 3].setAttribute('placeholder', 'Serial Number');
+             $('.input')[x + 4].setAttribute('placeholder', 'Order URL ("g" for google)');
           }
         }
       }
@@ -130,10 +115,10 @@ export class AddComponent implements AfterViewInit {
     for (let index = 0; index < inputArray.length; index++) {
       //text box must contain letters, numbers, dashes, spaces, no emojis ERICK (-_-)
       if (/^[0-9A-Za-z\s\-\_]+$/.test(document.getElementsByClassName('input')[index].getAttribute("value")) && document.getElementsByClassName('input')[index].getAttribute("value") != "") {
-        textboxContent.push(document.getElementsByClassName('input')[index].getAttribute("value")); //add that value to the array of values
-        document.getElementsByClassName('input')[index].setAttribute("style", "background-color: white"); //set it to white, if it was previously red, no spoilers but thats coming up soon
+        textboxContent.push($('.input')[index].getAttribute("value")); //add that value to the array of values
+       $('.input')[index].setAttribute("style", "background-color: white"); //set it to white, if it was previously red, no spoilers but thats coming up soon
       }
-      else if (document.getElementsByClassName('input')[index].getAttribute("value") == "" && document.getElementsByClassName('input')[index].className != "URL") { //if the box was blank
+      else if ($('.input')[index].getAttribute("value") == "" && $('.input')[index].className != "URL") { //if the box was blank
         document.getElementsByClassName('input')[index].setAttribute("style", "background-color: red"); //set it to red 
         badEnrtyFlag = true; // flag for l8r
         break;//get out of loop because something is messed up no point going on just like life

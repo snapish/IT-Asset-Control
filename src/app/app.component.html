@@ -9,35 +9,36 @@
             <mat-icon class="example-tab-icon">storage</mat-icon>
             Inventory
           </ng-template>
-          <app-queue></app-queue>
+          <inventory></inventory>
+          <app-scan></app-scan>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon">create</mat-icon>
             Manage
           </ng-template>
-
-          <app-add></app-add>
+          <app-manage></app-manage>
           
         </mat-tab>
-      
+        
         <mat-tab  >
-           
+          
           <ng-template mat-tab-label >
             <mat-icon class="example-tab-icon" >add_box</mat-icon>
             Add To Inventory
           </ng-template>
-
-          <inventory></inventory>
-     
+          
+          <app-add></app-add>
+          
         </mat-tab>
-      
+        
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon">check_circle</mat-icon>
             Queue
           </ng-template>
           <!-- <app-manage></app-manage> -->
+          <app-queue></app-queue>
           <app-pin></app-pin>
         </mat-tab>
 

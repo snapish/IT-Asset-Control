@@ -41,6 +41,12 @@ td{
     font-size: 20px;
     font-weight: bold;
 }
+.restock{
+    width: 10%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
 /* for centering headers, sort messes with them */
 ::ng-deep .mat-sort-header-container {
     display:flex;

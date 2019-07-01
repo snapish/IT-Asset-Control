@@ -30,6 +30,7 @@
     "ng-maphilight": "^1.0.1",
     "ng2-img-map": "^0.1.2",
     "ngx-cookie-service": "^2.2.0",
+    "querybase": "^0.6.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

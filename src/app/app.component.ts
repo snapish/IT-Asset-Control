@@ -22,7 +22,7 @@ export class AppComponent {
   }
   addFirstBoxes(e){
    console.log(e.index)
-   if(e.index == 1 && !this.addedBoxes){
+   if(e.index == 2 && !this.addedBoxes){
     this.add.createTextBoxes(5);
     this.addedBoxes= true;
    }

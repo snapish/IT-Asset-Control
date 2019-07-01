@@ -22,7 +22,7 @@ coordArray = [];
  displayColumns = [ 'Name', 'Quantity', 'Location', 'User', 'Notes', 'Date',];
 
 
-  ngOnInit() {
+  ngOnInit() { 
     this.firebaseService.getManage().subscribe(data => { this.items = data; this.manageSource = new MatTableDataSource(data); this.manageSource.sort = this.sort; });
 
   }

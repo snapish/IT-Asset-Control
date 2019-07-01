@@ -10,11 +10,13 @@ import {
 } from 'angularfire2/firestore';
 import { Observable, from, observable } from 'rxjs';
 import { map, tap, take, switchMap, mergeMap, expand, takeWhile } from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
 
 import * as firebase from 'firebase/app';
 import { Timestamp } from 'rxjs/internal/operators/timestamp';
 import { DatePipe } from '@angular/common';
 import { Items } from './inventory/Items';
+import { FirebaseDatabase } from '@angular/fire';
 
 
 
@@ -24,22 +26,21 @@ import { Items } from './inventory/Items';
 export class FirestoreService {
   mydate = new Date();
   x;
-  test : any;
   items: Observable<any[]>;
-  itemCollection : AngularFirestoreCollection;
-  
-  restocks : Observable<any[]>;
-  restockCollection : AngularFirestoreCollection;
-  
-  queueItems : Observable<any[]>;
-  queueCollection : AngularFirestoreCollection;
-  
-  manageItems : Observable<any[]>;
-  manageCollection : AngularFirestoreCollection;
-  
-  decomItems : Observable<any[]>;
-  decomCollection : AngularFirestoreCollection;
-  
+  itemCollection: AngularFirestoreCollection;
+
+  restocks: Observable<any[]>;
+  restockCollection: AngularFirestoreCollection;
+
+  queueItems: Observable<any[]>;
+  queueCollection: AngularFirestoreCollection;
+
+  manageItems: Observable<any[]>;
+  manageCollection: AngularFirestoreCollection;
+
+  decomItems: Observable<any[]>;
+  decomCollection: AngularFirestoreCollection;
+
   constructor(private db: AngularFirestore, private datePipe: DatePipe) {
     this.items = db.collection('Inventory').valueChanges();
     this.restocks = db.collection('Restock').valueChanges();
@@ -52,6 +53,43 @@ export class FirestoreService {
     this.manageItems = this.db.collection('Manage').valueChanges();
     this.decomItems = this.db.collection('Decomission').valueChanges();
     
+   this.queryInventory('Name', 'jquery')
+      this.nameExistsInTable('Inventory', 'jquery')
+  }
+  test() {
+
+    
+  }
+  queryInventory(field:string, value:string){
+    let invRef = this.db.collection('Inventory');
+    let qry = invRef.ref.where(field, '==', value).get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        return;
+      }  
+      snapshot.forEach(doc => {
+      if(doc.exists){
+        return true
+      }
+        console.log(doc.exists)
+         console.log(doc.data().Description)
+      });});
+  }
+
+  nameExistsInTable(collection: string, name:string){
+    let colRef = this.db.collection(collection);
+    let qry = colRef.ref.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          if(doc.data().Name == name){
+            return true;
+          }
+        });
+      })
+      return false;
+      // .catch(err => {
+      //   console.log('Error getting documents', err);
+      // });
   }
   /**
    * Add an entry into the Invetory table 
@@ -73,9 +111,9 @@ export class FirestoreService {
     });
   }
 
-  restockEntry(name: string, qty: number){
-    
-//typesafe checks go here
+  restockEntry(name: string, qty: number) {
+
+    //typesafe checks go here
     return this.db.collection('Restock').add({
       Name: name,
       Quantity: qty,
@@ -83,11 +121,11 @@ export class FirestoreService {
     });
   }
 
-      //  console.log(this.db.collection('Inventory').doc("eiwef").update({Name: "cookout"}) ) ;
-      //  console.log(this.db.collection('Inventory' , ref => ref.where('Name', '>=', 'cookout').where('Name' , '<=', 'cookout' + '\uf8ff')).snapshotChanges());
+  //  console.log(this.db.collection('Inventory').doc("eiwef").update({Name: "cookout"}) ) ;
+  //  console.log(this.db.collection('Inventory' , ref => ref.where('Name', '>=', 'cookout').where('Name' , '<=', 'cookout' + '\uf8ff')).snapshotChanges());
 
 
-  queueEntry(name: string, qty: number, user: string){
+  queueEntry(name: string, qty: number, user: string) {
     return this.db.collection('Queue').add({
       Date: this.mydate,
       Name: name,
@@ -95,11 +133,11 @@ export class FirestoreService {
       User: user,
     });
   }
-  manageEntry(itemName:string, user: string, location: string, notes :string, quantity: number){
+  manageEntry(itemName: string, user: string, location: string, notes: string, quantity: number) {
     //would be good to have a query to check if an item of that same name exists at that location
     //and if so, just bump qty instead of new entry
     return this.db.collection('Manage').add({
-      Name : itemName,
+      Name: itemName,
       Quantity: quantity,
       Location: location,
       Notes: notes,
@@ -107,7 +145,7 @@ export class FirestoreService {
       Date: this.mydate
     })
   }
-  decomEntry(name: string, location :string, user : string, notes: string, date: Date){
+  decomEntry(name: string, location: string, user: string, notes: string, date: Date) {
     return this.db.collection('Decomission').add({
       Name: name,
       Location: location,
@@ -117,28 +155,28 @@ export class FirestoreService {
 
     })
   }
-  getManage(){
+  getManage() {
     return this.manageItems;
   }
-  getQueue(){
+  getQueue() {
     // console.log(this.db.collection('Inventory', ref => ref.where("Name", '==' , 'Test')))
     // console.log(this.db.collection<object>("Invetory", ref => ref.where("Name", "==", "Test")).doc);
 
-  //this.items.forEach(a => {console.log(a[0].Description)})
-     //Array.from(this.db.collection('Inventory' , ref => ref.where('Name', '==', 'Test')).snapshotChanges())
+    //this.items.forEach(a => {console.log(a[0].Description)})
+    //Array.from(this.db.collection('Inventory' , ref => ref.where('Name', '==', 'Test')).snapshotChanges())
     return this.queueItems;
   }
-  getInventory(){
-  //  console.log(this.items);
-   return this.items;
+  getInventory() {
+    //  console.log(this.items);
+    return this.items;
   }
-  getRestock(){
+  getRestock() {
     return this.restocks;
   }
-  getDecom(){
+  getDecom() {
     return this.decomItems;
   }
-  decomission(){
+  decomission() {
     //ask for a reason why
     //remove from inventory, and manage
     //either remove it or cut and paste into decom table

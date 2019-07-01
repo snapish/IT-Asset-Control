@@ -39,7 +39,10 @@ export class QueueComponent implements OnInit {
     else{
     this.user = this.cookie.get("User");
     }
+
+
   }
+
 
   /**
    * Pulls up a dialog box, which has some buttons that pull up another dialog box with image-maps of the building
@@ -56,9 +59,11 @@ export class QueueComponent implements OnInit {
         } 
       })
   }
+  
   fullSend(){
 
   }
+
   sendIt(name:string, location : string, notes: string, quantity : number){
     this.coordArray[1] = "lunch"
     this.noteValue[1] = "is a-comin"
@@ -73,7 +78,7 @@ export class QueueComponent implements OnInit {
     //set up manage page ---partial woo---
     //jquery plug in for map ---oh yeah, $ez---
     //url passing 
-    //fix the adding page ---im a f***ing god at all things coding go me ---
+    //fix the adding page ---im a god at all things coding go me ---
           /*got it to only delete the Google Search box thats being targeted
             fixed it so it doesn't interfere with textboxes in other pages
             switched everything to jquery, easier to read and made ^ possible
@@ -81,18 +86,3 @@ export class QueueComponent implements OnInit {
     //auto fill mass entry 
   }
 }
-
-//monday
-//6:20-7:33 
-//7:50-8:19
-
-//1 hr 48 mins
-
-//wednesday
-//7:10-2:20
-
-//7hr 10 mins
-
-//sunday
-//7:18-8:58
-//1 hr 40 mins

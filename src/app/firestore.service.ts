@@ -10,7 +10,7 @@ import {
 } from 'angularfire2/firestore';
 import { Observable, from, observable } from 'rxjs';
 import { map, tap, take, switchMap, mergeMap, expand, takeWhile } from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import * as firebase from 'firebase/app';
 import { Timestamp } from 'rxjs/internal/operators/timestamp';
@@ -26,6 +26,8 @@ import { FirebaseDatabase } from '@angular/fire';
 export class FirestoreService {
   mydate = new Date();
   x;
+  done = false;
+  newID = 0;
   items: Observable<any[]>;
   itemCollection: AngularFirestoreCollection;
 
@@ -52,44 +54,60 @@ export class FirestoreService {
     this.queueItems = this.db.collection('Queue').valueChanges();
     this.manageItems = this.db.collection('Manage').valueChanges();
     this.decomItems = this.db.collection('Decomission').valueChanges();
-    
-   this.queryInventory('Name', 'jquery')
-      this.nameExistsInTable('Inventory', 'jquery')
-  }
-  test() {
+    this.remainingItems = 0;
 
-    
+    this.updateRemaining();
+    this.getNextID();
   }
-  queryInventory(field:string, value:string){
+  remainingItems;
+
+  queryInventory(field: string, value: string) {
     let invRef = this.db.collection('Inventory');
     let qry = invRef.ref.where(field, '==', value).get()
-    .then(snapshot => {
-      if (snapshot.empty) {
-        return;
-      }  
-      snapshot.forEach(doc => {
-      if(doc.exists){
-        return true
-      }
-        console.log(doc.exists)
-         console.log(doc.data().Description)
-      });});
+      .then(snapshot => {
+        if (snapshot.empty) {
+          return;
+        }
+        snapshot.forEach(doc => {
+          if (doc.exists) {
+            return true
+          }
+          console.log(doc.exists)
+          console.log(doc.data().Description)
+        });
+      });
   }
 
-  nameExistsInTable(collection: string, name:string){
+  nameExistsInTable(collection: string, name: string) {
     let colRef = this.db.collection(collection);
     let qry = colRef.ref.get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          if(doc.data().Name == name){
+          if (doc.data().Name == name) {
             return true;
           }
         });
       })
-      return false;
-      // .catch(err => {
-      //   console.log('Error getting documents', err);
-      // });
+    return false;
+    // .catch(err => {
+    //   console.log('Error getting documents', err);
+    // });
+  }
+  nameContainedInTable(collection: string, name: string) {
+    let colRef = this.db.collection(collection);
+    var temp = [];
+    let qry = colRef.ref.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          if (doc.data().Name.contains(name) ) {
+            temp.push(name);
+          }
+        });
+      })
+    return temp;
+    // .catch(err => {
+    //   console.log('Error getting documents', err);
+    // });
   }
   /**
    * Add an entry into the Invetory table 
@@ -120,17 +138,45 @@ export class FirestoreService {
       Date: this.mydate
     });
   }
+  getNextID() {
+    var makeID = 0
+    let colRef = this.db.collection('Queue');
+    let qry = colRef.ref.orderBy('ID', 'desc').get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          if (doc.data().ID > makeID ) {
+            makeID = doc.data().ID + 1;
+            this.newID = makeID;
+            console.log("newID: ", this.newID)
+          }
+        })
+        if(makeID = 0){
+          this.newID = 1;
+        }
+        
+        return this.newID;}
+      ); 
+  }
+  updateRemaining() {
+    this.remainingItems = 0;
+    let colRef = this.db.collection('Queue');
+    let qry = colRef.ref.orderBy('ID', 'desc').get()
+      .then(snapshot => {
 
-  //  console.log(this.db.collection('Inventory').doc("eiwef").update({Name: "cookout"}) ) ;
-  //  console.log(this.db.collection('Inventory' , ref => ref.where('Name', '>=', 'cookout').where('Name' , '<=', 'cookout' + '\uf8ff')).snapshotChanges());
-
-
-  queueEntry(name: string, qty: number, user: string) {
+        snapshot.forEach(doc => {
+          this.remainingItems++;
+        })
+      })
+      
+  }
+  queueEntry(name: string, qty: number, user: string, id: number) {
+    this.updateRemaining();
     return this.db.collection('Queue').add({
       Date: this.mydate,
       Name: name,
       Quantity: qty,
       User: user,
+      ID: id
     });
   }
   manageEntry(itemName: string, user: string, location: string, notes: string, quantity: number) {
@@ -141,7 +187,7 @@ export class FirestoreService {
       Quantity: quantity,
       Location: location,
       Notes: notes,
-      User: "salt shaker",
+      User: user,
       Date: this.mydate
     })
   }

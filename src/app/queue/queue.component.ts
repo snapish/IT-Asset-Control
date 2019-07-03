@@ -9,6 +9,7 @@ import { MatSort, MatTableDataSource } from '@angular/material'
 import { FirestoreService } from '../firestore.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CookieService } from 'ngx-cookie-service';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @Component({
   selector: 'app-queue',
@@ -26,11 +27,11 @@ export class QueueComponent implements OnInit {
   displayColumns = [ 'Name', 'Quantity', 'Location', 'User', 'Notes', 'Date',];
   queueSource;
   user ;
-  noteValue = [];
+  notesArray = [];
   selection = new SelectionModel<any>(true, []);
-  constructor(private cookie: CookieService, private dialog: MatDialog, private map: MapComponent, private dialogRef: MatDialogRef<QueueComponent>, @Inject(MAT_DIALOG_DATA) data, private firebaseService: FirestoreService, private global: Globals) { this.coords = data.coords; }
+  constructor(private db: AngularFirestore, private cookie: CookieService, private dialog: MatDialog, private map: MapComponent, private dialogRef: MatDialogRef<QueueComponent>, @Inject(MAT_DIALOG_DATA) data, private firebaseService: FirestoreService, private global: Globals) { this.coords = data.coords; }
 
-
+  remainingItems=0;
   ngOnInit() {
     this.firebaseService.getQueue().subscribe(data => { this.items = data; this.queueSource = new MatTableDataSource(data); this.queueSource.sort = this.sort; });
     if(this.cookie.get("User") == "" || this.cookie.get("User") == null){
@@ -39,7 +40,7 @@ export class QueueComponent implements OnInit {
     else{
     this.user = this.cookie.get("User");
     }
-
+    
 
   }
 
@@ -63,26 +64,39 @@ export class QueueComponent implements OnInit {
   fullSend(){
 
   }
-
-  sendIt(name:string, location : string, notes: string, quantity : number){
-    this.coordArray[1] = "lunch"
-    this.noteValue[1] = "is a-comin"
-    this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity);
-    /*delete entry from queue*/
+/**
+ * 
+ * @param name The name of the item getting sent
+ * @param location Where it's getting sent to, from imagemap
+ * @param notes Notes about the sent asset from the text box
+ * @param quantity Qty to be sent out
+ * @param ID Janky primary key for deleting entries
+ * @param ind Index of the item in the table/observable
+ */
+  sendIt(name:string, location : string, notes: string, quantity : number, ID: number, ind:number){
+    if(notes == null){ //firebase gets mad if its null 
+      notes = "";
+    }
+    if(location != null && location != ""){ // failsafe because i dont actually know what the default is, but it has to have a value
+    let colRef = this.db.collection('Queue'); //from the queue
+    let qry = colRef.ref.orderBy('ID','asc').get() 
+      .then(snapshot => {
+        snapshot.forEach(doc => { //for each doc
+          if(doc.data().ID == ID ){  //find the doc's ID that matches the one passed 
+            this.notesArray.splice(ind, 1) //remove the item from the array
+            this.coordArray.splice(ind, 1)
     
-
-    //pin authentication ---woo---
-    //decom table+page ---woo---
-    //queue to manage button ---woo---
-    //queue button to inv ---woo---
-    //set up manage page ---partial woo---
-    //jquery plug in for map ---oh yeah, $ez---
-    //url passing 
-    //fix the adding page ---im a god at all things coding go me ---
-          /*got it to only delete the Google Search box thats being targeted
-            fixed it so it doesn't interfere with textboxes in other pages
-            switched everything to jquery, easier to read and made ^ possible
-            this took so long im so excited*/
+           this.db.collection('Queue').doc(doc.ref.id).delete(); // delete the doc from the queue
+           this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity); // and add it to the manage page
+          
+          }
+        });
+      })
+    
+    }
+    else{ //if no location choosened
+      alert("Pick a Location for: " + name)
+    }
     //auto fill mass entry 
   }
 }

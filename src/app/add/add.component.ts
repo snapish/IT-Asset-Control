@@ -35,8 +35,8 @@ export class AddComponent implements AfterViewInit {
     $('.input')[2].setAttribute('placeholder', 'Description');
     $('.input')[3].setAttribute('placeholder', 'Serial Number');
     $('.input')[4].setAttribute('placeholder', 'URL ("g" for google)');
-  
-  
+
+
 
     // on key down events lie below
 
@@ -50,50 +50,60 @@ export class AddComponent implements AfterViewInit {
           }
         })
       }
-
+      
       if ($event.key == "Tab") { // if the key they pressed was tab
         var filledCount = 0; // for counting how many text boxes have something in them
-    
         $('.input').each(function () {
-         
-          if ($(this).val() == "g" ) { // if the box text is g
+
+          if ($(this).val() == "g") { // if the box text is g
             $(this).val("Google Search"); //set it to google search
           }
-            if ($(this).val() != "" ) { // if the box text has osmething in it
-              filledCount++; // tick this up one
-            }
-          
+          if ($(this).val() != "") { // if the box text has osmething in it
+            filledCount++; // tick this up one
+          }
+
         })
       }
-        if (filledCount == arr.length) { //if all the boxes had something in them
-          var br = document.createElement("br");//make a new line node
-        
-          $('#boxesDiv').append(br);
-          for (let index = 0; index < 5; index++) { //make 5 text boxes
-            var node = document.createElement("input"); // of type input
-            $(node).addClass('input');
-            $('#boxesDiv').append(node)
-           }
-          //down here is just setting class names and placeholder text
-          arr = document.getElementsByClassName('input'); //temp array getting all the text boxes
-          for (let x = 0; x < arr.length; x += 5) {
-           
-             $('.input')[x].setAttribute('placeholder', 'Item Name');
-             $('.input')[x + 1].setAttribute('placeholder', 'Quantity');
-             $('.input')[x + 2].setAttribute('placeholder', 'Description');
-             $('.input')[x + 3].setAttribute('placeholder', 'Serial Number');
-             $('.input')[x + 4].setAttribute('placeholder', 'Order URL ("g" for google)');
-          }
+      if (filledCount == arr.length) { //if all the boxes had something in them
+        var br = document.createElement("br");//make a new line node
+
+        $('#boxesDiv').append(br);
+        for (let index = 0; index < 5; index++) { //make 5 text boxes
+          var node = document.createElement("input"); // of type input
+          $(node).addClass('input');
+          $('#boxesDiv').append(node)
+        }
+        //down here is just setting class names and placeholder text
+        arr = document.getElementsByClassName('input'); //temp array getting all the text boxes
+        for (let x = 0; x < arr.length; x += 5) {
+
+          $('.input')[x].setAttribute('placeholder', 'Item Name');
+          $('.input')[x + 1].setAttribute('placeholder', 'Quantity');
+          $('.input')[x + 2].setAttribute('placeholder', 'Description');
+          $('.input')[x + 3].setAttribute('placeholder', 'Serial Number');
+          $('.input')[x + 4].setAttribute('placeholder', 'Order URL ("g" for google)');
         }
       }
-    ); //end event handeler
+    }) //end event handeler
 
-    }
+  }
   // delays for ms 
   async delay(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => console.log());
   }
-
+  fillByName(e) {
+    var results = this.Firestore.nameContainedInTable('Inventory', e)
+    if (results.length >= 1) {
+      var node = document.createElement('input')
+      node.className = 'placeholder'
+      $(event.target).append(node)
+      $('.placeholder').val(results[0])
+    }
+    //called every time key down
+    //jquery get textbox value, check if something contains it in inventory
+    //create an input thats disabled with the text of whatever it contains
+    //if they press tab, it gives that text to the parent input
+  }
   addToInv() {
     var badEnrtyFlag = false;
     var qtyEntry = 0;
@@ -106,8 +116,8 @@ export class AddComponent implements AfterViewInit {
       if ((inputArray[inputArray.length - 1].value == "" && inputArray[inputArray.length - 2].value == "" && inputArray[inputArray.length - 3].value == "" && inputArray[inputArray.length - 4].value == "" && inputArray[inputArray.length - 5].value == "")) {
         //remove the last 5 boxes on the page before continuing
         for (let ind = 0; ind < 5; ind++) {
-         // document.getElementsByClassName('input')[document.getElementsByClassName('input').length - 1].remove();
-          $('.input')[($('.input').length -1)].remove();
+          // document.getElementsByClassName('input')[document.getElementsByClassName('input').length - 1].remove();
+          $('.input')[($('.input').length - 1)].remove();
         }
       }
     }
@@ -116,7 +126,7 @@ export class AddComponent implements AfterViewInit {
       //text box must contain letters, numbers, dashes, spaces, no emojis ERICK (-_-)
       if (/^[0-9A-Za-z\s\-\_]+$/.test(document.getElementsByClassName('input')[index].getAttribute("value")) && document.getElementsByClassName('input')[index].getAttribute("value") != "") {
         textboxContent.push($('.input')[index].getAttribute("value")); //add that value to the array of values
-       $('.input')[index].setAttribute("style", "background-color: white"); //set it to white, if it was previously red, no spoilers but thats coming up soon
+        $('.input')[index].setAttribute("style", "background-color: white"); //set it to white, if it was previously red, no spoilers but thats coming up soon
       }
       else if ($('.input')[index].getAttribute("value") == "" && $('.input')[index].className != "URL") { //if the box was blank
         document.getElementsByClassName('input')[index].setAttribute("style", "background-color: red"); //set it to red 

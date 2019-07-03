@@ -6,6 +6,7 @@ import { FirestoreService } from '../firestore.service';
 import { CookieService } from 'ngx-cookie-service';
 import { PinComponent } from '../pin/pin.component';
 import { async } from '@angular/core/testing';
+import { AngularFirestore } from 'angularfire2/firestore';
 @Component({
   selector: 'app-scan',
   templateUrl: './scan.component.html',
@@ -14,17 +15,21 @@ import { async } from '@angular/core/testing';
 
 export class ScanComponent implements OnInit {
   param1 = "";
+  newID = 0;
 
-  constructor(private db: FirestoreService, private cookie: CookieService, private pin: PinComponent) {
+
+  constructor(private afs: AngularFirestore, private db: FirestoreService, private cookie: CookieService, private pin: PinComponent) {
 
   }
   urlParams;
   ngOnInit() {
     this.urlParams = this.getParams();
     console.log("Paramaters: ", this.urlParams)
-
+    
     this.sendUrlQueue();
   }
+ 
+
   /**
    * Gets the parameters in the URL
    */
@@ -42,13 +47,22 @@ export class ScanComponent implements OnInit {
     }
     return paramValue;
   }
-  async sendUrlQueue() {
-    console.log(this.pin.approved)
-    if (this.urlParams.length == 2 && this.db.nameExistsInTable('Inventory', this.urlParams[0])) {
-      while (!this.pin.approved) {
-        this.db.queueEntry(this.urlParams[0], this.urlParams[1], this.cookie.get("User"))
-        break;
+  sendUrlQueue() {
+    this.delay(1500).then(a => {
+
+      if (this.urlParams.length == 2) { //&& this.db.nameExistsInTable('Inventory', this.urlParams[0])
+        while (!this.pin.approved) {
+          if (this.db.newID == 0) {
+            this.db.newID = 1;
+          }
+          this.db.queueEntry(this.urlParams[0], this.urlParams[1], this.cookie.get("User"), this.db.newID)
+          break;
+        }
       }
-    }
+    })
+  }
+
+  async delay(ms: number) {
+    await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => console.log("fired"));
   }
 }

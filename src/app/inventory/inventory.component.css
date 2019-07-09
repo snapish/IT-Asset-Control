@@ -4,6 +4,11 @@ body{
 td{
     font-size: 20px
 }
+.filter{
+    width: 20%;
+    size: 20%
+
+}
 .description{
     
     width: 15%; 

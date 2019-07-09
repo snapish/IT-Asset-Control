@@ -61,9 +61,6 @@ export class QueueComponent implements OnInit {
       })
   }
   
-  fullSend(){
-
-  }
 /**
  * 
  * @param name The name of the item getting sent
@@ -73,21 +70,23 @@ export class QueueComponent implements OnInit {
  * @param ID Janky primary key for deleting entries
  * @param ind Index of the item in the table/observable
  */
-  sendIt(name:string, location : string, notes: string, quantity : number, ID: number, ind:number){
+  sendIt(name:string, location : string, notes: string, quantity : number, ID: number, ind:number, serial:string){
+    console.log("sendy")
     if(notes == null){ //firebase gets mad if its null 
       notes = "";
     }
-    if(location != null && location != ""){ // failsafe because i dont actually know what the default is, but it has to have a value
+    if(location != null && location != ""){ // failsafe null or "" because i dont actually know what the default is, but it has to have a value
     let colRef = this.db.collection('Queue'); //from the queue
     let qry = colRef.ref.orderBy('ID','asc').get() 
       .then(snapshot => {
-        snapshot.forEach(doc => { //for each doc
+        snapshot.forEach(doc => { //for each doc 
           if(doc.data().ID == ID ){  //find the doc's ID that matches the one passed 
             this.notesArray.splice(ind, 1) //remove the item from the array
-            this.coordArray.splice(ind, 1)
+            this.coordArray.splice(ind, 1) /*side note, not checking against serial here because there might be multiple queue'd items for the same serial, but ID is for each queue */
     
            this.db.collection('Queue').doc(doc.ref.id).delete(); // delete the doc from the queue
-           this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity); // and add it to the manage page
+           console.log("fl")
+           this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity, serial); // and add it to the manage page
           
           }
         });

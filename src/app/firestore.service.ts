@@ -89,28 +89,26 @@ export class FirestoreService {
         });
       })
     return false;
-    // .catch(err => {
-    //   console.log('Error getting documents', err);
-    // });
+ 
   }
-  nameContainedInTable(collection: string, name: string) {
+  nameContainedInTable(collection: string, name: string) : Array<string> {
     let colRef = this.db.collection(collection);
-    var temp = [];
+    var temp :string[] = [];
     let qry = colRef.ref.get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          if (doc.data().Name.contains(name) ) {
-            temp.push(name);
+          if (doc.data().Name.startsWith(name)) {
+            temp.push(doc.data().Name)
           }
         });
       })
-    return temp;
+      return temp
     // .catch(err => {
     //   console.log('Error getting documents', err);
     // });
   }
   /**
-   * Add an entry into the Invetory table 
+   * Add an entry into the Inventory table 
    * @param name Name of item getting sent to inventory
    * @param qty How many youre adding
    * @param desc Description of the item
@@ -122,7 +120,7 @@ export class FirestoreService {
       Name: name,
       Description: desc,
       LastRestock: this.mydate,
-      LastRestockQuantity: 0,
+      LastRestockQuantity: qty,
       Quantity: qty,
       Serial: issn,
       OrderUrl: orderUrl
@@ -169,17 +167,18 @@ export class FirestoreService {
       })
       
   }
-  queueEntry(name: string, qty: number, user: string, id: number) {
+  queueEntry(name: string, qty: number, user: string, id: number, serial: string) {
     this.updateRemaining();
     return this.db.collection('Queue').add({
       Date: this.mydate,
       Name: name,
       Quantity: qty,
       User: user,
-      ID: id
+      ID: id,
+      Serial: serial
     });
   }
-  manageEntry(itemName: string, user: string, location: string, notes: string, quantity: number) {
+  manageEntry(itemName: string, user: string, location: string, notes: string, quantity: number, serial: string) {
     //would be good to have a query to check if an item of that same name exists at that location
     //and if so, just bump qty instead of new entry
     return this.db.collection('Manage').add({
@@ -188,7 +187,8 @@ export class FirestoreService {
       Location: location,
       Notes: notes,
       User: user,
-      Date: this.mydate
+      Date: this.mydate,
+      Serial: serial
     })
   }
   decomEntry(name: string, location: string, user: string, notes: string, date: Date) {

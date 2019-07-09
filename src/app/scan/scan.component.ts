@@ -48,14 +48,14 @@ export class ScanComponent implements OnInit {
     return paramValue;
   }
   sendUrlQueue() {
-    this.delay(1500).then(a => {
+    this.delay(1500).then(() => {
 
-      if (this.urlParams.length == 2) { //&& this.db.nameExistsInTable('Inventory', this.urlParams[0])
+      if (this.urlParams.length == 3) { //&& this.db.nameExistsInTable('Inventory', this.urlParams[0])
         while (!this.pin.approved) {
           if (this.db.newID == 0) {
             this.db.newID = 1;
           }
-          this.db.queueEntry(this.urlParams[0], this.urlParams[1], this.cookie.get("User"), this.db.newID)
+          this.db.queueEntry(this.urlParams[0], this.urlParams[1], this.cookie.get("User"), this.db.newID, this.urlParams[2]) //the name of the item, the nunmber 
           break;
         }
       }

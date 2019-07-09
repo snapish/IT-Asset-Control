@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewEncapsulation, HostBinding, Directive, ElementRef, AfterViewInit } from '@angular/core';
 import { FirestoreService } from '../firestore.service';
-import { delay } from 'q';
+import { delay, reject } from 'q';
 import * as $ from 'jquery';
 @Component({
   selector: 'app-add',
@@ -31,6 +31,7 @@ export class AddComponent implements AfterViewInit {
 
     }
     $('.input')[0].setAttribute('placeholder', 'Item Name');
+    $('.input')[0].addEventListener('keyup', ($event) => this.fillByName($event))
     $('.input')[1].setAttribute('placeholder', 'Quantity');
     $('.input')[2].setAttribute('placeholder', 'Description');
     $('.input')[3].setAttribute('placeholder', 'Serial Number');
@@ -41,7 +42,7 @@ export class AddComponent implements AfterViewInit {
     // on key down events lie below
 
 
-    document.addEventListener('keydown', function ($event) { //keydown to make next line work
+    document.addEventListener('keydown', ($event) => {  //keydown to make next line work
       var arr = document.getElementsByClassName('input');// make an html collection
       if ($event.key == "Backspace" || $event.key == 'Delete') { // if they pressed a get-rid-of-character-button
         $('.input').each(function () { //for each input box
@@ -50,7 +51,7 @@ export class AddComponent implements AfterViewInit {
           }
         })
       }
-      
+
       if ($event.key == "Tab") { // if the key they pressed was tab
         var filledCount = 0; // for counting how many text boxes have something in them
         $('.input').each(function () {
@@ -61,7 +62,6 @@ export class AddComponent implements AfterViewInit {
           if ($(this).val() != "") { // if the box text has osmething in it
             filledCount++; // tick this up one
           }
-
         })
       }
       if (filledCount == arr.length) { //if all the boxes had something in them
@@ -91,19 +91,31 @@ export class AddComponent implements AfterViewInit {
   async delay(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => console.log());
   }
-  fillByName(e) {
-    var results = this.Firestore.nameContainedInTable('Inventory', e)
-    if (results.length >= 1) {
+  fillByName($event) {
+    var inp = String.fromCharCode($event.keyCode);
+    $('#autofill').attr('placeholder', '')
+    if (/[a-zA-Z0-9-_ ]/.test(inp)) { // if the key pressed was a number letter space hyphen or letter
+      var c = $($event.target).val().toString() //get the key value
+      var results = this.Firestore.nameContainedInTable('Inventory', c); // query db for inventory items starting with c
       var node = document.createElement('input')
       node.className = 'placeholder'
-      $(event.target).append(node)
-      $('.placeholder').val(results[0])
+      node.disabled = true
+      node.id = "autofill"
+      
+    
+      if ($('#autofill').length < 1) {
+     //   $('#boxesDiv').append(node)
+      }
+   //   this.delay(500).then(() => { $('.placeholder')[0].setAttribute('placeholder', results[0]) })
     }
+
+
     //called every time key down
     //jquery get textbox value, check if something contains it in inventory
     //create an input thats disabled with the text of whatever it contains
     //if they press tab, it gives that text to the parent input
   }
+
   addToInv() {
     var badEnrtyFlag = false;
     var qtyEntry = 0;

@@ -58,6 +58,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { FormsModule } from '@angular/forms';
 import { ManageComponent } from './manage/manage.component';
 import { MaphilightModule } from 'ng-maphilight';
+import { ExportComponent } from './export/export.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { MaphilightModule } from 'ng-maphilight';
     DecomissionComponent,
     KeypadComponent,
     ManageComponent,
+    ExportComponent,
 
   ],
   imports: [

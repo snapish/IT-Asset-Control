@@ -3,19 +3,26 @@
     margin-top: 20%;
         margin: auto;
         width: 90%;
-        /* border: 3px solid green; */
+        
         padding: 10px;
       
     
 }
-/*.name,.description,.quantity,.serial, .URL,.txt{*/
    .input{ 
     margin: 5px; 
     width: 15%;
     padding: 10px;
     font-size: 20px;
-}
+    z-index: 5;
+   }
+
 .placeholder{
     z-index: 1;
     color: silver;
-}
+    /* margin: 5px; 
+    width: 15%;
+    padding: 10px;
+    font-size: 20px; */
+  
+} 
+

@@ -1,8 +1,8 @@
 <body>
-add a an alert askign for qty for last restcock qty when reorder button clickerd
+
     <div class="" style="padding-left: 42%">
         <mat-form-field>
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+          <input matInput class="filter" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
         </mat-form-field>
       </div>
 <!-- grab data from the variable "items" inside of inventory component -->
@@ -17,7 +17,7 @@ add a an alert askign for qty for last restcock qty when reorder button clickerd
 
   <ng-container matColumnDef="Quantity">
       <th  mat-header-cell *matHeaderCellDef class="quantity " mat-sort-header > Quantity </th>
-    <td mat-cell *matCellDef="let item" > <div [ngStyle] = "{color: scaleColor(item.Quantity, 10)}">{{item.Quantity}}</div> </td>
+    <td mat-cell *matCellDef="let item" > <div [ngStyle] = "{color: scaleColor(item.Quantity, item.LastRestockQuantity)}">{{item.Quantity}}</div> </td>
   </ng-container>
 
   <ng-container matColumnDef="Description"> 
@@ -40,18 +40,21 @@ add a an alert askign for qty for last restcock qty when reorder button clickerd
     <!-- *1000 brings it to a format the date can work with and returns that format to the table   -->
     <td mat-cell *matCellDef="let item"> {{item.LastRestock.seconds * 1000 | date:'MM-dd-yyyy'}} </td>
   </ng-container> 
+
   <ng-container matColumnDef="Restock">
-    <th mat-header-cell *matHeaderCellDef class="restock" mat-sort-header> Restock </th>
-    <td mat-cell *matCellDef="let item"> <button mat-button (click) = "restock($event)" id="{{item.OrderUrl + ' ' + item.Name}}">Reorder</button>
-      <button mat-button (click) = "queueItem($event, item.Name, 1)" id="{{item.OrderUrl + ' ' + item.Name}}">Queue Item</button>
-     </td>
+    <th mat-header-cell *matHeaderCellDef class="restock" mat-sort-header> Actions </th>
+    <td mat-cell *matCellDef="let item"> 
+      <button mat-button (click) = "restock($event, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Reorder</button>
+      <button mat-button (click) = "queueItem($event, item.Name, 1, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Queue Item</button>
+      <button mat-button [disabled] = "item.Quantity <= 0" (click) = "decomission($event, item.Serial, item.Quantity)" id="decom">Decomission</button>
+    </td>
   </ng-container> 
 
 <!-- next 2 lines are determining what rows and columns to display, displayColumns is an array in the component -->
   <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
-
+ 
 </table>
-
+<button (click) = "massDelete()">mass delete</button>
 
 </body>

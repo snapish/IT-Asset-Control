@@ -3,9 +3,9 @@
     margin-top: 20%;
         margin: auto;
         width: 90%;
-        
+        max-height: 100%;
         padding: 10px;
-      
+      overflow: hidden;
     
 }
    .input{ 
@@ -16,13 +16,29 @@
     z-index: 5;
    }
 
-.placeholder{
-    z-index: 1;
+ .placeholder{
+    position: absolute ;
+    z-index: 0;
     color: silver;
     /* margin: 5px; 
     width: 15%;
     padding: 10px;
-    font-size: 20px; */
+    font-size: 20px; 
+    */
+    font-size: 20px;
   
-} 
+}  
+#autofillDiv{
+    /* z-index: 100;
+    position: absolute; */
+}
+#confirmed{
+    
+    font-size: 30px;
+    padding-left: 39%;
+    padding-right: 40%;
+    
+    text-shadow:   1px 1px 2px black, 0 0 1em yellow, 0 0 0.2em gold;
+    overflow: hidden;
+}
 

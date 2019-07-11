@@ -1,19 +1,21 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <body>
       
-
-    <mat-tab-group (selectedTabChange) = "addFirstBoxes($event)">
+    <!-- -->
+    <mat-tab-group  mat-stretch-tabs (selectedTabChange) = "addFirstBoxes($event)">
       <!-- tab icons https://material.io/tools/icons/?style=baseline -->
-        <mat-tab>
+        <mat-tab >
           <ng-template mat-tab-label>
+            
             <mat-icon class="example-tab-icon">storage</mat-icon>
             Inventory
+          
           </ng-template>
           <inventory></inventory>
           <app-scan></app-scan>
         </mat-tab>
-        <mat-tab>
-          <ng-template mat-tab-label>
+        <mat-tab class = "mtab">
+          <ng-template mat-tab-label >
             <mat-icon class="example-tab-icon">create</mat-icon>
             Manage
           </ng-template>
@@ -21,7 +23,7 @@
           
         </mat-tab>
         
-        <mat-tab >
+        <mat-tab class = "mtab">
           
           <ng-template mat-tab-label >
             <mat-icon class="example-tab-icon" >add_box</mat-icon>
@@ -30,23 +32,23 @@
           
           <app-add></app-add>
           
-        </mat-tab>
+        </mat-tab >
         
-        <mat-tab>
+        <mat-tab class = "mtab">
           <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon">check_circle</mat-icon>
             Queue
           </ng-template>
-          <!-- <app-manage></app-manage> -->
           <app-queue></app-queue>
           <app-pin></app-pin>
         </mat-tab>
 
-        <mat-tab>
+        <mat-tab >
           <ng-template mat-tab-label>
+            
             <mat-icon class="example-tab-icon">phonelink_off</mat-icon>
-            Decomissioned
-          </ng-template>
+              Decomissioned
+            </ng-template>
        <app-decomission></app-decomission>
         </mat-tab>
       </mat-tab-group>

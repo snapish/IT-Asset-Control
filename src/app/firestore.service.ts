@@ -91,7 +91,7 @@ export class FirestoreService {
     return false;
  
   }
-  nameContainedInTable(collection: string, name: string) : Array<string> {
+  async nameContainedInTable(collection: string, name: string)  {
     let colRef = this.db.collection(collection);
     var temp :string[] = [];
     let qry = colRef.ref.get()
@@ -101,8 +101,8 @@ export class FirestoreService {
             temp.push(doc.data().Name)
           }
         });
-      })
-      return temp
+      }).then(() =>{return temp})
+      
     // .catch(err => {
     //   console.log('Error getting documents', err);
     // });

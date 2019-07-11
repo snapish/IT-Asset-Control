@@ -39,10 +39,8 @@ export class ManageComponent implements OnInit {
         let qry = colRef.ref.get().then(snapshot => {
           snapshot.forEach(doc => { //for each document in the collectoin
             if (doc.data().Serial == serial && serial != null ) { // find the matching entry
-              colRef.doc(doc.id).delete() //update the quantity
               decRef.add({ //add to the decom table
                 Quantity: qty,
-                Description: doc.data().Description,
                 Name: doc.data().Name,
                 Serial: doc.data().Serial,
                 Notes: notes,
@@ -50,6 +48,7 @@ export class ManageComponent implements OnInit {
                 User: this.cookie.get("User"),
                 Date: this.myDate
               })
+              colRef.doc(doc.id).delete() //delete the doc
             }
           })
         })

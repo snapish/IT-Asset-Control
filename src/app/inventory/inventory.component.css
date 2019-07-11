@@ -1,14 +1,14 @@
 body{
-    background-color: darkslategrey;
+    background-color: rgb(94, 94, 94);
 }
 td{
     font-size: 20px
 }
-.filter{
-    width: 20%;
-    size: 20%
-
-}
+.filterbar {
+    width: 30%;
+    font-size: 20px;
+ 
+  }
 .description{
     
     width: 15%; 
@@ -59,42 +59,43 @@ td{
   }
    
 .mat-row:nth-child(odd){
-    background-color:rgb(0, 92, 92);
+    background-color:rgb(48, 81, 173);
     }
 .mat-row:nth-child(even){
-    background-color:rgb(79, 92, 89);
+    background-color:rgb(49, 73, 109);
     }
     
     .mat-column-Description{
-        border-right: 1px solid darkgoldenrod;
+        border-right: 1px solid black;
         align-self: stretch;
         text-align: center;
         }
         .mat-column-Name{
-        border-right: 1px solid darkgoldenrod;
+        border-right: 1px solid black;
         align-self: stretch;
         text-align: center;
         }
         .mat-column-Quantity{
-        border-right: 1px solid darkgoldenrod;
-        align-self: stretch;
+            border-right: 1px solid black;
+            
+            align-self: stretch;
         text-align: center;
         } 
         .mat-column-LastRestock{
-        border-right: 1px solid darkgoldenrod;
+        border-right: 1px solid black;
         align-self: stretch;
         text-align: center;
             align-content: center;
             
         } 
         .mat-column-LastRestockQuantity{
-        border-right: 1px solid darkgoldenrod;
+        border-right: 1px solid black;
         align-self: stretch;
         text-align: center;
     
         } 
         .mat-column-Serial{
-        border-right: 1px solid darkgoldenrod;
+        border-right: 1px solid black;
         align-self: stretch;
         text-align: center;
     

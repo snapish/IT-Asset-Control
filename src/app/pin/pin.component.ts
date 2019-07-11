@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class PinComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private dialogRef: MatDialogRef<PinComponent>, @Inject(MAT_DIALOG_DATA) data, private cookie : CookieService) {
+  constructor(private queue :QueueComponent, private dialog: MatDialog, private dialogRef: MatDialogRef<PinComponent>, @Inject(MAT_DIALOG_DATA) data, private cookie : CookieService) {
   }
 
   pins = ["1111", "2222"];//approved pins
@@ -30,7 +30,6 @@ export class PinComponent implements OnInit {
     }
     else if (this.cookie.get("User") != ""){
       this.approved = true;
-      console.log(this.approved)
     }
   }
   /**
@@ -52,6 +51,7 @@ export class PinComponent implements OnInit {
   }
   approvePin(user:string) {
     this.cookie.set('User', user, 1)
+    this.queue.ngOnInit()
   }
 
   /**

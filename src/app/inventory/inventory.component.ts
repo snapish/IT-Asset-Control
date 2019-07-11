@@ -96,7 +96,6 @@ export class InventoryComponent implements OnInit {
   }
   massDelete() {
     var enteredPin = ""
-
     const dialogConfig = new MatDialogConfig(); //options for dialog boxes
     dialogConfig.autoFocus = true;
     dialogConfig.disableClose = true; //so they can't exit
@@ -132,8 +131,9 @@ export class InventoryComponent implements OnInit {
             newID = doc.data().ID + 1;
           }
         });
+      }).then(() =>{  
+        this.firebaseService.queueEntry(name, qty, this.cookie.get("User"), newID, serial);
       })
-    this.firebaseService.queueEntry(name, qty, this.cookie.get("User"), newID, serial);
 
   }
   applyFilter(filterValue: string) {

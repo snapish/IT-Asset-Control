@@ -71,7 +71,6 @@ export class QueueComponent implements OnInit {
  * @param ind Index of the item in the table/observable
  */
   sendIt(name:string, location : string, notes: string, quantity : number, ID: number, ind:number, serial:string){
-    console.log("sendy")
     if(notes == null){ //firebase gets mad if its null 
       notes = "";
     }
@@ -83,9 +82,8 @@ export class QueueComponent implements OnInit {
           if(doc.data().ID == ID ){  //find the doc's ID that matches the one passed 
             this.notesArray.splice(ind, 1) //remove the item from the array
             this.coordArray.splice(ind, 1) /*side note, not checking against serial here because there might be multiple queue'd items for the same serial, but ID is for each queue */
-    
+          
            this.db.collection('Queue').doc(doc.ref.id).delete(); // delete the doc from the queue
-           console.log("fl")
            this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity, serial); // and add it to the manage page
           
           }
@@ -96,6 +94,5 @@ export class QueueComponent implements OnInit {
     else{ //if no location choosened
       alert("Pick a Location for: " + name)
     }
-    //auto fill mass entry 
   }
 }

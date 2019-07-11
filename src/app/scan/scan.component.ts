@@ -23,17 +23,18 @@ export class ScanComponent implements OnInit {
   }
   urlParams;
   ngOnInit() {
-    this.urlParams = this.getParams();
-    console.log("Paramaters: ", this.urlParams)
-    
-    this.sendUrlQueue();
+    this.urlParams = this.getParams()
+      
+   
+      this.sendUrlQueue();
+ 
   }
  
 
   /**
    * Gets the parameters in the URL
    */
-  getParams() {
+   getParams() {
     const url = window.location.href;
     let paramValue = [];
     if (url.includes('?')) {
@@ -49,20 +50,19 @@ export class ScanComponent implements OnInit {
   }
   sendUrlQueue() {
     this.delay(1500).then(() => {
-
       if (this.urlParams.length == 3) { //&& this.db.nameExistsInTable('Inventory', this.urlParams[0])
         while (!this.pin.approved) {
           if (this.db.newID == 0) {
             this.db.newID = 1;
           }
+          
           this.db.queueEntry(this.urlParams[0], this.urlParams[1], this.cookie.get("User"), this.db.newID, this.urlParams[2]) //the name of the item, the nunmber 
           break;
         }
       }
     })
   }
-
   async delay(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => console.log("fired"));
-  }
+}
 }

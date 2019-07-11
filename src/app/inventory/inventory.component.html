@@ -1,10 +1,8 @@
 <body>
-
-    <div class="" style="padding-left: 42%">
-        <mat-form-field>
-          <input matInput class="filter" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-        </mat-form-field>
-      </div>
+    <mat-form-field  class="filterbar">
+        <mat-icon matPrefix >filter_list</mat-icon>
+         <input matInput placeholder="Filter" (keyup)="applyFilter($event.target.value)" >
+       </mat-form-field>
 <!-- grab data from the variable "items" inside of inventory component -->
 <table mat-table #table [dataSource]="itemsource" matSort> 
   <!-- column named "name" -->
@@ -56,5 +54,5 @@
  
 </table>
 <button (click) = "massDelete()">mass delete</button>
-
+<app-export></app-export>
 </body>

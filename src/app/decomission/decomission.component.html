@@ -1,34 +1,85 @@
-<table mat-table #table [dataSource]="decomSource" matSort> 
+<body>
+    <mat-form-field  class="filterbar">
+        <mat-icon matPrefix >filter_list</mat-icon>
+          <input matInput  (keyup)="applyFilter($event.target.value)" ><mat-placeholder style="color: white; font-weight: 300; opacity: .5">Filter</mat-placeholder>
+      </mat-form-field><mat-slide-toggle color = "warn" [(ngModel)]="editMode" style="float:right;padding-right: 10px; color: white">Edit Mode</mat-slide-toggle>  
+  
+      <div *ngIf="editMode" style="float: right; margin-top: 10px ; ">   
+          <button mat-fab (click) = "saveChanges()"color = "warn" >Save<br></button>
+        </div>
+        <br>
+    <button  (click) ="exportAsJSON('Decomission')">Export to JSON</button>
+    <button  (click) ="exportAsCSV('Decomission') ">Export to CSV</button>
+  <table mat-table #table [dataSource]="decomSource" matSort> 
 
-  <!-- column named "name" -->
+
   <ng-container matColumnDef="Name">
-    <!-- a table header thats a mat header, and is sortable -->
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="name"> Name </th>
-    <!-- item is an object inside of items -->
-    <td mat-cell *matCellDef="let item"> {{item.Name}}  </td>
+
+    <td mat-cell *matCellDef="let item"> <div *ngIf="!editMode">
+        {{item.Name}}
+      </div>
+        <div *ngIf="editMode"> 
+            <input class="namebox editbox" value="{{item.Name}}">
+           </div>  </td>
   </ng-container>
 
+
+  <ng-container matColumnDef="Quantity"> 
+    <th mat-header-cell *matHeaderCellDef class="quantity"> Quantity </th>
+    <td mat-cell *matCellDef="let item; let i = index"> 
+        <div *ngIf="!editMode" >{{item.Quantity}}</div>
+        <div *ngIf="editMode">
+          <input class="quantitybox editbox"   value="{{item.Quantity}}">
+          <!-- [ngStyle] = "{color: scaleColor(item.Quantity, item.LastRestockQuantity)}" -->
+         </div>
+    </td>
+  </ng-container> 
 
   <ng-container matColumnDef="Location"> 
     <th mat-header-cell *matHeaderCellDef class="location"> Location </th>
     <td mat-cell *matCellDef="let item; let i = index"> 
-      {{item.Location}}
+        <div *ngIf="!editMode">
+            {{item.Location}}
+          </div>
+            <div *ngIf="editMode">
+                <input class="locationbox editbox" value="{{item.Location}}">
+               </div>
     </td>
   </ng-container> 
   
   <ng-container matColumnDef="User">
     <th mat-header-cell *matHeaderCellDef class="user" mat-sort-header > User </th>
-    <td mat-cell *matCellDef="let item" > {{item.User}} </td>
+    <td mat-cell *matCellDef="let item" > 
+        {{item.User}}
+      </td>
   </ng-container> 
 
   <ng-container matColumnDef="Notes">
     <th mat-header-cell *matHeaderCellDef class="notes" mat-sort-header > Notes </th>
-    <td mat-cell *matCellDef="let item"> {{item.Notes}} </td>
+    <td mat-cell *matCellDef="let item">   <div *ngIf="!editMode">
+        {{item.Notes}}
+      </div>
+        <div *ngIf="editMode">
+            <input class="notesbox editbox" value="{{item.Notes}}">
+           </div> </td>
   </ng-container>
 
   <ng-container matColumnDef="Date">
     <th mat-header-cell *matHeaderCellDef class="date" mat-sort-header > Date </th>
-    <td mat-cell *matCellDef="let item"> {{item.Date.seconds * 1000 | date:'MM-dd-yyyy'}} </td>
+    <td mat-cell *matCellDef="let item"> <div *ngIf="!editMode">
+        {{item.Date.seconds * 1000 | date:'MM-dd-yyyy'}}
+    </div>
+      <div *ngIf="editMode"> 
+          <input class="datebox editbox" value=" {{item.Date.seconds * 1000 | date:'MM-dd-yyyy'}}">
+        </div> </td>
+  </ng-container> 
+  <ng-container matColumnDef="Actions">
+    <th mat-header-cell *matHeaderCellDef class="actions" mat-sort-header >Actions</th>
+    <td mat-cell *matCellDef="let item"> 
+      <button mat-button (click) = "recomission($event, item)">Recomission</button>
+      <button mat-button (click) = "deleteRow($event, item)">Delete</button>
+    </td>
   </ng-container> 
 
 
@@ -39,3 +90,5 @@
 
 
 </table>
+
+</body>

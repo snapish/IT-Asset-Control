@@ -2,8 +2,20 @@
 
 <div *ngFor="let item of coordArray">
     <a href="javascript:void(0)" id="{{item}}" (click) = "newBoxes(item)"> {{item}}</a>
-</div> -->
-
+</div> --> 
+<body>  
+    <mat-form-field  class="filterbar">
+        <mat-icon matPrefix >filter_list</mat-icon>
+          <input matInput  (keyup)="applyFilter($event.target.value)" ><mat-placeholder style="color: white; font-weight: 300; opacity: .5">Filter</mat-placeholder>
+      </mat-form-field>
+      <mat-slide-toggle color = "warn" [(ngModel)]="editMode" style="float:right;padding-right: 10px; color: white">Edit Mode</mat-slide-toggle>  
+      
+      <div *ngIf="editMode" style="float: right; margin-top: 10px ; ">   
+          <button mat-fab (click) = "saveChanges()"color = "warn" >Save<br></button>
+        </div><br>
+    <button (click) = "exportToJSON('Manage')">Export as JSON</button>
+  <button (click) = "exportToCSV('Manage')">Export as CSV</button>
+  <br>
 <table mat-table #table [dataSource]="manageSource" matSort> 
 
   <!-- column named "name" -->
@@ -11,12 +23,23 @@
     <!-- a table header thats a mat header, and is sortable -->
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="name"> Name </th>
     <!-- item is an object inside of items -->
-    <td mat-cell *matCellDef="let item; let i = index"> {{item.Name}} </td>
+    <td mat-cell *matCellDef="let item; let i = index">   <div *ngIf="!editMode">
+        {{item.Name}}
+      </div>
+        <div *ngIf="editMode"> 
+            <input class="namebox editbox" value="{{item.Name}}">
+           </div></td>
+  
   </ng-container>
 
   <ng-container matColumnDef="Quantity">
       <th  mat-header-cell *matHeaderCellDef class="quantity " mat-sort-header > Quantity </th>
-    <td mat-cell *matCellDef="let item" > {{item.Quantity}} </td>
+    <td mat-cell *matCellDef="let item" >   
+       <div *ngIf="!editMode">{{item.Quantity}}</div>
+      <div *ngIf="editMode">
+        <input class="quantitybox editbox"   value="{{item.Quantity}}">
+       </div>
+      </td>
   </ng-container>
 
   <ng-container matColumnDef="Location"> 
@@ -34,18 +57,31 @@
 
   <ng-container matColumnDef="Notes">
     <th mat-header-cell *matHeaderCellDef class="notes" mat-sort-header > Notes </th>
-    <td mat-cell *matCellDef="let item"> {{item.Notes}} </td>
+    <td mat-cell *matCellDef="let item"> <div *ngIf="!editMode">
+        {{item.Notes}}
+      </div>
+        <div *ngIf="editMode">
+            <input class="notesbox editbox" value="{{item.Notes}}">
+          </div> </td>
   </ng-container>
 
   <ng-container matColumnDef="Date">
     <th mat-header-cell *matHeaderCellDef class="date" mat-sort-header > Date</th>
-    <td mat-cell *matCellDef="let item">{{item.Date.seconds * 1000 | date:'MM-dd-yyyy'}} </td>
+
+    <!-- <td mat-cell *matCellDef="let item">{{item.Date.seconds * 1000 | date:'MM-dd-yyyy'}} </td> -->
+    <td mat-cell *matCellDef="let item"> <div *ngIf="!editMode">
+        {{item.Date.seconds * 1000 | date:'MM-dd-yyyy'}}
+    </div>
+      <div *ngIf="editMode"> 
+          <input class="datebox editbox" value=" {{item.Date.seconds * 1000 | date:'MM-dd-yyyy'}}">
+        </div> </td>
   </ng-container> 
   
   <ng-container matColumnDef="Actions">
     <th mat-header-cell *matHeaderCellDef class="actions" mat-sort-header > Actions</th>
     <td mat-cell *matCellDef="let item">
         <button mat-button (click) = "decomission($event, item.Serial, item.Quantity, item.Location, item.Notes)" id="decom">Decomission</button>  
+        <button mat-button (click) = "inventory($event, item)" id="decom">Inventory</button>  
     </td>
   </ng-container> 
 
@@ -57,3 +93,4 @@
 
 
 </table>
+</body>

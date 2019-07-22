@@ -9,10 +9,10 @@ import { AddComponent } from "./add/add.component";
 export class AppComponent {
   addedBoxes: boolean =false;
   items: Array<any>;
+  selectedIndex = 0;
 
   title = 'PROJECT NIGHTHAWK'; //default property from angular, idk why they named it project nighthawk
   constructor(private Firestore: FirestoreService, private add: AddComponent){  //any services, modules, or classes (most import stuff really) goes here so the component can use it
-   
  
 }
   ngOnInit(): void {
@@ -21,6 +21,8 @@ export class AppComponent {
     
   }
   addFirstBoxes(e){
+    this.selectedIndex =e.index
+    console.log(this.selectedIndex)
    if(e.index == 2 && !this.addedBoxes){
     this.add.createTextBoxes(5);
     this.addedBoxes= true;

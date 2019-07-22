@@ -1,33 +1,57 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <body>
-      
+      <div class="body">
     <!-- -->
-    <mat-tab-group  mat-stretch-tabs (selectedTabChange) = "addFirstBoxes($event)">
+    <mat-tab-group [selectedIndex] = "selectedIndex" mat-stretch-tabs (selectedTabChange) = "addFirstBoxes($event)" style="background-color: rgb(13, 123, 232); ">
       <!-- tab icons https://material.io/tools/icons/?style=baseline -->
         <mat-tab >
           <ng-template mat-tab-label>
-            
-            <mat-icon class="example-tab-icon">storage</mat-icon>
+              <span *ngIf="selectedIndex == 0" class="spans">
+            <mat-icon style="vertical-align: -4px" class="example-tab-icon">storage</mat-icon>
+
             Inventory
+          </span>
           
+              <span *ngIf="selectedIndex != 0" style="font-size: 23px ;">
+            <mat-icon style="vertical-align: -4px" class="example-tab-icon">storage</mat-icon>
+           Inventory
+          </span>
+
           </ng-template>
           <inventory></inventory>
           <app-scan></app-scan>
         </mat-tab>
-        <mat-tab class = "mtab">
+        <mat-tab  class = "mtab">
           <ng-template mat-tab-label >
-            <mat-icon class="example-tab-icon">create</mat-icon>
-            Manage
+
+            <span *ngIf="selectedIndex == 1" class="spans">
+            <mat-icon style="vertical-align: -3px" class="example-tab-icon" >create</mat-icon>
+                  Manage
+              </span>
+          
+              <span *ngIf="selectedIndex != 1" style="font-size: 23px  ">
+            <mat-icon style="vertical-align: -3px" class="example-tab-icon" >create</mat-icon>
+                  Manage
+              </span>
+
+
           </ng-template>
           <app-manage></app-manage>
           
         </mat-tab>
-        
         <mat-tab class = "mtab">
           
           <ng-template mat-tab-label >
-            <mat-icon class="example-tab-icon" >add_box</mat-icon>
+            
+              <span *ngIf="selectedIndex == 2" class="spans">
+            <mat-icon style="vertical-align: -4px" class="example-tab-icon" >add_box</mat-icon>
             Add To Inventory
+            </span>
+
+              <span *ngIf="selectedIndex != 2" style="font-size: 23px  ">
+            <mat-icon style="vertical-align: -4px" class="example-tab-icon" >add_box</mat-icon>
+            Add To Inventory
+            </span>
           </ng-template>
           
           <app-add></app-add>
@@ -36,8 +60,15 @@
         
         <mat-tab class = "mtab">
           <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">check_circle</mat-icon>
+              <span *ngIf="selectedIndex == 3" class="spans">
+            <mat-icon style="vertical-align: -4px" class="example-tab-icon">check_circle</mat-icon>
             Queue
+              </span>
+
+            <span *ngIf="selectedIndex != 3" style="font-size: 23px  ">
+                <mat-icon style="vertical-align: -4px" class="example-tab-icon" >check_circle</mat-icon>
+                Queue
+                </span>
           </ng-template>
           <app-queue></app-queue>
           <app-pin></app-pin>
@@ -45,9 +76,15 @@
 
         <mat-tab >
           <ng-template mat-tab-label>
-            
-            <mat-icon class="example-tab-icon">phonelink_off</mat-icon>
+              <span *ngIf="selectedIndex == 4" class="spans">
+            <mat-icon style="vertical-align: -4px" class="example-tab-icon">phonelink_off</mat-icon>
               Decomissioned
+              </span>
+
+              <span *ngIf="selectedIndex != 4" style="font-size: 23px  ">
+            <mat-icon style="vertical-align: -4px" class="example-tab-icon">phonelink_off</mat-icon>
+              Decomissioned
+              </span>
             </ng-template>
        <app-decomission></app-decomission>
         </mat-tab>
@@ -77,5 +114,5 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 </script>
- 
+ </div>
 </body>

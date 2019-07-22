@@ -62,6 +62,7 @@ import { ExportComponent } from './export/export.component';
 
 @NgModule({
   declarations: [
+    ExportComponent,
     AppComponent,
     InventoryComponent,
     AddComponent,
@@ -80,6 +81,7 @@ import { ExportComponent } from './export/export.component';
 
   ],
   imports: [
+    
     MaphilightModule,
     FormsModule,
     RouterModule.forRoot([]),
@@ -123,7 +125,7 @@ import { ExportComponent } from './export/export.component';
   ],
   entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent, KeypadComponent],
   exports: [MatButtonModule, MatCheckboxModule, MatCardModule,MatTableModule],
-  providers: [PinComponent, DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
+  providers: [ExportComponent, PinComponent, DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
   bootstrap: [AppComponent ]
 })
 export class AppModule { }

@@ -28,6 +28,7 @@ export class FirestoreService {
   x;
   done = false;
   newID = 0;
+  invID = 0;
   items: Observable<any[]>;
   itemCollection: AngularFirestoreCollection;
 
@@ -57,7 +58,8 @@ export class FirestoreService {
     this.remainingItems = 0;
 
     this.updateRemaining();
-    this.getNextID();
+    this.getNextQueueID();
+    this.getNextInvID()
   }
   remainingItems;
 
@@ -89,11 +91,11 @@ export class FirestoreService {
         });
       })
     return false;
- 
+
   }
-  async nameContainedInTable(collection: string, name: string)  {
+  async nameContainedInTable(collection: string, name: string) {
     let colRef = this.db.collection(collection);
-    var temp :string[] = [];
+    var temp: string[] = [];
     let qry = colRef.ref.get()
       .then(snapshot => {
         snapshot.forEach(doc => {
@@ -101,8 +103,8 @@ export class FirestoreService {
             temp.push(doc.data().Name)
           }
         });
-      }).then(() =>{return temp})
-      
+      }).then(() => { return temp })
+
     // .catch(err => {
     //   console.log('Error getting documents', err);
     // });
@@ -115,7 +117,7 @@ export class FirestoreService {
    * @param issn Serial number
    * @param orderUrl URL you want reorder button to go to
    */
-  inventoryEntry(name: string, qty: number, desc: string, issn: string, orderUrl: string) {
+   inventoryEntry(name: string, qty: number, desc: string, issn: string, orderUrl: string) {
     return this.db.collection('Inventory').add({
       Name: name,
       Description: desc,
@@ -123,7 +125,8 @@ export class FirestoreService {
       LastRestockQuantity: qty,
       Quantity: qty,
       Serial: issn,
-      OrderUrl: orderUrl
+      OrderUrl: orderUrl,
+     
     });
   }
 
@@ -136,24 +139,49 @@ export class FirestoreService {
       Date: this.mydate
     });
   }
-  getNextID() {
+  getNextQueueID(): number {
     var makeID = 0
     let colRef = this.db.collection('Queue');
     let qry = colRef.ref.orderBy('ID', 'desc').get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          if (doc.data().ID > makeID ) {
+          if (doc.data().ID > makeID) {
             makeID = doc.data().ID + 1;
             this.newID = makeID;
             console.log("newID: ", this.newID)
           }
         })
-        if(makeID = 0){
+        if (makeID = 0) {
           this.newID = 1;
         }
-        
-        return this.newID;}
-      ); 
+
+        return this.newID;
+      }
+      )
+    return this.newID
+
+  }
+   getNextInvID() {
+    var makeID = 0
+    let colRef = this.db.collection('Inventory');
+    let qry = colRef.ref.orderBy('ID', 'desc').get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          if (doc.data().ID > makeID) {
+            makeID = doc.data().ID + 1;
+            this.invID = makeID;
+            console.log("invID: ", this.invID)
+          }
+        })
+        if (makeID == 0) {
+          this.invID = 1;
+        }
+
+        return this.invID;
+      }
+      )
+    return this.invID
+
   }
   updateRemaining() {
     this.remainingItems = 0;
@@ -165,7 +193,7 @@ export class FirestoreService {
           this.remainingItems++;
         })
       })
-      
+
   }
   queueEntry(name: string, qty: number, user: string, id: number, serial: string) {
     this.updateRemaining();
@@ -178,7 +206,7 @@ export class FirestoreService {
       Serial: serial
     });
   }
-  manageEntry(itemName: string, user: string, location: string, notes: string, quantity: number, serial: string) {
+  manageEntry(itemName: string, user: string, location: string, notes: string, quantity: number, serial: string, id: number) {
     //would be good to have a query to check if an item of that same name exists at that location
     //and if so, just bump qty instead of new entry
     return this.db.collection('Manage').add({
@@ -188,7 +216,8 @@ export class FirestoreService {
       Notes: notes,
       User: user,
       Date: this.mydate,
-      Serial: serial
+      Serial: serial,
+      ID: id
     })
   }
   decomEntry(name: string, location: string, user: string, notes: string, date: Date) {

@@ -3,7 +3,14 @@
 <div *ngFor="let item of coordArray">
     <a href="javascript:void(0)" id="{{item}}" (click) = "newBoxes(item)"> {{item}}</a>
 </div> -->
-
+<body>
+    <mat-form-field  class="filterbar">
+        <mat-icon matPrefix >filter_list</mat-icon>
+          <input matInput  (keyup)="applyFilter($event.target.value)" ><mat-placeholder style="color: white; font-weight: 300; opacity: .5">Filter</mat-placeholder>
+      </mat-form-field><br>
+      <button (click) = "exportToJSON('Inventory')">Export as JSON</button>
+      <button (click) = "exportToCSV('Inventory')">Export as CSV</button>
+      
 <table mat-table #table [dataSource]="queueSource" matSort> 
 
     <!-- column named "name" -->
@@ -50,3 +57,4 @@
   
   </table>
   <button mat-raised-button (click) = "fullSend()">send it dawg</button>
+</body>

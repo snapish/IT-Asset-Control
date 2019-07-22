@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(94, 94, 94);
+    background-color: rgb(105, 28, 92);
 }
 .mtab {
     min-width : 0px;
@@ -7,4 +7,15 @@ body{
      height: 42px;
      border-radius: 3px;
      background-color: #e0e0e0;
-   }
+    }
+  ::ng-deep.mat-tab-label.mat-tab-label-active:not(.mat-tab-disabled),
+  ::ng-deep.mat-tab-label.mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled) {
+    opacity : 1;
+  }
+  .spans{
+    box-shadow: 0px 0px 9px 6px rgb(0, 0, 0);
+    font-size: 23px ; 
+    color: rgb(133, 33, 116);
+    font-weight: 500 ; 
+    border-radius: 4px; padding: 3px
+  }

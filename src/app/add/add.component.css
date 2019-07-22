@@ -19,26 +19,29 @@
  .placeholder{
     position: absolute ;
     z-index: 0;
-    color: silver;
-    /* margin: 5px; 
+    /* color: silver;
+     margin: 5px; 
     width: 15%;
     padding: 10px;
-    font-size: 20px; 
-    */
+    font-size: 20px;  */
+    
     font-size: 20px;
   
-}  
+}  /*
 #autofillDiv{
     /* z-index: 100;
-    position: absolute; */
-}
+    position: absolute; 
+}*/
 #confirmed{
     
     font-size: 30px;
-    padding-left: 39%;
-    padding-right: 40%;
+    padding-left: 37%;
+    padding-right: 37%;
     
     text-shadow:   1px 1px 2px black, 0 0 1em yellow, 0 0 0.2em gold;
     overflow: hidden;
+}
+body{
+    background-color: rgb(105, 28, 92);
 }
 

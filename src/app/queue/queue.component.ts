@@ -10,6 +10,7 @@ import { FirestoreService } from '../firestore.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CookieService } from 'ngx-cookie-service';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { ExportComponent } from '../export/export.component';
 
 @Component({
   selector: 'app-queue',
@@ -29,7 +30,7 @@ export class QueueComponent implements OnInit {
   user ;
   notesArray = [];
   selection = new SelectionModel<any>(true, []);
-  constructor(private db: AngularFirestore, private cookie: CookieService, private dialog: MatDialog, private map: MapComponent, private dialogRef: MatDialogRef<QueueComponent>, @Inject(MAT_DIALOG_DATA) data, private firebaseService: FirestoreService, private global: Globals) { this.coords = data.coords; }
+  constructor(private exp: ExportComponent, private db: AngularFirestore, private cookie: CookieService, private dialog: MatDialog, private map: MapComponent, private dialogRef: MatDialogRef<QueueComponent>, @Inject(MAT_DIALOG_DATA) data, private firebaseService: FirestoreService, private global: Globals) { this.coords = data.coords; }
 
   remainingItems=0;
   ngOnInit() {
@@ -43,9 +44,17 @@ export class QueueComponent implements OnInit {
     
 
   }
+  exportAsCSV(table){
+    this.exp.convertToCSV(table);
+  }
+  exportAsJSON(table){
+    this.exp.convertToJSON(table);
+  }
+  applyFilter(filterValue: string) {
+    this.queueSource.filter = filterValue.trim().toLowerCase();
+  }
 
-
-  /**
+  /** 
    * Pulls up a dialog box, which has some buttons that pull up another dialog box with image-maps of the building
    * @param e the index being passed, normally from the view, to set the location to
    */
@@ -70,7 +79,7 @@ export class QueueComponent implements OnInit {
  * @param ID Janky primary key for deleting entries
  * @param ind Index of the item in the table/observable
  */
-  sendIt(name:string, location : string, notes: string, quantity : number, ID: number, ind:number, serial:string){
+  sendIt(name:string, location : string, notes: string, quantity : number, ID: number, ind:number, serial:string, ){
     if(notes == null){ //firebase gets mad if its null 
       notes = "";
     }
@@ -84,7 +93,7 @@ export class QueueComponent implements OnInit {
             this.coordArray.splice(ind, 1) /*side note, not checking against serial here because there might be multiple queue'd items for the same serial, but ID is for each queue */
           
            this.db.collection('Queue').doc(doc.ref.id).delete(); // delete the doc from the queue
-           this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity, serial); // and add it to the manage page
+           this.firebaseService.manageEntry(name, this.cookie.get("User"), location, notes, quantity, serial, doc.data().ID); // and add it to the manage page
           
           }
         });

@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ExportComponent } from './../export/export.component';
+import { Component, OnInit, ViewChild, ɵConsole } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs';
 import { FirestoreService } from '../firestore.service';
@@ -12,6 +13,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { KeypadComponent } from '../pin/keypad/keypad.component';
 import { PinComponent } from '../pin/pin.component';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'inventory',
@@ -26,9 +29,11 @@ export class InventoryComponent implements OnInit {
   myDate = new Date();
   v = true;
   itemsource;
+  editMode = false;
   displayColumns = ['Name', 'Quantity', 'Description', 'LastRestock', 'LastRestockQuantity', 'Serial', 'Restock'];
 
-  constructor(private pin: PinComponent, private db: AngularFirestore, public firebaseService: FirestoreService, private dialog: MatDialog, private loc: LocationService, private cookie: CookieService) { }
+  constructor(private exp: ExportComponent, private pin: PinComponent, private db: AngularFirestore, public firebaseService: FirestoreService,
+     private dialog: MatDialog, private loc: LocationService, private cookie: CookieService) { }
 
   ngOnInit() {
     this.firebaseService.getInventory().subscribe(data => { this.items = data; this.itemsource = new MatTableDataSource(data); this.itemsource.sort = this.sort; });
@@ -57,7 +62,7 @@ export class InventoryComponent implements OnInit {
     }
     return "#ff0000"
   }
-  invDelete(){
+  invDelete() {
     let colRef = this.db.collection('Inventory'); // inventory reference
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => { //for each document in the collectoin
@@ -66,7 +71,7 @@ export class InventoryComponent implements OnInit {
     })
     alert("Cleared Inventory")
   }
-  mngDelete(){
+  mngDelete() {
     let colRef = this.db.collection('Manage'); // inventory reference
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => { //for each document in the collectoin
@@ -75,7 +80,7 @@ export class InventoryComponent implements OnInit {
     })
     alert("Cleared Manage")
   }
-  queDelete(){
+  queDelete() {
     let colRef = this.db.collection('Queue'); // inventory reference
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => { //for each document in the collectoin
@@ -84,8 +89,8 @@ export class InventoryComponent implements OnInit {
     })
     alert("Cleared Queue")
   }
-  
-  decDelete(){
+
+  decDelete() {
     let colRef = this.db.collection('Decomission'); // inventory reference
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => { //for each document in the collectoin
@@ -104,17 +109,17 @@ export class InventoryComponent implements OnInit {
       enteredPin = data;
       if (this.pin.pins.includes(enteredPin)) {
         var table = prompt("Delete all from which table")
-        switch(table){
+        switch (table) {
           case 'Inventory':
             this.invDelete()
             break;
-            case 'Manage':
+          case 'Manage':
             this.mngDelete()
             break;
-            case 'Queue':
+          case 'Queue':
             this.queDelete()
             break;
-            case 'Decomission':
+          case 'Decomission':
             this.decDelete()
             break;
         }
@@ -131,14 +136,12 @@ export class InventoryComponent implements OnInit {
             newID = doc.data().ID + 1;
           }
         });
-      }).then(() =>{  
+      }).then(() => {
         this.firebaseService.queueEntry(name, qty, this.cookie.get("User"), newID, serial);
       })
 
   }
-  applyFilter(filterValue: string) {
-    this.itemsource.filter = filterValue.trim().toLowerCase();
-  }
+  
   decomission(e, serial, quantityLeft) {
     var qty;
     qty = prompt("How many are you decomissioning", "1"); //prompt asking how many of the item to send to yeesus
@@ -156,7 +159,7 @@ export class InventoryComponent implements OnInit {
               Quantity: quantityLeft - qty
             })
             decRef.add({ //add to the decom table
-              Quantity: quantityLeft - qty,
+              Quantity: qty,
               Description: doc.data().Description,
               Name: doc.data().Name,
               Serial: doc.data().Serial,
@@ -199,6 +202,122 @@ export class InventoryComponent implements OnInit {
     }
     else if (qty != null) { //alert box returns null on cancel
       alert("Bad entry try again sir")
+    }
+  }
+ 
+
+  deleteRow($event, x) {
+    //  console.log(x)
+    var allboxesArr = $('.editbox').toArray()
+    let colRef = this.db.collection('Inventory'); //from the inventory
+    let qry = colRef.ref.get().then(snapshot => {
+      snapshot.forEach(doc => {
+        if (doc.data().Name == x.Name && doc.data().Serial == x.Serial && doc.data().Quantity == x.Quantity && doc.data().Description == x.Description && doc.data().LastRestock == x.LastRestock && doc.data().LastRestockQuantity == x.LastRestockQuantity) {
+          doc.ref.delete()
+        }
+      })
+    })
+    //find the doc with the matching name qty desc lastrestock lrq serial
+    //remove it
+
+  }
+  exportAsCSV(table){
+    this.exp.convertToCSV(table);
+  }
+  exportAsJSON(table){
+    this.exp.convertToJSON(table);
+  }
+  applyFilter(filterValue: string) {
+    this.itemsource.filter = filterValue.trim().toLowerCase();
+  }
+  saveChanges() {
+    var allboxes = $('.editbox')
+    var allboxesArr = $('.editbox').toArray()
+    var badEntryFlag = false;
+    var container = []
+    allboxes.each(v => {
+      var boxVal = $($('.editbox')[v]).val().toString()
+      if ($($('.editbox')[v]).hasClass('descriptionbox') && !/^$|^[0-9A-Za-z\s\-\_]+$/.test(boxVal)) {
+        badEntryFlag = true;
+        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
+      } else if ($($('.editbox')[v]).hasClass('descriptionbox')){
+        $($('.editbox')[v]).css('box-shadow', 'none')
+      }
+
+      if ($($('.editbox')[v]).hasClass('serialbox') && (!/^$|^[0-9A-Za-z\s\-\_]+$/.test(boxVal))) {//lol, serial box
+        badEntryFlag = true;
+        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
+      } else if ($($('.editbox')[v]).hasClass('serialbox')) {
+        $($('.editbox')[v]).css('box-shadow', 'none')
+      }
+
+      if ($($('.editbox')[v]).hasClass('namebox') && (!/^[0-9A-Za-z\s\-\_]+$/.test(boxVal) || boxVal.trim() == "")) {//if we're talking to the name box, and the string is contains non-alphanumeric chars, and its empty
+        badEntryFlag = true;
+        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px red')
+      } else if ($($('.editbox')[v]).hasClass('namebox')) {
+        $($('.editbox')[v]).css('box-shadow', 'none')
+      }
+
+      if ($($('.editbox')[v]).hasClass('quantitybox') && !/^[0-9]+$/.test(boxVal)) {// quantity must be a number and nothing else
+        badEntryFlag = true;
+        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
+      } else if ($($('.editbox')[v]).hasClass('quantitybox')) {
+        $($('.editbox')[v]).css('box-shadow', 'none')
+      }
+
+      if ($($('.editbox')[v]).hasClass('lastrestockquantitybox') && !/^[0-9]+$/.test(boxVal)) {// quantity must be a number and nothing else
+        badEntryFlag = true;
+        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
+      } else if ($($('.editbox')[v]).hasClass('lastrestockquantitybox')) {
+        $($('.editbox')[v]).css('box-shadow', 'none')
+      }
+
+      if ($($('.editbox')[v]).hasClass('lastrestockbox') && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(boxVal)) {//im too tired to make my own regex for this, heres one i found on stackoverflow. Matches dates
+        badEntryFlag = true;
+        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px red')
+      } else if ($($('.editbox')[v]).hasClass('lastrestockbox')) {
+        $($('.editbox')[v]).css('box-shadow', 'none')
+      }
+
+    })
+    if (!badEntryFlag) {
+      console.log('full send boys')
+      var ind = 0;
+
+      for (let x = 0; x < allboxesArr.length; x += 6) {
+        var temp = []
+        temp.push($(allboxesArr[x]).val().toString())
+        temp.push(parseInt($(allboxesArr[x + 1]).toString()))
+        temp.push($(allboxesArr[x + 2]).val().toString())
+        temp.push($(allboxesArr[x + 3]).val().toString())
+        temp.push(parseInt($(allboxesArr[x + 4]).val().toString()))
+        temp.push($(allboxesArr[x + 5]).val().toString())
+
+        container.push(temp)
+      }
+
+      console.log(container)
+      let colRef = this.db.collection('Inventory'); //from the inventory
+      let qry = colRef.ref.get().then(snapshot => {
+        snapshot.forEach(doc => { //for each doc. A row is a doc in this scenario, this was a huge realization https://i.ytimg.com/vi/LLpIMRowndg/maxresdefault.jpg
+          for (let x = 0; x < container.length; x++) {
+            if (container[x][0] == doc.data().Name) {
+              doc.ref.update({
+                Name: $(allboxesArr[ind]).val().toString(),
+                Quantity: parseInt($(allboxesArr[ind + 1]).val().toString()),
+                Description: $(allboxesArr[ind + 2]).val().toString(),
+                LastRestock: firebase.firestore.Timestamp.fromDate(new Date(Date.parse(($(allboxesArr[ind + 3]).val().toString())))),
+                LastRestockQuantity: parseInt($(allboxesArr[ind + 4]).val().toString()),
+                Serial: $(allboxesArr[ind + 5]).val().toString()
+
+              })
+            }
+          }
+          ind += 6 //go to next row
+        })
+      })
+      alert('Inventory updated!')
+      this.editMode = false;
     }
   }
 }

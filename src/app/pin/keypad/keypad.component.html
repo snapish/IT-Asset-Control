@@ -11,17 +11,18 @@
   <button mat-raised-button (click) = "addEntry(8)">8</button>
   <button mat-raised-button (click) = "addEntry(9)">9</button>
   <br>
-  <button mat-raised-button (click) = "addEntry(0)" style="padding-left: 48%; padding-right: 48%">0</button>
+  <button mat-raised-button (click) = "addEntry(0)" style="padding-left: 46%; padding-right: 46%">0</button>
   <br>
   <br>
 
   <div id="entered"  >
     <input type="text" disabled="true" value={{entered}}>
   </div>
-  <button mat-fab style="float:left" (click) = "back()">
+  <br>
+  <button mat-fab style="float:left; background-color: green" (click) = "back()">
     <mat-icon>keyboard_backspace</mat-icon>
   </button>
-  <button mat-fab style="float: right" (click) = "enter()">
+  <button mat-fab style="float: right; background-color: green" (click) = "enter()">
     <mat-icon>done_outline</mat-icon>
   </button>
 </div>

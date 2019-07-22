@@ -1,58 +1,118 @@
 <body>
-    <mat-form-field  class="filterbar">
-        <mat-icon matPrefix >filter_list</mat-icon>
-         <input matInput placeholder="Filter" (keyup)="applyFilter($event.target.value)" >
-       </mat-form-field>
-<!-- grab data from the variable "items" inside of inventory component -->
-<table mat-table #table [dataSource]="itemsource" matSort> 
-  <!-- column named "name" -->
-  <ng-container matColumnDef="Name">
-    <!-- a table header thats a mat header, and is sortable -->
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="name"> Name </th>
-    <!-- item is an object inside of items -->
-    <td mat-cell *matCellDef="let item"> {{item.Name}}  </td>
-  </ng-container>
+  <mat-form-field  class="filterbar">
+    <mat-icon matPrefix >filter_list</mat-icon>
+   
+      <input matInput  (keyup)="applyFilter($event.target.value)" ><mat-placeholder style="color: white; font-weight: 300; opacity: .5">Filter</mat-placeholder>
 
-  <ng-container matColumnDef="Quantity">
-      <th  mat-header-cell *matHeaderCellDef class="quantity " mat-sort-header > Quantity </th>
-    <td mat-cell *matCellDef="let item" > <div [ngStyle] = "{color: scaleColor(item.Quantity, item.LastRestockQuantity)}">{{item.Quantity}}</div> </td>
-  </ng-container>
-
-  <ng-container matColumnDef="Description"> 
-    <th mat-header-cell *matHeaderCellDef class="description"> Description </th>
-    <td mat-cell *matCellDef="let item"> {{item.Description}} </td>
-  </ng-container> 
+  </mat-form-field>
+  <mat-slide-toggle color = "warn" [(ngModel)]="editMode" style="float:right;padding-right: 10px; color: white">Edit Mode</mat-slide-toggle>  
   
-  <ng-container matColumnDef="Serial">
-    <th mat-header-cell *matHeaderCellDef class="serial" mat-sort-header > Serial # </th>
-    <td mat-cell *matCellDef="let item" > {{item.Serial}} </td>
-  </ng-container> 
+  <div *ngIf="editMode" style="float: right; margin-top: 10px ; ">   
+      <button mat-fab (click) = "saveChanges()"color = "warn" >Save<br></button>
+    </div>
+    <br>
+    <button (click) = "exportToJSON('Inventory')">Export as JSON</button>
+    <button (click) = "exportToCSV('Inventory')">Export as CSV</button>
+    
 
-  <ng-container matColumnDef="LastRestockQuantity">
-    <th mat-header-cell *matHeaderCellDef class="lastrestockqty" mat-sort-header > Last Restock Quantity </th>
-    <td mat-cell *matCellDef="let item"> {{item.LastRestockQuantity}} </td>
-  </ng-container> 
+  <!-- grab data from the variable "items" inside of inventory component -->
+  <table mat-table #table [dataSource]="itemsource" matSort> 
+    <!-- column named "name" -->
+    <ng-container matColumnDef="Name">
+      <!-- a table header thats a mat header, and is sortable -->
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="name">Name</th>
+      <!-- item is an object inside of items -->
+      <td mat-cell *matCellDef="let item">
+          <div *ngIf="!editMode">
+            {{item.Name}}
+          </div>
+            <div *ngIf="editMode"> 
+                <input class="namebox editbox" value="{{item.Name}}">
+               </div>
+        </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="Quantity">
+      <th  mat-header-cell *matHeaderCellDef class="quantity " mat-sort-header>Quantity</th>
+  
+      <td mat-cell *matCellDef="let item" > 
+        <div *ngIf="!editMode" [ngStyle] = "{color: scaleColor(item.Quantity, item.LastRestockQuantity)}">{{item.Quantity}}</div>
+        <div *ngIf="editMode">
+          <input class="quantitybox editbox"   value="{{item.Quantity}}">
+          <!-- [ngStyle] = "{color: scaleColor(item.Quantity, item.LastRestockQuantity)}" -->
+         </div>
+       </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="Description"> 
+      <th mat-header-cell *matHeaderCellDef class="description"> Description </th>
+      <td mat-cell *matCellDef="let item">
+        <div *ngIf="!editMode">
+          {{item.Description}}
+        </div>
+          <div *ngIf="editMode">
+              <input class="descriptionbox editbox" value="{{item.Description}}">
+            </div>
+      </td>
+    </ng-container> 
+    
+    <ng-container matColumnDef="Serial">
+      <th mat-header-cell *matHeaderCellDef class="serial" mat-sort-header >Serial #</th>
+      <td mat-cell *matCellDef="let item">
+          <div *ngIf="!editMode">
+            {{item.Serial}}
+          </div>
+            <div *ngIf="editMode">
+                <input class="serialbox editbox" value="{{item.Serial}}">
+               </div>
+        </td>
+    </ng-container> 
+    
+    <ng-container matColumnDef="LastRestockQuantity">
+      <th mat-header-cell *matHeaderCellDef class="lastrestockqty" mat-sort-header >Last Restock Quantity</th>
+      <td mat-cell *matCellDef="let item">
+          <div *ngIf="!editMode">
+            {{item.LastRestockQuantity}}
+          </div>
+            <div *ngIf="editMode">
+                <input class="lastrestockquantitybox editbox" value="{{item.LastRestockQuantity}}">
+              </div>
+        </td>
+    </ng-container> 
+    
+    <ng-container matColumnDef="LastRestock">
+      <th mat-header-cell *matHeaderCellDef class="lastrestock" mat-sort-header>Last Restock</th>
+      <!-- *1000 brings it to a format the date can work with and returns that format to the table   -->
+      <td mat-cell *matCellDef="let item">
+          <div *ngIf="!editMode">
+              {{item.LastRestock.seconds * 1000 | date:'MM-dd-yyyy'}}
+          </div>
+            <div *ngIf="editMode"> 
+                <input class="lastrestockbox editbox" value=" {{item.LastRestock.seconds * 1000 | date:'MM-dd-yyyy'}}">
+              </div>
+        </td>
+    </ng-container> 
+    
+    <ng-container matColumnDef="Restock">
+      <th mat-header-cell *matHeaderCellDef class="restock" mat-sort-header> Actions </th>
+      <td mat-cell *matCellDef="let item"> 
+        <div *ngIf="!editMode">
 
-  <ng-container matColumnDef="LastRestock">
-    <th mat-header-cell *matHeaderCellDef class="lastrestock" mat-sort-header  > Last Restock </th>
-    <!-- *1000 brings it to a format the date can work with and returns that format to the table   -->
-    <td mat-cell *matCellDef="let item"> {{item.LastRestock.seconds * 1000 | date:'MM-dd-yyyy'}} </td>
-  </ng-container> 
+          <button mat-button (click) = "restock($event, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Reorder</button>
+          <button mat-button (click) = "queueItem($event, item.Name, 1, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Queue Item</button>
+          <button mat-button [disabled] = "item.Quantity <= 0" (click) = "decomission($event, item.Serial, item.Quantity)" id="decom">Decomission</button>
+        </div>
+        <div *ngIf="editMode">
+          <button mat-button (click) = "deleteRow($event, item)">Delete Row</button>
 
-  <ng-container matColumnDef="Restock">
-    <th mat-header-cell *matHeaderCellDef class="restock" mat-sort-header> Actions </th>
-    <td mat-cell *matCellDef="let item"> 
-      <button mat-button (click) = "restock($event, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Reorder</button>
-      <button mat-button (click) = "queueItem($event, item.Name, 1, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Queue Item</button>
-      <button mat-button [disabled] = "item.Quantity <= 0" (click) = "decomission($event, item.Serial, item.Quantity)" id="decom">Decomission</button>
-    </td>
-  </ng-container> 
+        </div>
+        </td>
+    </ng-container> 
 
-<!-- next 2 lines are determining what rows and columns to display, displayColumns is an array in the component -->
-  <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
- 
-</table>
-<button (click) = "massDelete()">mass delete</button>
-<app-export></app-export>
+    <!-- next 2 lines are determining what rows and columns to display, displayColumns is an array in the component -->
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+    
+  </table>
+  <button (click) = "massDelete()">mass delete</button>
 </body>

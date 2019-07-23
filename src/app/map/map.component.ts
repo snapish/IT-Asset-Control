@@ -6,7 +6,6 @@ import { Production2Component } from './production2/production2.component';
 import { ShippingComponent } from './shipping/shipping.component';
 import { QueueComponent } from '../queue/queue.component';
 import { FormBuilder } from '@angular/forms';
-import {replace} from 'src/environments/environment'
 import { environment } from 'src/environments/environment.prod';
 import {Globals} from 'src/app/global'
 

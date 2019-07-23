@@ -92,10 +92,6 @@ export class AddComponent implements AfterViewInit {
     }) //end event handeler
 
   }
-  // delays for ms 
-  async delay(ms: number) {
-    await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => console.log());
-  }
   suggestByName($event) {
     var inp = $($event.target).val().toString().toUpperCase() // the value of the text box 
     if ($event.keyCode != 13) { // if they didn't press enter
@@ -118,8 +114,12 @@ export class AddComponent implements AfterViewInit {
               }
             });
           }).then(() => {
-            if (this.temp[0] != undefined)
+            if (this.temp[0] != undefined){
               $('.placeholder').val(this.temp[0].Name)
+            }
+            else{
+              $('.placeholder').val("")
+            }
           })
 
       }

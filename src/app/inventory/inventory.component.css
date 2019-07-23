@@ -1,6 +1,6 @@
 body{
-    /* background-color: rgb(94, 94, 94); */
-    background-color: rgb(105, 28, 92);
+    
+    background-color: rgb(16, 95, 175);
 }
 td{
     font-size: 20px;
@@ -60,18 +60,23 @@ td{
     font-size: 20px;
     font-weight: bold;
 }
+::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: white !important;
+  } 
 /* for centering headers, sort messes with them */
 ::ng-deep .mat-sort-header-container {
     display:flex;
     justify-content:center;
   }
    
-.mat-row:nth-child(odd){
+  .mat-row:nth-child(odd){
     background-color:rgb(48, 81, 173);
     }
 .mat-row:nth-child(even){
     background-color:rgb(49, 73, 109);
     }
+    
     
     .mat-column-Description{
         border-right: 1px solid black;

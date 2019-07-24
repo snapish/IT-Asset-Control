@@ -9,7 +9,10 @@ import { InventoryComponent } from './inventory/inventory.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatInputModule, MatCell,} from '@angular/material';
 //Angular Material Components
-
+import * as firebase from 'firebase/app';
+// You don't need to import firebase/app either since it's being imported above
+import 'firebase/auth';
+import 'firebase/firestore';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -59,7 +62,7 @@ import { FormsModule } from '@angular/forms';
 import { ManageComponent } from './manage/manage.component';
 import { MaphilightModule } from 'ng-maphilight';
 import { ExportComponent } from './export/export.component';
-
+import 'hammerjs';
 @NgModule({
   declarations: [
     ExportComponent,

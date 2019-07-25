@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NgVirtualKeyboardModule } from '@protacon/ng-virtual-keyboard';
 import { ActivatedRoute } from "@angular/router/";
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { FirestoreService } from '../firestore.service';

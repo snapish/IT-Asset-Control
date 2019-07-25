@@ -43,7 +43,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { FirestoreService } from './firestore.service';
 import { AddComponent } from './add/add.component';
 import { ScanComponent } from './scan/scan.component';
-import {NgVirtualKeyboardModule} from '@protacon/ng-virtual-keyboard';
 import {ActivatedRoute} from '@angular/router';
 import {RouterModule} from '@angular/router';
 import { QueueComponent } from './queue/queue.component';
@@ -91,7 +90,6 @@ import 'hammerjs';
     BrowserModule,
     BrowserAnimationsModule,
     MatCheckboxModule,
-    NgVirtualKeyboardModule,
     MatCheckboxModule,
     MatButtonModule,
     MatInputModule,

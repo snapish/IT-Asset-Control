@@ -221,10 +221,10 @@ export class InventoryComponent implements OnInit {
     //remove it
 
   }
-  exportAsCSV(table){
+  exportToCSV(table){
     this.exp.convertToCSV(table);
   }
-  exportAsJSON(table){
+  exportToJSON(table){
     this.exp.convertToJSON(table);
   }
   applyFilter(filterValue: string) {

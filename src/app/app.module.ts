@@ -57,7 +57,7 @@ import { DecomissionComponent } from './decomission/decomission.component';
 import { KeypadComponent } from './pin/keypad/keypad.component';
 import { CookieService } from 'ngx-cookie-service';
 //import {ChangeDetectorRef} from '@angular/core'
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManageComponent } from './manage/manage.component';
 import { MaphilightModule } from 'ng-maphilight';
 import { ExportComponent } from './export/export.component';
@@ -83,7 +83,7 @@ import 'hammerjs';
 
   ],
   imports: [
-    
+    FormsModule, ReactiveFormsModule,
     MaphilightModule,
     FormsModule,
     RouterModule.forRoot([]),

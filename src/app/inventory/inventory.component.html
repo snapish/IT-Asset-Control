@@ -96,12 +96,12 @@
     <ng-container matColumnDef="Restock">
       <th mat-header-cell *matHeaderCellDef class="restock" mat-sort-header> Actions </th>
       <td mat-cell *matCellDef="let item"> 
-        <div *ngIf="!editMode">
+      
 
-          <button mat-button (click) = "restock($event, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Reorder</button>
-          <button mat-button (click) = "queueItem($event, item.Name, 1, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Queue Item</button>
-          <button mat-button [disabled] = "item.Quantity <= 0" (click) = "decomission($event, item.Serial, item.Quantity)" id="decom">Decomission</button>
-        </div>
+          <button mat-button [disabled] = "editMode" (click) = "restock($event, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Reorder</button>
+          <button mat-button [disabled] = "editMode" (click) = "queueItem($event, item.Name, 1, item.Serial)" id="{{item.OrderUrl + ' ' + item.Name}}">Queue Item</button>
+          <button mat-button [disabled] = "item.Quantity <= 0 || editMode" (click) = "decomission($event, item.Serial, item.Quantity)" id="decom">Decomission</button>
+     
         <div *ngIf="editMode">
           <button mat-button (click) = "deleteRow($event, item)">Delete Row</button>
 

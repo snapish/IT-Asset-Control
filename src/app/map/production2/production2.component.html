@@ -129,11 +129,12 @@
 
 </map> </maphilight>
 <br>
+<span mat-dialog-actions >
 <button (click) = "closeDialog()" value="{{coordinate}}"  style="max-height: 20%; width: 15%;height: 60px;"> 
   <div *ngIf="coordinate != '' " style="font-size: 18px">Confirm {{coordinate}}</div>
   <div  *ngIf="coordinate == '' " style="font-size: 18px"> Pick a coordinate </div> 
   </button>
-  <div mat-dialog-actions  >
-    <button mat-button-raised style=" max-height: 20%; width: 15%;height: 60px; font-size: 18px" (click)="onNoClick()">Close</button>
+&nbsp;&nbsp;&nbsp;
+    <button mat-button-raised style=" max-height: 20%; width: 15%;height: 60px; font-size: 18px" (click)="onNoClick()">Close </button>
 
-  </div>
+  </span>

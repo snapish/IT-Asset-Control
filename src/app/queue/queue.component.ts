@@ -11,6 +11,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { CookieService } from 'ngx-cookie-service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { ExportComponent } from '../export/export.component';
+import { Observable } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-queue',
@@ -24,7 +26,7 @@ export class QueueComponent implements OnInit {
   form;
   items;
   coordArray = [];
-  
+  subscription: Subscription;
   displayColumns = [ 'Name', 'Quantity', 'Location', 'User', 'Notes', 'Date',];
   queueSource;
   user ;
@@ -41,8 +43,19 @@ export class QueueComponent implements OnInit {
     else{
     this.user = this.cookie.get("User");
     }
+    const source = interval(3000);
     
+    this.subscription = source.subscribe(() =>{ 
+      if(this.cookie.get("User") == "" || this.cookie.get("User") == null){
+      this.user = "Mystery"
+    }
+    else{
+    this.user = this.cookie.get("User");
+    }});
 
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
   exportToCSV(table){
     this.exp.convertToCSV(table);

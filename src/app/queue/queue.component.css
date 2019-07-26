@@ -101,7 +101,8 @@ a{
             justify-content:center;
           }
           td{
-              font-size: 20px
+            font-size: 20px;
+            color: rgb(214, 214, 214);
           }
           a:link:active, a:visited:active { 
             color: red;

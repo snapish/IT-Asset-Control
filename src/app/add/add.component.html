@@ -1,7 +1,9 @@
 <body id="body">
         <div style="margin-left: 5%; margin-right: 5%">
-                <button mat-raised-button style="margin-top: 2%; padding-left: 45%; padding-right: 45%"
-                        (click)="addToInv()" id="addButton">Add To Inventory</button>
+                <button mat-raised-button 
+                style="margin-top: 2%; padding-left: 45%; padding-right: 45%"
+                [disabled] = "addingToInv"
+                (click)="addToInv()" id="addButton">Add To Inventory</button>
         </div>
 
         <div id="boxesDiv">

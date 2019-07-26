@@ -1,5 +1,6 @@
 td{
-    font-size: 20px
+    font-size: 20px;
+    color: rgb(214, 214, 214);
 }
 a{
     color: gold
@@ -11,9 +12,12 @@ body{
     width: 30%;
     font-size: 20px;
     color: white;
-
- 
   }
+  input{
+    width : 90%;
+    font-size: 19px;
+    padding: 5px;   
+}
   ::ng-deep.mat-form-field-underline {
     /*change color of underline*/
     background-color: white !important;

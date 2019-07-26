@@ -113,3 +113,9 @@ td{
         text-align: center;
     
         } 
+        input{
+            width : 90%;
+            font-size: 19px;
+            padding: 5px;
+            
+        }

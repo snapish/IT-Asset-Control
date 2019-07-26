@@ -201,11 +201,15 @@ export class ManageComponent implements OnInit {
         container.push(temp)
       }
 
-      let colRef = this.db.collection('Manage'); //from the inventory
+      let colRef = this.db.collection('Manage'); //from the manage
+      let docIDArr= []
       let qry = colRef.ref.get().then(snapshot => {
         snapshot.forEach(doc => { //for each doc. A row is a doc in this scenario, this was a huge realization https://i.ytimg.com/vi/LLpIMRowndg/maxresdefault.jpg
+          snapshot.forEach( docID =>{
+            docIDArr.push(docID.data().ID)
+          })
           for (let x = 0; x < container.length; x++) {
-            if (container[x][0] == doc.data().Name) {
+            if (docIDArr[x] == doc.data().ID) {
               doc.ref.update({
                 Name: $(allboxesArr[ind]).val().toString(),
                 Quantity: parseInt($(allboxesArr[ind + 1]).val().toString()),

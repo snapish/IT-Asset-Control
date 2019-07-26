@@ -47,7 +47,10 @@
     <td mat-cell *matCellDef="let item; let i = index"> 
       
       <div *ngIf="!editMode" >{{item.Location}}</div> 
-      <a class="locationbox editbox" *ngIf="editMode" href="javascript:void(0)" (click) = "locationPicker(i)"  ><div *ngIf="coordArray[i] == null || coordArray[i] == ''">Pick a Location</div>{{coordArray[i]}}</a> 
+      <a class="locationbox editbox" *ngIf="editMode" href="javascript:void(0)" (click) = "locationPicker(i)"  > <div *ngIf="coordArray[i] != null"> {{coordArray[i]}} </div>
+      <div *ngIf="coordArray[i] == null">{{item.Location}}</div>
+      </a> 
+      <!-- <div *ngIf="coordArray[i] == null || coordArray[i] == '' ">Pick a Location</div> -->
     </td>
   </ng-container> 
   
@@ -81,8 +84,11 @@
   <ng-container matColumnDef="Actions">
     <th mat-header-cell *matHeaderCellDef class="actions" mat-sort-header > Actions</th>
     <td mat-cell *matCellDef="let item">
-        <button mat-button (click) = "decomission($event, item.Serial, item.Quantity, item.Location, item.Notes)" id="decom">Decomission</button>  
-        <button mat-button (click) = "inventory($event, item)" id="decom">Inventory</button>  
+     
+        
+        <button [disabled] = "editMode" mat-button (click) = "decomission($event, item.Serial, item.Quantity, item.Location, item.Notes)" id="decom">Decomission</button>  
+        <button [disabled] = "editMode" mat-button (click) = "inventory($event, item)" id="decom">Inventory</button>  
+   
     </td>
   </ng-container> 
 

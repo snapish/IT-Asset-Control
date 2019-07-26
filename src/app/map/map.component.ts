@@ -40,6 +40,8 @@ export class MapComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
     dialogConfig.width = "70%";
+    dialogConfig.height = "99%";
+
     
     if (s == "offices") { // if they press office button
       // close the current one (area choice)

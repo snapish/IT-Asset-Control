@@ -18,6 +18,7 @@ export class AddComponent implements AfterViewInit {
   constructor(private Firestore: FirestoreService, private afs: AngularFirestore) {
 
   }
+  addingToInv = false;
    id=0;
   temp: any = [];
   ngAfterViewInit() {
@@ -95,9 +96,9 @@ export class AddComponent implements AfterViewInit {
   suggestByName($event) {
     var inp = $($event.target).val().toString().toUpperCase() // the value of the text box 
     if ($event.keyCode != 13) { // if they didn't press enter
+    this.temp = []; 
       $('#autofill').attr('placeholder', '') 
       if (/[a-zA-Z0-9-_ ]/.test(inp)) { // if the key pressed was a number letter space hyphen or letter
-        this.temp = []; 
         if ($('#autofill').length == 0) { //if the autofill thing doesn't exist yet (length ==0 is only true when it doesn't exist)
           var node = document.createElement('input') //
           node.className = 'placeholder'
@@ -125,7 +126,6 @@ export class AddComponent implements AfterViewInit {
       }
     }
     else { //if they pressed enter
-
       if (this.temp[0] != null) {
         $($event.target).val(this.temp[0].Name)
         $($event.target).next('.input').next('.input').val(this.temp[0].Description).next('.input').val(this.temp[0].Serial).next('.input').val(this.temp[0].OrderUrl)
@@ -151,6 +151,7 @@ export class AddComponent implements AfterViewInit {
     return this.id
   }
   addToInv() {
+    this.addingToInv = true;
     var badEnrtyFlag = false;
     var qtyEntry = 0;
     var inputArray = $('.input:enabled'); // something to iterate (not to be confused with integrate) with respect to
@@ -290,7 +291,8 @@ export class AddComponent implements AfterViewInit {
             }
        
           }
-          
+          this.addingToInv = false;
+          $('.placeholder').remove()
         }
       }
       

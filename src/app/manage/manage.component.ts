@@ -124,7 +124,7 @@ export class ManageComponent implements OnInit {
     else {
       alert("Enter a valid number")
     }
-  }
+  } 
   //need this to update in the db
   locationPicker(e) {
     const dialogConfig = new MatDialogConfig(); //options for dialog boxes
@@ -179,18 +179,25 @@ export class ManageComponent implements OnInit {
         $($('.editbox')[v]).css('box-shadow', 'none')
       }
 
+      if ($($('.editbox')[v]).hasClass('locationbox') && $($('.editbox')[v]).val().toString().toLowerCase() == "pick a location") {
+        badEntryFlag = true;
+        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px red')
+      } else if ($($('.editbox')[v]).hasClass('locationbox')) {
+        $($('.editbox')[v]).css('box-shadow', 'none')
+      }
+
     })
     if (!badEntryFlag) {
-      console.log('full send boys')
+      console.log('we are full send boys')
       var ind = 0;
 
-      for (let x = 0; x < allboxesArr.length; x += 4) {
+      for (let x = 0; x < allboxesArr.length; x += 5) {
         var temp = []
-        temp.push($(allboxesArr[x]).val().toString())
-        temp.push(parseInt($(allboxesArr[x + 1]).toString()))
-        temp.push($(allboxesArr[x + 2]).val().toString())
-        temp.push($(allboxesArr[x + 3]).val().toString())
-
+        temp.push($(allboxesArr[x]).val().toString()) //pushing name
+        temp.push(parseInt($(allboxesArr[x + 1]).toString())) //quantity
+        temp.push($(allboxesArr[x + 2]).val().toString()) //location
+        temp.push($(allboxesArr[x + 3]).val().toString()) //notes
+        temp.push($(allboxesArr[x + 4]).val().toString()) //date
         container.push(temp)
       }
 
@@ -202,12 +209,13 @@ export class ManageComponent implements OnInit {
               doc.ref.update({
                 Name: $(allboxesArr[ind]).val().toString(),
                 Quantity: parseInt($(allboxesArr[ind + 1]).val().toString()),
-                Notes: $(allboxesArr[ind + 2]).val().toString(),
-                Date: firebase.firestore.Timestamp.fromDate(new Date(Date.parse(($(allboxesArr[ind + 3]).val().toString())))),
+                Location: $(allboxesArr[ind + 2]).text(),
+                Notes: $(allboxesArr[ind + 3]).val().toString(),
+                Date: firebase.firestore.Timestamp.fromDate(new Date(Date.parse(($(allboxesArr[ind + 4]).val().toString())))),
               })
             }
           }
-          ind += 4 //go to next row
+          ind += 5 //go to next row
         })
       })
       alert('Manage updated!')

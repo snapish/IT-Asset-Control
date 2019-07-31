@@ -25,7 +25,7 @@ export class PinComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.disableClose = true; //so they can't exit
     const dialogRef = this.dialog.open(KeypadComponent, dialogConfig); //open the keypad 
-    dialogRef.afterClosed().subscribe(data => { this.enteredPin = data; this.checkPin() }); 
+    dialogRef.afterClosed().subscribe(data => { this.enteredPin = data; this.checkPin() });  
 
     }
     else if (this.cookie.get("User") != ""){
@@ -65,11 +65,6 @@ export class PinComponent implements OnInit {
     dialogConfig.disableClose = true;
     const dialogRef = this.dialog.open(KeypadComponent, dialogConfig); //open the map component
     dialogRef.afterClosed().subscribe(data => { this.enteredPin = data; this.checkPin() });
-
-    var message = document.createElement("p");
-    message.setAttribute("value", "Invalid PIN");
-    message.style.fontSize = "25px";
-    message.style.color = "red";
   
   }
 

@@ -30,7 +30,7 @@ export class InventoryComponent implements OnInit {
   v = true;
   itemsource;
   editMode = false;
-  displayColumns = ['Name', 'Quantity', 'Description', 'LastRestock', 'LastRestockQuantity', 'Serial', 'Restock'];
+  displayColumns = ['Name', 'Quantity', 'Description', 'LastRestock', 'LastRestockQuantity', 'Serial', 'Actions']; //all columns to display, dictates the order
 
   constructor(private exp: ExportComponent, private pin: PinComponent, private db: AngularFirestore, public firebaseService: FirestoreService,
      private dialog: MatDialog, private loc: LocationService, private cookie: CookieService) { }
@@ -38,30 +38,37 @@ export class InventoryComponent implements OnInit {
   ngOnInit() {
     this.firebaseService.getInventory().subscribe(data => { this.items = data; this.itemsource = new MatTableDataSource(data); this.itemsource.sort = this.sort; });
   }
-
+/**
+ * Gives a shade of a gradient based on the ratio of quantity left to last restocked at
+ * @param qty Current quantity
+ * @param last Last restock qty
+ */
   scaleColor(qty: number, last: number) {
 
-    var perc = (qty / last) * 100
-    if (perc >= 85) {
+    var percent = (qty / last) * 100 
+    if (percent >= 85) {
       return "#00ff00"
     }
-    if (perc >= 70) {
+    if (percent >= 70) {
       return "#6fff00"
     }
-    if (perc >= 55) {
+    if (percent >= 55) {
       return "#bcff00"
     }
-    if (perc >= 40) {
+    if (percent >= 40) {
       return "#fff700"
     }
-    if (perc >= 25) {
+    if (percent >= 25) {
       return "#ffc400"
     }
-    if (perc >= 10) {
+    if (percent >= 10) {
       return "#ff7700"
     }
-    return "#ff0000"
+    return "#ff0000" //red if all else fails
   }
+  /**
+   * Deletes the inventory table
+   */
   invDelete() {
     let colRef = this.db.collection('Inventory'); // inventory reference
     let qry = colRef.ref.get().then(snapshot => {
@@ -71,8 +78,11 @@ export class InventoryComponent implements OnInit {
     })
     alert("Cleared Inventory")
   }
+  /**
+   * Deletes the manage table
+   */
   mngDelete() {
-    let colRef = this.db.collection('Manage'); // inventory reference
+    let colRef = this.db.collection('Manage'); // manage reference
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => { //for each document in the collectoin
         this.db.collection('Manage').doc(doc.ref.id).delete();
@@ -80,8 +90,11 @@ export class InventoryComponent implements OnInit {
     })
     alert("Cleared Manage")
   }
+  /**
+   * Deletes the queue table
+   */
   queDelete() {
-    let colRef = this.db.collection('Queue'); // inventory reference
+    let colRef = this.db.collection('Queue'); // queue reference
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => { //for each document in the collectoin
         this.db.collection('Queue').doc(doc.ref.id).delete();
@@ -89,9 +102,11 @@ export class InventoryComponent implements OnInit {
     })
     alert("Cleared Queue")
   }
-
+/**
+   * Deletes the decom table
+   */
   decDelete() {
-    let colRef = this.db.collection('Decomission'); // inventory reference
+    let colRef = this.db.collection('Decomission'); // decom reference
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => { //for each document in the collectoin
         this.db.collection('Decomission').doc(doc.ref.id).delete();
@@ -99,6 +114,9 @@ export class InventoryComponent implements OnInit {
     })
     alert("Cleared Decomissioned items")
   }
+  /**
+   * Brings up keypad for validating, prompts for a table to delete 
+   */
   massDelete() {
     var enteredPin = ""
     const dialogConfig = new MatDialogConfig(); //options for dialog boxes
@@ -108,7 +126,7 @@ export class InventoryComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       enteredPin = data;
       if (this.pin.pins.includes(enteredPin)) {
-        var table = prompt("Delete all from which table")
+        var table = prompt("Delete ALL documents from which table?")
         switch (table) {
           case 'Inventory':
             this.invDelete()
@@ -126,7 +144,13 @@ export class InventoryComponent implements OnInit {
       }
     })
   }
-  queueItem(e, name: string, qty: number, serial: string): any {
+  /**
+   * Sends the item into the queue, doesn't delete it from the inventory
+   * @param name item name
+   * @param qty item quantity
+   * @param serial item serial number
+   */
+  queueItem(name: string, qty: number, serial: string): any {
     var newID = 0;
     let colRef = this.db.collection('Queue');
     let qry = colRef.ref.orderBy('ID', 'asc').get()
@@ -141,8 +165,12 @@ export class InventoryComponent implements OnInit {
       })
 
   }
-  
-  decomission(e, serial, quantityLeft) {
+  /**
+   * Decomissions X of an item in the inventory
+   * @param serial serial number
+   * @param quantityLeft the quantity of the item
+   */
+  decomission(serial, quantityLeft) {
     var qty;
     qty = prompt("How many are you decomissioning", "1"); //prompt asking how many of the item to send to yeesus
     if (qty != null && qty != 0 && qty > 0 && qty <= quantityLeft) { // if they entered a number over 0 and its less than or equal to the number remaining
@@ -173,6 +201,11 @@ export class InventoryComponent implements OnInit {
       })
     }
   }
+  /**
+   * Opens a new tab of the URL set for the items restock and updates the inventory quantity accordingly
+   * @param e event object
+   * @param serial item serial object
+   */
   restock(e, serial) {
     var s: string = (e.currentTarget.attributes['id'].value);
     var a = s.split(' ');
@@ -192,7 +225,7 @@ export class InventoryComponent implements OnInit {
               colRef.doc(doc.id).update({
                 LastRestockQuantity: qty,
                 LastRestock: mydate,
-                Quantity: qty + doc.data().Quantity
+                Quantity: (parseInt(qty) + parseInt(doc.data().Quantity))
               })
             }
           })
@@ -205,42 +238,48 @@ export class InventoryComponent implements OnInit {
     }
   }
  
-
-  deleteRow($event, x) {
+/**
+ * Deletes an item from the inventory
+ * @param item item that you're deleting
+ */
+  deleteRow(item) {
     //  console.log(x)
     var allboxesArr = $('.editbox').toArray()
     let colRef = this.db.collection('Inventory'); //from the inventory
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => {
-        if (doc.data().Name == x.Name && doc.data().Serial == x.Serial && doc.data().Quantity == x.Quantity && doc.data().Description == x.Description && doc.data().LastRestock == x.LastRestock && doc.data().LastRestockQuantity == x.LastRestockQuantity) {
+        if (doc.data().Name == item.Name && doc.data().Serial == item.Serial && doc.data().Quantity == item.Quantity && doc.data().Description == item.Description && doc.data().LastRestock == item.LastRestock && doc.data().LastRestockQuantity == item.LastRestockQuantity) {
           doc.ref.delete()
         }
       })
     })
-    //find the doc with the matching name qty desc lastrestock lrq serial
-    //remove it
-
   }
+
   exportToCSV(table){
     this.exp.convertToCSV(table);
   }
+
   exportToJSON(table){
     this.exp.convertToJSON(table);
   }
+
   applyFilter(filterValue: string) {
     this.itemsource.filter = filterValue.trim().toLowerCase();
   }
+    /**
+   * Saves changes made in the edit mode. Checks all textboxes for valid entries, then updates data table
+   */
   saveChanges() {
     var allboxes = $('.editbox')
     var allboxesArr = $('.editbox').toArray()
     var badEntryFlag = false;
     var container = []
-    allboxes.each(v => {
-      var boxVal = $($('.editbox')[v]).val().toString()
+    allboxes.each(v => { //for each text box
+      var boxVal = $($('.editbox')[v]).val().toString() //get the value of the text box in at v position
       if ($($('.editbox')[v]).hasClass('descriptionbox') && !/^$|^[0-9A-Za-z\s\-\_]+$/.test(boxVal)) {
-        badEntryFlag = true;
+        badEntryFlag = true;  //if it doesnt pass the test flag it and make it red
         $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
-      } else if ($($('.editbox')[v]).hasClass('descriptionbox')){
+      } else if ($($('.editbox')[v]).hasClass('descriptionbox')){//otherwise set the box shadow to nothing
         $($('.editbox')[v]).css('box-shadow', 'none')
       }
 
@@ -280,12 +319,11 @@ export class InventoryComponent implements OnInit {
       }
 
     })
-    if (!badEntryFlag) {
-      console.log('full send boys')
+    if (!badEntryFlag) { //if no entries were bad
       var ind = 0;
 
-      for (let x = 0; x < allboxesArr.length; x += 6) {
-        var temp = []
+      for (let x = 0; x < allboxesArr.length; x += 6) {//for every row
+        var temp = [] //for holding text box values
         temp.push($(allboxesArr[x]).val().toString())
         temp.push(parseInt($(allboxesArr[x + 1]).toString()))
         temp.push($(allboxesArr[x + 2]).val().toString())
@@ -293,15 +331,14 @@ export class InventoryComponent implements OnInit {
         temp.push(parseInt($(allboxesArr[x + 4]).val().toString()))
         temp.push($(allboxesArr[x + 5]).val().toString())
 
-        container.push(temp)
+        container.push(temp) //add array to array for l8r
       }
 
-      console.log(container)
       let colRef = this.db.collection('Inventory'); //from the inventory
       let qry = colRef.ref.get().then(snapshot => {
         snapshot.forEach(doc => { //for each doc. A row is a doc in this scenario, this was a huge realization https://i.ytimg.com/vi/LLpIMRowndg/maxresdefault.jpg
           for (let x = 0; x < container.length; x++) {
-            if (container[x][0] == doc.data().Name) {
+            if (container[x][0] == doc.data().Name) {//if the containers document has the same name as the snapshot doc
               doc.ref.update({
                 Name: $(allboxesArr[ind]).val().toString(),
                 Quantity: parseInt($(allboxesArr[ind + 1]).val().toString()),
@@ -318,6 +355,7 @@ export class InventoryComponent implements OnInit {
       })
       alert('Inventory updated!')
       this.editMode = false;
+      $(".invTable").load(location.href + " .invTable");
     }
   }
 }

@@ -43,7 +43,7 @@ export class QueueComponent implements OnInit {
     else{
     this.user = this.cookie.get("User");
     }
-    const source = interval(3000);
+    const source = interval(3000); 
     
     this.subscription = source.subscribe(() =>{ 
       if(this.cookie.get("User") == "" || this.cookie.get("User") == null){
@@ -55,7 +55,7 @@ export class QueueComponent implements OnInit {
 
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription.unsubscribe(); //stops the 3 second interval from continuing
   }
   exportToCSV(table){
     this.exp.convertToCSV(table);

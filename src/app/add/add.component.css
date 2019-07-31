@@ -1,16 +1,17 @@
 #boxesDiv{
     float:right;
     margin-top: 20%;
-        margin: auto;
-        width: 90%;
-        max-height: 100%;
-        padding: 10px;
+    margin: auto;
+    width: 90%;
+    max-height: 100%;
+    padding: 10px;
+    padding-right: 100px;
       overflow: hidden;
     
 }
    .input{ 
     margin: 5px; 
-    width: 15%;
+    width: 17%;
     padding: 10px;
     font-size: 20px;
     z-index: 5;
@@ -19,25 +20,15 @@
  .placeholder{
     position: absolute ;
     z-index: 0;
-    /* color: silver;
-     margin: 5px; 
-    width: 15%;
-    padding: 10px;
-    font-size: 20px;  */
-    
     font-size: 20px;
   
-}  /*
-#autofillDiv{
-    /* z-index: 100;
-    position: absolute; 
-}*/
+}  
 #confirmed{
     
     font-size: 30px;
     padding-left: 37%;
     padding-right: 37%;
-    
+
     text-shadow:   1px 1px 2px black, 0 0 1em yellow, 0 0 0.2em gold;
     overflow: hidden;
 }

@@ -36,29 +36,44 @@ export class ScanComponent implements OnInit {
    getParams() {
     const url = window.location.href;
     let paramValue = [];
-    if (url.includes('?')) {
-      var count = (url.match(new RegExp("&", "g")) || []).length + 1
-      var httpParams = new HttpParams({ fromString: url.split('?')[1] });
-      for (let ind = 1; ind < count + 1; ind++) {
-        var p: string = "param" + ind
+    if (url.includes('?')) { //if the url has paramaters
+      var count = (url.match(new RegExp("&", "g")) || []).length + 1 //get the number ofparams
+      var httpParams = new HttpParams({ fromString: url.split('?')[1] }); //get the params
+      for (let ind = 1; ind < count + 1; ind++) {//for ech param
+        var p: string = "param" + ind 
         paramValue.push(httpParams.get(p))
         httpParams = new HttpParams({ fromString: url.split('&')[ind] });
       }
     }
     return paramValue;
   }
+  /**
+   * Gets the URL parameters, and adds the item into the queue with the quantity but only if it exists in the inventory. 
+   */
   sendUrlQueue() {
-    this.delay(1500).then(() => {
-      if (this.urlParams.length == 3) { //&& this.db.nameExistsInTable('Inventory', this.urlParams[0])
-        while (!this.pin.approved) {
-          if (this.db.newID == 0) {
-            this.db.newID = 1;
+    this.delay(1500).then(() => { //wait for page to load basically
+var exists = false; 
+var match ;
+      let colRef = this.afs.collection('Inventory');
+    let qry = colRef.ref.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => { 
+          if (doc.data().Name == this.urlParams[0]) { //find a matching doc in the inv
+            exists = true;
+            match = doc.data()
           }
-          
-          this.db.queueEntry(this.urlParams[0], this.urlParams[1], this.cookie.get("User"), this.db.newID, this.urlParams[2]) //the name of the item, the nunmber 
-          break;
+        });
+      }).then(() =>{
+        if (this.urlParams.length == 2 && exists){ //need 2 params. Name, quantity
+          while (!this.pin.approved) {
+            if (this.db.newID == 0) {
+              this.db.newID = 1;
+            }
+            this.db.queueEntry(this.urlParams[0], this.urlParams[1], this.cookie.get("User"), this.db.newID, match.Serial) //the name of the item, the quantity, who done it, the id, and the serial #
+            break;
+          }
         }
-      }
+      })
     })
   }
   async delay(ms: number) {

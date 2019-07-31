@@ -33,7 +33,7 @@
   </ng-container>
 
   <ng-container matColumnDef="Quantity">
-      <th  mat-header-cell *matHeaderCellDef class="quantity " mat-sort-header > Quantity </th>
+      <th  mat-header-cell *matHeaderCellDef class="quantity " mat-sort-header >&nbsp;&nbsp; Quantity </th>
     <td mat-cell *matCellDef="let item" >   
        <div *ngIf="!editMode">{{item.Quantity}}</div>
       <div *ngIf="editMode">
@@ -55,7 +55,7 @@
   </ng-container> 
   
   <ng-container matColumnDef="User">
-    <th mat-header-cell *matHeaderCellDef class="user" mat-sort-header > User </th>
+    <th mat-header-cell *matHeaderCellDef class="user" mat-sort-header > &nbsp;User </th>
     <td mat-cell *matCellDef="let item" > {{item.User}} </td>
   </ng-container> 
 
@@ -86,8 +86,8 @@
     <td mat-cell *matCellDef="let item">
      
         
-        <button [disabled] = "editMode" mat-button (click) = "decomission($event, item.Serial, item.Quantity, item.Location, item.Notes)" id="decom">Decomission</button>  
-        <button [disabled] = "editMode" mat-button (click) = "inventory($event, item)" id="decom">Inventory</button>  
+        <button class="actionButtons" [disabled] = "editMode" mat-button (click) = "decomission(item.Serial, item.Quantity, item.Location, item.Notes)" id="decom">Decomission</button>  
+        <button class="actionButtons" [disabled] = "editMode" mat-button (click) = "inventory(item)" id="decom">Inventory</button>  
    
     </td>
   </ng-container> 

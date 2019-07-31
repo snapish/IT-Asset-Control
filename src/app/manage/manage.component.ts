@@ -26,7 +26,7 @@ export class ManageComponent implements OnInit {
   items;
   manageSource;
   coordArray = [];
-  displayColumns = ['Name', 'Quantity', 'Location', 'User', 'Notes', 'Date','Actions'];
+  displayColumns = ['Name', 'Quantity', 'Location', 'User', 'Notes', 'Date','Actions'];//all columns to display, dictates the order
 
   applyFilter(filterValue: string) {
     this.manageSource.filter = filterValue.trim().toLowerCase();
@@ -34,37 +34,38 @@ export class ManageComponent implements OnInit {
   ngOnInit() {
     this.firebaseService.getManage().subscribe(data => { this.items = data; this.manageSource = new MatTableDataSource(data); this.manageSource.sort = this.sort; });
   }
-  inventory(e, item){
-   var description=""
+  /**
+   * Send an item to the inventory from manage table
+   * @param item the item to send to inventory
+   */
+  inventory(item){
    var url =""
   var matchID =""
    let invRef = this.db.collection('Inventory'); //from the inventory
    let qry2 = invRef.ref.get().then(snapshot => {
      snapshot.forEach(doc => {
        if(item.Name == doc.data().Name){
-        matchID = doc.id;
-        description = doc.data().Description
+        matchID = doc.id;//used later when looking for id
         url = doc.data().OrderUrl
       }
   })
 }).then(()=>{
   if(url != ""){
-    let colRef = this.db.collection('Manage'); //from the inventory
+    let colRef = this.db.collection('Manage'); //from the manage
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => {
-        if (item.ID == doc.data().ID) {
+        if (item.ID == doc.data().ID) { //match the document
           invRef.ref.get().then(invdoc =>{
-            invdoc.forEach(inventry=>{
-
-              var n: number = parseInt(inventry.data().Quantity) + parseInt(item.Quantity);
+            invdoc.forEach(invEntry=>{
+              var n: number = parseInt(invEntry.data().Quantity) + parseInt(item.Quantity); 
               this.db.collection('Inventory').doc(matchID).update({
                 Name: item.Name,
                 Quantity: n,
-                Description: inventry.data().Description,
-                LastRestock: inventry.data().LastRestock,
-                LastRestockQuantity: inventry.data().LastRestockQuantity,
-                OrderUrl: inventry.data().OrderUrl,
-                Serial: inventry.data().Serial
+                Description: invEntry.data().Description,
+                LastRestock: invEntry.data().LastRestock,
+                LastRestockQuantity: invEntry.data().LastRestockQuantity,
+                OrderUrl: invEntry.data().OrderUrl,
+                Serial: invEntry.data().Serial
               })
             })
             })
@@ -78,16 +79,12 @@ export class ManageComponent implements OnInit {
   }
   else{
     var del = confirm('something went wrong\nDelete entry without sending to inventory?')
-
     if(del){
       let colRef = this.db.collection('Manage'); //from the inventory
       let qry = colRef.ref.get().then(snapshot => {
         snapshot.forEach(doc => {
           if (item.ID == doc.data().ID) {
             doc.ref.delete()
-            
-            //find item with the same name, get its url set url var to that
-            // check if it exists
           }
         })
       })
@@ -95,7 +92,14 @@ export class ManageComponent implements OnInit {
   }
 })
 }
-  decomission(e, serial, quantity, loc, notes) {
+/**
+ * Sends X items from Manage into the Decom table
+ * @param serial item serial #
+ * @param quantity quantity left
+ * @param loc item location
+ * @param notes item notes
+ */
+  decomission(serial, quantity, loc, notes) {
     var qty;
     qty = prompt("How many are you decomissioning", "1"); //prompt asking how many of the item to send to yeesus
     if (qty <= quantity) {
@@ -125,7 +129,7 @@ export class ManageComponent implements OnInit {
       alert("Enter a valid number")
     }
   } 
-  //need this to update in the db
+ 
   locationPicker(e) {
     const dialogConfig = new MatDialogConfig(); //options for dialog boxes
     dialogConfig.autoFocus = true;

@@ -25,7 +25,6 @@ import { FirebaseDatabase } from '@angular/fire';
 })
 export class FirestoreService {
   mydate = new Date();
-  x;
   done = false;
   newID = 0;
   invID = 0;
@@ -46,10 +45,7 @@ export class FirestoreService {
 
   constructor(private db: AngularFirestore, private datePipe: DatePipe) {
     this.items = db.collection('Inventory').valueChanges();
-    this.restocks = db.collection('Restock').valueChanges();
-    this.restockCollection = this.db.collection('Restock');
     this.itemCollection = this.db.collection('Inventory');
-    this.queueCollection = this.db.collection('Restock');
     this.manageCollection = this.db.collection('Manage');
     this.decomCollection = this.db.collection('Decomission');
     this.queueItems = this.db.collection('Queue').valueChanges();
@@ -63,24 +59,7 @@ export class FirestoreService {
   }
   remainingItems;
 
-  queryInventory(field: string, value: string) {
-    let invRef = this.db.collection('Inventory');
-    let qry = invRef.ref.where(field, '==', value).get()
-      .then(snapshot => {
-        if (snapshot.empty) {
-          return;
-        }
-        snapshot.forEach(doc => {
-          if (doc.exists) {
-            return true
-          }
-          console.log(doc.exists)
-          console.log(doc.data().Description)
-        });
-      });
-  }
-
-  nameExistsInTable(collection: string, name: string) {
+  async nameExistsInTable(collection: string, name: string) {
     let colRef = this.db.collection(collection);
     let qry = colRef.ref.get()
       .then(snapshot => {
@@ -89,10 +68,17 @@ export class FirestoreService {
             return true;
           }
         });
+      }).then(() => {
+
+        return false;
       })
-    return false;
 
   }
+/**
+ * Checks to see if the name of an item is in a table. Returns an array of the names found
+ * @param collection what table/collection to look in
+ * @param name the item name
+ */
   async nameContainedInTable(collection: string, name: string) {
     let colRef = this.db.collection(collection);
     var temp: string[] = [];
@@ -105,9 +91,7 @@ export class FirestoreService {
         });
       }).then(() => { return temp })
 
-    // .catch(err => {
-    //   console.log('Error getting documents', err);
-    // });
+   
   }
   /**
    * Add an entry into the Inventory table 
@@ -117,7 +101,7 @@ export class FirestoreService {
    * @param issn Serial number
    * @param orderUrl URL you want reorder button to go to
    */
-   inventoryEntry(name: string, qty: number, desc: string, issn: string, orderUrl: string) {
+  inventoryEntry(name: string, qty: number, desc: string, issn: string, orderUrl: string) {
     return this.db.collection('Inventory').add({
       Name: name,
       Description: desc,
@@ -125,20 +109,13 @@ export class FirestoreService {
       LastRestockQuantity: qty,
       Quantity: qty,
       Serial: issn,
-      OrderUrl: orderUrl,
-     
+      OrderURL: orderUrl,
+
     });
   }
-
-  restockEntry(name: string, qty: number) {
-
-    //typesafe checks go here
-    return this.db.collection('Restock').add({
-      Name: name,
-      Quantity: qty,
-      Date: this.mydate
-    });
-  }
+/**
+ * Returns the next item ID from the Queue. Checks for the highest ID already there. If there isn't one it returns 1
+ */
   getNextQueueID(): number {
     var makeID = 0
     let colRef = this.db.collection('Queue');
@@ -148,7 +125,6 @@ export class FirestoreService {
           if (doc.data().ID > makeID) {
             makeID = doc.data().ID + 1;
             this.newID = makeID;
-            console.log("newID: ", this.newID)
           }
         })
         if (makeID = 0) {
@@ -161,7 +137,10 @@ export class FirestoreService {
     return this.newID
 
   }
-   getNextInvID() {
+  /**
+ * Returns the next item ID from the inventory. Checks for the highest ID already there. If there isn't one it returns 1
+   */
+  getNextInvID() {
     var makeID = 0
     let colRef = this.db.collection('Inventory');
     let qry = colRef.ref.orderBy('ID', 'desc').get()
@@ -170,7 +149,6 @@ export class FirestoreService {
           if (doc.data().ID > makeID) {
             makeID = doc.data().ID + 1;
             this.invID = makeID;
-            console.log("invID: ", this.invID)
           }
         })
         if (makeID == 0) {
@@ -183,18 +161,29 @@ export class FirestoreService {
     return this.invID
 
   }
+  /**
+   * For counting the number of items left in the queue
+   */
   updateRemaining() {
     this.remainingItems = 0;
     let colRef = this.db.collection('Queue');
     let qry = colRef.ref.orderBy('ID', 'desc').get()
       .then(snapshot => {
 
-        snapshot.forEach(doc => {
+        snapshot.forEach(doc => {//for each doc up the count
           this.remainingItems++;
         })
       })
 
   }
+  /**
+   * Makes an entry into the Queue table
+   * @param name item name
+   * @param qty item quantity
+   * @param user the current user
+   * @param id item id
+   * @param serial item serial number
+   */
   queueEntry(name: string, qty: number, user: string, id: number, serial: string) {
     this.updateRemaining();
     return this.db.collection('Queue').add({
@@ -206,6 +195,16 @@ export class FirestoreService {
       Serial: serial
     });
   }
+  /**
+   * Makes an entry into the manage table
+   * @param itemName item name
+   * @param user current user
+   * @param location location of the item
+   * @param notes notes about the entry
+   * @param quantity how many are getting sent
+   * @param serial item serial number
+   * @param id item id
+   */
   manageEntry(itemName: string, user: string, location: string, notes: string, quantity: number, serial: string, id: number) {
     //would be good to have a query to check if an item of that same name exists at that location
     //and if so, just bump qty instead of new entry
@@ -220,6 +219,14 @@ export class FirestoreService {
       ID: id
     })
   }
+  /**
+   * Makes an entry into the decomission table
+   * @param name Item name
+   * @param location items location
+   * @param user current user
+   * @param notes notes about the decom
+   * @param date date it was broken/decom'd
+   */
   decomEntry(name: string, location: string, user: string, notes: string, date: Date) {
     return this.db.collection('Decomission').add({
       Name: name,
@@ -234,11 +241,6 @@ export class FirestoreService {
     return this.manageItems;
   }
   getQueue() {
-    // console.log(this.db.collection('Inventory', ref => ref.where("Name", '==' , 'Test')))
-    // console.log(this.db.collection<object>("Invetory", ref => ref.where("Name", "==", "Test")).doc);
-
-    //this.items.forEach(a => {console.log(a[0].Description)})
-    //Array.from(this.db.collection('Inventory' , ref => ref.where('Name', '==', 'Test')).snapshotChanges())
     return this.queueItems;
   }
   getInventory() {
@@ -251,10 +253,6 @@ export class FirestoreService {
   getDecom() {
     return this.decomItems;
   }
-  decomission() {
-    //ask for a reason why
-    //remove from inventory, and manage
-    //either remove it or cut and paste into decom table
-  }
+
 
 }

@@ -7,11 +7,10 @@ import { AddComponent } from "./add/add.component";
   styleUrls: ['./app.component.css'] //the style sheet
 })
 export class AppComponent {
-  addedBoxes: boolean =false;
-  items: Array<any>;
+  addedBoxes: boolean = false;
   selectedIndex = 0;
 
-  title = 'PROJECT NIGHTHAWK'; //default property from angular, idk why they named it project nighthawk
+  title = 'IT Asset Control'; //default property from angular, idk why they named it project nighthawk
   constructor(private Firestore: FirestoreService, private add: AddComponent){  //any services, modules, or classes (most import stuff really) goes here so the component can use it
  
 }
@@ -20,12 +19,15 @@ export class AppComponent {
     //Add 'implements OnInit' to the class.
     
   }
+  /**
+   * Adds boxes to add page when you first navigate to it
+   * @param e $event object
+   */
   addFirstBoxes(e){
-    this.selectedIndex =e.index
-    console.log(this.selectedIndex)
-   if(e.index == 2 && !this.addedBoxes){
+    this.selectedIndex =e.index //sets the index of the tab you're on
+   if(e.index == 2 && !this.addedBoxes){ //when it loads the add page make some text boxes
     this.add.createTextBoxes(5);
-    this.addedBoxes= true;
+    this.addedBoxes= true;//dont do it more than once
    }
   }
   

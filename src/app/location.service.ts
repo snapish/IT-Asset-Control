@@ -12,10 +12,7 @@ export class LocationService {
   constructor(private map: MapComponent, private queue: QueueComponent) {
   }
 
-  setCoordinateArray() {
-   
-  }
-
+  
   getCoordinate(e): string {
     var temp: string = "";
     temp = e.target.id

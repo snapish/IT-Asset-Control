@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FirestoreService } from './firestore.service';
 import { AddComponent } from "./add/add.component";
+
 @Component({
   selector: 'app-root', // waht html tag it will be <app-root>
   templateUrl: './app.component.html', //what html file to use
@@ -12,13 +13,13 @@ export class AppComponent {
 
   title = 'IT Asset Control'; //default property from angular, idk why they named it project nighthawk
   constructor(private Firestore: FirestoreService, private add: AddComponent){  //any services, modules, or classes (most import stuff really) goes here so the component can use it
- 
+
 }
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    
-  }
+
+     }
   /**
    * Adds boxes to add page when you first navigate to it
    * @param e $event object

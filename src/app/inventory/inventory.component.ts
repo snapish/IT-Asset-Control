@@ -117,7 +117,8 @@ export class InventoryComponent implements OnInit {
   /**
    * Brings up keypad for validating, prompts for a table to delete 
    */
-  massDelete() {
+  massDelete($event) {
+    if($event.ctrlKey){
     var enteredPin = ""
     const dialogConfig = new MatDialogConfig(); //options for dialog boxes
     dialogConfig.autoFocus = true;
@@ -144,6 +145,7 @@ export class InventoryComponent implements OnInit {
       }
     })
   }
+}
   /**
    * Sends the item into the queue, doesn't delete it from the inventory
    * @param name item name
@@ -156,11 +158,13 @@ export class InventoryComponent implements OnInit {
     let qry = colRef.ref.orderBy('ID', 'asc').get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          if (doc.data().ID > newID) {
-            newID = doc.data().ID + 1;
+          if (doc.data().ID >= newID) {
+            newID = parseInt(doc.data().ID) + 1;
+            console.log(newID)
           }
         });
       }).then(() => {
+        console.log(newID)
         this.firebaseService.queueEntry(name, qty, this.cookie.get("User"), newID, serial);
       })
 
@@ -276,14 +280,14 @@ export class InventoryComponent implements OnInit {
     var container = []
     allboxes.each(v => { //for each text box
       var boxVal = $($('.editbox')[v]).val().toString() //get the value of the text box in at v position
-      if ($($('.editbox')[v]).hasClass('descriptionbox') && !/^$|^[0-9A-Za-z\s\-\_]+$/.test(boxVal)) {
+      if ($($('.editbox')[v]).hasClass('descriptionbox') && !/^$|^[0-9A-Za-z\s\-\_\/]+$/.test(boxVal)) {
         badEntryFlag = true;  //if it doesnt pass the test flag it and make it red
         $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
       } else if ($($('.editbox')[v]).hasClass('descriptionbox')){//otherwise set the box shadow to nothing
         $($('.editbox')[v]).css('box-shadow', 'none')
       }
 
-      if ($($('.editbox')[v]).hasClass('serialbox') && (!/^$|^[0-9A-Za-z\s\-\_]+$/.test(boxVal))) {//lol, serial box
+      if ($($('.editbox')[v]).hasClass('serialbox') && (!/^$|^[0-9A-Za-z\s\-\_\/]+$/.test(boxVal))) {//lol, serial box
         badEntryFlag = true;
         $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
       } else if ($($('.editbox')[v]).hasClass('serialbox')) {
@@ -355,7 +359,7 @@ export class InventoryComponent implements OnInit {
       })
       alert('Inventory updated!')
       this.editMode = false;
-      $(".invTable").load(location.href + " .invTable");
+  
     }
   }
 }

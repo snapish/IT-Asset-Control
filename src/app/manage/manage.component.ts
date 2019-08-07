@@ -17,8 +17,8 @@ import * as firebase from 'firebase';
 export class ManageComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   myDate = new Date();
-  constructor(private exp: ExportComponent, private db: AngularFirestore, private cookie: CookieService, 
-    private firebaseService: FirestoreService, private dialog: MatDialog, private map: MapComponent, 
+  constructor(private exp: ExportComponent, private db: AngularFirestore, private cookie: CookieService,
+    private firebaseService: FirestoreService, private dialog: MatDialog, private map: MapComponent,
     private dialogRef: MatDialogRef<ManageComponent>, @Inject(MAT_DIALOG_DATA) data, private global: Globals) {
 
   }
@@ -26,7 +26,7 @@ export class ManageComponent implements OnInit {
   items;
   manageSource;
   coordArray = [];
-  displayColumns = ['Name', 'Quantity', 'Location', 'User', 'Notes', 'Date','Actions'];//all columns to display, dictates the order
+  displayColumns = ['Name', 'Quantity', 'Location', 'User', 'Notes', 'Date', 'Actions'];//all columns to display, dictates the order
 
   applyFilter(filterValue: string) {
     this.manageSource.filter = filterValue.trim().toLowerCase();
@@ -38,68 +38,72 @@ export class ManageComponent implements OnInit {
    * Send an item to the inventory from manage table
    * @param item the item to send to inventory
    */
-  inventory(item){
-   var url =""
-  var matchID =""
-   let invRef = this.db.collection('Inventory'); //from the inventory
-   let qry2 = invRef.ref.get().then(snapshot => {
-     snapshot.forEach(doc => {
-       if(item.Name == doc.data().Name){
-        matchID = doc.id;//used later when looking for id
-        url = doc.data().OrderUrl
-      }
-  })
-}).then(()=>{
-  if(url != ""){
-    let colRef = this.db.collection('Manage'); //from the manage
-    let qry = colRef.ref.get().then(snapshot => {
+  inventory(item) {
+    var url = ""
+    var matchID = ""
+    let invRef = this.db.collection('Inventory'); //from the inventory
+    let qry2 = invRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => {
-        if (item.ID == doc.data().ID) { //match the document
-          invRef.ref.get().then(invdoc =>{
-            invdoc.forEach(invEntry=>{
-              var n: number = parseInt(invEntry.data().Quantity) + parseInt(item.Quantity); 
-              this.db.collection('Inventory').doc(matchID).update({
-                Name: item.Name,
-                Quantity: n,
-                Description: invEntry.data().Description,
-                LastRestock: invEntry.data().LastRestock,
-                LastRestockQuantity: invEntry.data().LastRestockQuantity,
-                OrderUrl: invEntry.data().OrderUrl,
-                Serial: invEntry.data().Serial
-              })
-            })
-            })
-          doc.ref.delete()
-          
-          //find item with the same name, get its url set url var to that
-          // check if it exists
+        if (item.Name == doc.data().Name) {
+          matchID = doc.id;//used later when looking for id
+          url = doc.data().OrderURL
         }
       })
+    }).then(() => {
+      if (url != "" && url != null) {
+        let colRef = this.db.collection('Manage'); //from the manage
+        let qry = colRef.ref.get().then(snapshot => {
+          snapshot.forEach(doc => {
+            if (item.ID == doc.data().ID) { //match the document
+              invRef.ref.get().then(invdoc => {
+                invdoc.forEach(invEntry => {
+                  var n: number = parseInt(invEntry.data().Quantity) + parseInt(item.Quantity);
+                  this.db.collection('Inventory').doc(matchID).update({
+                    Name: item.Name,
+                    Quantity: n,
+                    Description: invEntry.data().Description,
+                    LastRestock: invEntry.data().LastRestock,
+                    LastRestockQuantity: invEntry.data().LastRestockQuantity,
+                    OrderURL: invEntry.data().OrderURL,
+                    Serial: invEntry.data().Serial
+                  })
+                })
+              })
+              if(doc.data().Quantity > 1){
+                doc.ref.update({
+                  Quantity: parseInt(doc.data().Quantity) -1
+                })
+              }
+              else{
+              doc.ref.delete()
+              }
+              //find item with the same name, get its url set url var to that
+              // check if it exists
+            }
+          })
+        })
+      }
+      else {
+        var del = confirm('something went wrong\nDelete entry without sending to inventory?')
+        if (del) {
+          let colRef = this.db.collection('Manage'); //from the inventory
+          let qry = colRef.ref.get().then(snapshot => {
+            snapshot.forEach(doc => {
+              if (item.ID == doc.data().ID) {
+                doc.ref.delete()
+              }
+            })
+          })
+        }
+      }
     })
   }
-  else{
-    var del = confirm('something went wrong\nDelete entry without sending to inventory?')
-    if(del){
-      let colRef = this.db.collection('Manage'); //from the inventory
-      let qry = colRef.ref.get().then(snapshot => {
-        snapshot.forEach(doc => {
-          if (item.ID == doc.data().ID) {
-            doc.ref.delete()
-          }
-        })
-      })
-    }
-  }
-})
-}
-/**
- * Sends X items from Manage into the Decom table
- * @param serial item serial #
- * @param quantity quantity left
- * @param loc item location
- * @param notes item notes
- */
-  decomission(serial, quantity, loc, notes) {
+  /**
+   * Sends X items from Manage into the Decom table. 
+   * @param id item id
+   * @param quantity quantity left
+   */
+  decomission(id, quantity) {
     var qty;
     qty = prompt("How many are you decomissioning", "1"); //prompt asking how many of the item to send to yeesus
     if (qty <= quantity) {
@@ -109,17 +113,24 @@ export class ManageComponent implements OnInit {
         let decRef = this.db.collection('Decomission'); // decom ref
         let qry = colRef.ref.get().then(snapshot => {
           snapshot.forEach(doc => { //for each document in the collectoin
-            if (doc.data().Serial == serial && serial != null ) { // find the matching entry
+            if (doc.data().ID == id) { // find the matching entry
               decRef.add({ //add to the decom table
                 Quantity: qty,
                 Name: doc.data().Name,
                 Serial: doc.data().Serial,
-                Notes: notes,
-                Location: loc,
+                Notes: doc.data().Notes,
+                Location: doc.data().Location,
                 User: this.cookie.get("User"),
                 Date: this.myDate
               })
-              colRef.doc(doc.id).delete() //delete the doc
+              if(quantity - qty <= 0) {
+                colRef.doc(doc.id).delete() //delete the doc if decomissioning all or more
+              }
+              else if(quantity - qty > 0){ //update if they remove less than the total number available
+                doc.ref.update({
+                  Quantity: parseInt(doc.data().Quantity) - parseInt(qty)
+                })
+              }
             }
           })
         })
@@ -128,8 +139,8 @@ export class ManageComponent implements OnInit {
     else {
       alert("Enter a valid number")
     }
-  } 
- 
+  }
+
   locationPicker(e) {
     const dialogConfig = new MatDialogConfig(); //options for dialog boxes
     dialogConfig.autoFocus = true;
@@ -141,10 +152,10 @@ export class ManageComponent implements OnInit {
       }
     })
   }
-  exportToCSV(table){
+  exportToCSV(table) {
     this.exp.convertToCSV(table);
   }
-  exportToJSON(table){
+  exportToJSON(table) {
     this.exp.convertToCSV(table);
   }
 
@@ -158,7 +169,7 @@ export class ManageComponent implements OnInit {
       if ($($('.editbox')[v]).hasClass('notesbox') && !/^$|^[0-9A-Za-z\s\-\_]+$/.test(boxVal)) {
         badEntryFlag = true;
         $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
-      } else if ($($('.editbox')[v]).hasClass('notesbox')){
+      } else if ($($('.editbox')[v]).hasClass('notesbox')) {
         $($('.editbox')[v]).css('box-shadow', 'none')
       }
 
@@ -206,10 +217,10 @@ export class ManageComponent implements OnInit {
       }
 
       let colRef = this.db.collection('Manage'); //from the manage
-      let docIDArr= []
+      let docIDArr = []
       let qry = colRef.ref.get().then(snapshot => {
         snapshot.forEach(doc => { //for each doc. A row is a doc in this scenario, this was a huge realization https://i.ytimg.com/vi/LLpIMRowndg/maxresdefault.jpg
-          snapshot.forEach( docID =>{
+          snapshot.forEach(docID => {
             docIDArr.push(docID.data().ID)
           })
           for (let x = 0; x < container.length; x++) {

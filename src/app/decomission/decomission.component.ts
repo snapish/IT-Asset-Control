@@ -1,10 +1,11 @@
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FirestoreService } from '../firestore.service';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource, MatSort, MatDialogConfig, MatDialog } from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
 import { ExportComponent } from '../export/export.component';
 import * as firebase from 'firebase';
+import { MapComponent } from '../map/map.component';
 
 @Component({
   selector: 'app-decomission',
@@ -16,13 +17,27 @@ export class DecomissionComponent implements OnInit {
   editMode = false;
   items;
   decomSource;
-  constructor(private exp: ExportComponent, private firestore: FirestoreService, private cookie: CookieService, private db: AngularFirestore) { }
+  coordArray = []
+  constructor(private exp: ExportComponent, private firestore: FirestoreService, private cookie: CookieService, private db: AngularFirestore, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.firestore.getDecom().subscribe(data => { this.items = data; this.decomSource = new MatTableDataSource(data); this.decomSource.sort = this.sort; });
   }
 
   displayColumns = ['Name', 'Quantity', 'Location', 'User', 'Notes', 'Date', 'Actions',]; //all the columns, this also dictates order shown
+  
+
+  locationPicker(e) {
+    const dialogConfig = new MatDialogConfig(); //options for dialog boxes
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+    const dialogRef = this.dialog.open(MapComponent, dialogConfig); //open the map component
+    dialogRef.afterClosed().subscribe(data => {
+      if (data != null) { //if the componenet sent back some kind of data
+        this.coordArray[e] = data //e is the index in the coord array that lines up with the queue entry 
+      }
+    })
+  }
   /**
    * Calls the export function from the export component
    * @param table The table contents to be exported
@@ -96,11 +111,14 @@ export class DecomissionComponent implements OnInit {
    */
   deleteRow(item) {
     let colRef = this.db.collection('Decomission');
+    var flag = false;
     let qry = colRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => {
-        console.log(item.Name)
-        if (doc.data().Name == item.Name && doc.data().Serial == item.Serial && doc.data().Location == item.Location && doc.data().Notes == item.Notes) {
+        console.log(doc.data().Name)
+
+        if (doc.data().Name == item.Name && doc.data().Serial == item.Serial && doc.data().Location == item.Location && doc.data().Notes == item.Notes && !flag) {
           doc.ref.delete();
+          flag = true //only delete once. cant really refernce doc.data.id and this technically works
         }
       })
     })
@@ -123,9 +141,9 @@ export class DecomissionComponent implements OnInit {
         $($('.editbox')[v]).css('box-shadow', 'none')
       }
 
-      if ($($('.editbox')[v]).hasClass('locationbox') && (!/^$|^[0-9A-Za-z\s\-\_]+$/.test(boxVal))) {//lol, serial box
+      if ($($('.editbox')[v]).hasClass('locationbox') && $($('.editbox')[v]).val().toString().toLowerCase() == "pick a location") {
         badEntryFlag = true;
-        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px 2px red ')
+        $($('.editbox')[v]).css('box-shadow', '0px 0px 5px red')
       } else if ($($('.editbox')[v]).hasClass('locationbox')) {
         $($('.editbox')[v]).css('box-shadow', 'none')
       }
@@ -160,10 +178,9 @@ export class DecomissionComponent implements OnInit {
         var temp = [] //for holding text box values
         temp.push($(allboxesArr[x]).val().toString())
         temp.push(parseInt($(allboxesArr[x + 1]).toString()))
-        temp.push($(allboxesArr[x + 2]).val().toString())
+        temp.push($(allboxesArr[x + 2]).text().toString())
         temp.push($(allboxesArr[x + 3]).val().toString())
         temp.push($(allboxesArr[x + 4]).val())
-
         container.push(temp) //add array to array for l8r
       }
       let colRef = this.db.collection('Decomission'); //from the decom table
@@ -174,7 +191,7 @@ export class DecomissionComponent implements OnInit {
               doc.ref.update({
                 Name: $(allboxesArr[ind]).val().toString(),
                 Quantity: parseInt($(allboxesArr[ind + 1]).val().toString()),
-                Location: $(allboxesArr[ind + 2]).val().toString(),
+                Location: $(allboxesArr[ind + 2]).text().toString(),
                 Notes: $(allboxesArr[ind + 3]).val().toString(),
                 Date: firebase.firestore.Timestamp.fromDate(new Date(Date.parse(($(allboxesArr[ind + 4]).val().toString())))),
 

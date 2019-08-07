@@ -20,13 +20,12 @@ export class ScanComponent implements OnInit {
   constructor(private afs: AngularFirestore, private db: FirestoreService, private cookie: CookieService, private pin: PinComponent) {
 
   }
-  urlParams;
+  urlParams = [];
   ngOnInit() {
     this.urlParams = this.getParams()
-      
-   
+      if(this.urlParams.length != 0 ){
       this.sendUrlQueue();
- 
+   }
   }
  
 
@@ -53,12 +52,17 @@ export class ScanComponent implements OnInit {
   sendUrlQueue() {
     this.delay(1500).then(() => { //wait for page to load basically
 var exists = false; 
-var match ;
+var match;
+var urlItem :string = this.urlParams[0].toString()
+console.log(urlItem)
+
+urlItem = urlItem.replace("_"," ")
+console.log(urlItem)
       let colRef = this.afs.collection('Inventory');
     let qry = colRef.ref.get()
       .then(snapshot => {
         snapshot.forEach(doc => { 
-          if (doc.data().Name == this.urlParams[0]) { //find a matching doc in the inv
+          if (doc.data().Name.toLowerCase() == urlItem.toLocaleLowerCase()) { //find a matching doc in the inv
             exists = true;
             match = doc.data()
           }
@@ -69,7 +73,7 @@ var match ;
             if (this.db.newID == 0) {
               this.db.newID = 1;
             }
-            this.db.queueEntry(this.urlParams[0], this.urlParams[1], this.cookie.get("User"), this.db.newID, match.Serial) //the name of the item, the quantity, who done it, the id, and the serial #
+            this.db.queueEntry(match.Name, this.urlParams[1], this.cookie.get("User"), this.db.newID, match.Serial) //the name of the item, the quantity, who done it, the id, and the serial #
             break;
           }
         }

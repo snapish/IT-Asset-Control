@@ -1,0 +1,14 @@
+<h1>Whose PIN would you like to change?</h1>
+<div *ngFor="let item of people; let i = index">
+    <h2>{{item}}</h2>
+    <input class="pinbox" type="password" placeholder="Current PIN" > &nbsp;&nbsp;&nbsp;
+    <input class="pinbox" type="text" placeholder="New PIN" > &nbsp;&nbsp;&nbsp;
+    <button (click) = "update(item, i)">Update {{item}}</button>
+    <br>
+    <br>
+   
+</div>
+
+
+<button (click) = "close()">Close</button>
+<div class="message" style="float: right; "> </div>

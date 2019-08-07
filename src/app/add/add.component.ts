@@ -101,8 +101,9 @@ export class AddComponent implements AfterViewInit {
    * @param $event The event object. Normally just pass "$event" (no quotes) 
    */
   suggestByName($event) {
+
     var inp = $($event.target).val().toString().toUpperCase() // the value of the text box 
-    if ($event.keyCode != 13) { // every key press that isnt enter
+    if ($event.keyCode != 13 || $event.keyCode == 8) { // every key press that isnt enter
       this.suggestArr = []; // reset it every time, no leftovers
       $('#autofill').attr('placeholder', '')  //reset again
       if (/[a-zA-Z0-9-_ ]/.test(inp)) { // if the key pressed was a number letter space hyphen or letter
@@ -111,7 +112,7 @@ export class AddComponent implements AfterViewInit {
           node.className = 'placeholder'
           node.disabled = true
           node.id = "autofill"
-          $('#autofillDiv').append(node)
+          $('#autofillDiv').prepend(node)
         }
         let colRef = this.afs.collection('Inventory'); //talking to inventory
         let qry = colRef.ref.orderBy('Name', 'asc').get()
@@ -129,7 +130,9 @@ export class AddComponent implements AfterViewInit {
               $('.placeholder').val("") //set it to nothing if nothing is matched
             }
           })
-
+      }
+      else { // if the box is empty or a bad character is entered. Like the green goblin or something
+        $('.placeholder').remove()
       }
     }
     else { //if they pressed enter
@@ -178,7 +181,7 @@ export class AddComponent implements AfterViewInit {
       if ((inputArray.val() == "" && inputArray.next().val() == "" && inputArray.next().next().val() == "" && inputArray.next().next().next().val() == "" && inputArray.next().next().next().next().val() == "")) {
         //remove the last 5 boxes on the page before continuing so it doesnt flag them as bad entries
         inputArray.each(function (i, val) {
-         $(val).remove() 
+          $(val).remove()
         })
       }
 
@@ -205,104 +208,128 @@ export class AddComponent implements AfterViewInit {
       var name = ""
       var desc = ""
       var sn = ""
+      var container = []
+      var entries = []
       inputArray.each((i, box) => { //get all the box values and then remeove the boxes 
         //name
         if ($(box).attr('placeholder').includes('Name')) {
           name = $(box).val().toString()
-         $(box).remove()
+          entries.push(name)
+          $(box).remove()
         }
         //qty
-        if ($(box).attr('placeholder').includes('Quantity')) { 
+        if ($(box).attr('placeholder').includes('Quantity')) {
           qtyEntry = parseInt($(box).val().toString())
-         $(box).remove()
+          entries.push(qtyEntry)
+          $(box).remove()
 
         }
         //description
         if ($(box).attr('placeholder').includes('Description')) {
           desc = $(box).val().toString()
-         $(box).remove()
+          entries.push(desc)
+          $(box).remove()
         }
         //serial #
         if ($(box).attr('placeholder').includes('Serial')) {
           sn = $(box).val().toString();
-         $(box).remove()
+          entries.push(sn)
+          $(box).remove()
         }
         //url
         if ($(box).attr('placeholder').includes('URL') && $(box).val() == "Google Search") { //if the url box is a google searchy search
           addToQuery = $(box).val().toString().replace(" ", "-"); //query has to have dashes not spaces
           query = "https://google.com/search?q=" + addToQuery;
+          entries.push(query)
           $(box).remove()
         }
-        else if ($(box).attr('placeholder').includes('URL')) {
+        else if ($(box).attr('placeholder').includes('URL') && $(box).val() != "Google Search") {
           query = $(box).val().toString()
-         $(box).remove()
+          entries.push(query)
+          container.push(entries)
+          console.log(entries)
+          entries = []
+          $(box).remove()
         }
-        
-        //after we have all the values to enter into the db ->
-        
-        
-        var updateFlag = false; 
-        let colRef = this.afs.collection('Inventory'); //from the inventory
-        if ($(box).attr('placeholder').includes('URL') && query != "" && name != "" && typeof qtyEntry == "number") {
+
+
+
+
+
+
+      })
+      var updateFlag;
+      //after we have all the values to enter into the db ->
+      for (let ind = 0; ind < container.length; ind++) {
+        if (container[ind][0] != null && container[ind][0] != "" && container[ind][1] != null && container[ind][1] != "") {
+          let colRef = this.afs.collection('Inventory'); //from the inventory
+          updateFlag = false;
           let qry = colRef.ref.orderBy('Name', 'asc').get().then(snapshot => { //want the first thing in order
             snapshot.forEach(doc => {
-            
-              if (doc.data() != null && name.toString() == doc.data().Name.toString()) { //if theres a doc
+              if (doc.data() != null && container[ind][0].toString() == doc.data().Name.toString()) { //if theres a doc
                 doc.ref.update({ //update it instead of adding
-                  Name: name,
-                  Quantity: qtyEntry + doc.data().Quantity,
-                  Description: desc,
-                  LastRestock: firebase.firestore.Timestamp.fromDate(new Date),
-                  LastRestockQuantity: qtyEntry,
-                  Serial: sn,
-                  OrderURL: query
+                  Name: doc.data().Name,
+                  Quantity: parseInt(container[ind][1]) + parseInt(doc.data().Quantity),
+                  Description: container[ind][2],
+                  LastRestock: firebase.firestore.Timestamp.fromDate(new Date), //format for firebase entry
+                  LastRestockQuantity: container[ind][1],
+                  Serial: container[ind][3],
+                  OrderURL: container[ind][4]
                 })
                 updateFlag = true; //say that doc was updated so it doesn't get duplicated
               }
+
             })
-          }).then(() => { //after, so its done in order
- 
-           if (!updateFlag) { //if nothing was updated
+
+          }).then(() => {
+            /*
+            had some issues with the update flag and the async-ness of the firebase things
+            update flag needs to get set before and after the attempts otherwise the for loop will finish all the top things
+            before it finishes the rest of the async stuff. Hence the update flag being reset inside the then(()=>{})
+            */
+            if (!updateFlag) { //if nothing was updated
               this.Firestore.inventoryEntry( //enter into db
-                name,
-                qtyEntry,
-                desc,
-                sn,
-                query,
-              )
+                container[ind][0], //name
+                container[ind][1], //qty
+                container[ind][2], //desc
+                container[ind][3], //serial
+                container[ind][4]) //query
+
             }
-            
+            updateFlag = false;
           })
-          }
-        })
-        $('#confirmed').fadeIn("slow") //make a pretty
-        $('#confirmed').fadeOut(2000)
-        for (let index = 0; index < 5; index++) { //make 5 text boxes
-          var node = document.createElement("input"); // of type input
-          $(node).addClass('input'); 
-          $('#boxesDiv').append(node) //add it to the div that holds all the boxes
         }
-        
-        var arr = document.getElementsByClassName('input'); //temp array getting all the text boxes
-        for (let x = 0; x < arr.length; x += 5) {
-          $('.input')[x].setAttribute('placeholder', 'Item Name')
-          $('.input')[x].addEventListener('keyup', ($event) => this.suggestByName($event))
-          $('.input')[x + 1].setAttribute('placeholder', 'Quantity')
-          $('.input')[x + 2].setAttribute('placeholder', 'Description')
-          $('.input')[x + 3].setAttribute('placeholder', 'Serial Number')
-          $('.input')[x + 4].setAttribute('placeholder', 'Order URL ("g" for google)')
-        }
-        
       }
-      this.addingToInv = false;//let the button be free
-     //
-     if($('br').length > 1 ){
-     $('br')[0].remove()
-     }
-      $('.placeholder').remove()
-      
+
+      $('#confirmed').fadeIn("slow") //make a pretty
+      $('#confirmed').fadeOut(2000)
+      for (let index = 0; index < 5; index++) { //make 5 text boxes
+        var node = document.createElement("input"); // of type input
+        $(node).addClass('input');
+        $('#boxesDiv').append(node) //add it to the div that holds all the boxes
+      }
+
+      var arr = document.getElementsByClassName('input'); //temp array getting all the text boxes
+      for (let x = 0; x < arr.length; x += 5) {
+        $('.input')[x].setAttribute('placeholder', 'Item Name')
+        $('.input')[x].addEventListener('keyup', ($event) => this.suggestByName($event))
+        $('.input')[x + 1].setAttribute('placeholder', 'Quantity')
+        $('.input')[x + 2].setAttribute('placeholder', 'Description')
+        $('.input')[x + 3].setAttribute('placeholder', 'Serial Number')
+        $('.input')[x + 4].setAttribute('placeholder', 'Order URL ("g" for google)')
+      }
+
     }
+    this.addingToInv = false;//let the button be free
+
+    $('br').remove()//remove all the spaces that went between the boxes
+    $('#boxesDiv').prepend(document.createElement('br')) //add one space between the button and the boxes
+
+
+    $('.placeholder').remove()
+
   }
+}
 
 
 

@@ -62,6 +62,8 @@ import { ManageComponent } from './manage/manage.component';
 import { MaphilightModule } from 'ng-maphilight';
 import { ExportComponent } from './export/export.component';
 import 'hammerjs';
+import { ChangepinComponent } from './pin/changepin/changepin.component';
+
 @NgModule({
   declarations: [
     ExportComponent,
@@ -80,6 +82,7 @@ import 'hammerjs';
     KeypadComponent,
     ManageComponent,
     ExportComponent,
+    ChangepinComponent,
 
   ],
   imports: [
@@ -124,9 +127,9 @@ import 'hammerjs';
  	AngularFirestoreModule,
       
   ],
-  entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent, KeypadComponent],
+  entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent, KeypadComponent,ChangepinComponent],
   exports: [MatButtonModule, MatCheckboxModule, MatCardModule,MatTableModule],
-  providers: [ExportComponent, PinComponent, DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
+  providers: [ChangepinComponent, ExportComponent, PinComponent, DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
   bootstrap: [AppComponent ]
 })
 export class AppModule { }

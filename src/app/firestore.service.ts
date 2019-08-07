@@ -185,8 +185,8 @@ export class FirestoreService {
    * @param serial item serial number
    */
   queueEntry(name: string, qty: number, user: string, id: number, serial: string) {
-    this.updateRemaining();
-    return this.db.collection('Queue').add({
+    this.updateRemaining()
+     this.db.collection('Queue').add({
       Date: this.mydate,
       Name: name,
       Quantity: qty,

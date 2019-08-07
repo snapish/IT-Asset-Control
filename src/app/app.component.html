@@ -1,6 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <body>
       <div class="body">
+          <app-pin></app-pin>
     <!-- -->
     <mat-tab-group [selectedIndex] = "selectedIndex" mat-stretch-tabs (selectedTabChange) = "addFirstBoxes($event)" style="background-color: rgb(16, 112, 208); ">
       <!-- tab icons https://material.io/tools/icons/?style=baseline -->
@@ -26,12 +27,12 @@
 
             <span *ngIf="selectedIndex == 1" class="spans">
             <mat-icon style="vertical-align: -3px" class="example-tab-icon" >create</mat-icon>
-                  Manage
+            Deployed
               </span>
           
               <span *ngIf="selectedIndex != 1" style="font-size: 23px  ">
             <mat-icon style="vertical-align: -3px" class="example-tab-icon" >create</mat-icon>
-                  Manage
+                  Deployed
               </span>
 
 
@@ -71,7 +72,7 @@
                 </span>
           </ng-template>
           <app-queue></app-queue>
-          <app-pin></app-pin>
+          
         </mat-tab>
 
         <mat-tab >
@@ -88,6 +89,7 @@
             </ng-template>
        <app-decomission></app-decomission>
         </mat-tab>
+    
       </mat-tab-group>
 
 

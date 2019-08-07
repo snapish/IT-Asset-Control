@@ -1,9 +1,18 @@
 td{
-    font-size: 20px;
+    font-size: 16px;
     color: rgb(214, 214, 214);
+   
 }
 a{
     color: gold
+}
+td{
+    height: 5px;
+}
+#decom, #inventory{
+  height: 25px;
+  line-height: 0px !important
+
 }
 body{
     background-color: rgb(16, 95, 175)

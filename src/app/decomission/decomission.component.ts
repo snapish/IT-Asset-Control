@@ -12,6 +12,9 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './decomission.component.html',
   styleUrls: ['./decomission.component.css']
 })
+/**
+ * doesnt do anything special other than recommission items
+ */
 export class DecomissionComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   editMode = false;

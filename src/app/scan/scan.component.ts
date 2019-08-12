@@ -11,7 +11,11 @@ import { AngularFirestore } from 'angularfire2/firestore';
   templateUrl: './scan.component.html',
   styleUrls: ['./scan.component.css']
 })
-
+/**
+ * handles URL queries and adds it to the queue table. 
+ * Query params must be in order of: Name, Quantity
+ * The name of the item must be present in the inventory to be added
+ */
 export class ScanComponent implements OnInit {
   param1 = "";
   newID = 0;
@@ -27,8 +31,6 @@ export class ScanComponent implements OnInit {
       this.sendUrlQueue();
    }
   }
- 
-
   /**
    * Gets the parameters in the URL
    */

@@ -7,18 +7,19 @@ import { ShippingComponent } from './shipping/shipping.component';
 import { QueueComponent } from '../queue/queue.component';
 import { FormBuilder } from '@angular/forms';
 import { environment } from 'src/environments/environment.prod';
-import {Globals} from 'src/app/global'
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * just used as a thing to pointn to which imagemap to open basically
+ */
 export class MapComponent implements OnInit {
   coords;
   form;
-  constructor(private dialog: MatDialog, private dialogRef: MatDialogRef<MapComponent>, @Inject(MAT_DIALOG_DATA) data, private fb: FormBuilder, private globals :Globals) { this.coords = data }//was data.coords not ""
+  constructor(private dialog: MatDialog, private dialogRef: MatDialogRef<MapComponent>, @Inject(MAT_DIALOG_DATA) data, private fb: FormBuilder) { this.coords = data }//was data.coords not ""
   test = environment;
 
   coordinate = "";
@@ -28,9 +29,10 @@ export class MapComponent implements OnInit {
     this.form = this.fb.group({
       coords: [this.coords, []],
     });
-    this.globals.replace = "";
   }
-
+/**
+ * called by the mat dialog opener thing when it closes
+ */
   save() {
     this.dialogRef.close(this.form.value)
   }
@@ -40,7 +42,7 @@ export class MapComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
     dialogConfig.width = "70%";
-    dialogConfig.height = "99%";
+    dialogConfig.height = "99%"; //need this so the dialog box doesnt open and cut things off
 
     
     if (s == "offices") { // if they press office button
@@ -75,84 +77,9 @@ export class MapComponent implements OnInit {
 
   }
 
-
-
-
-
-
-
-
-
-
-
-
-  /*
-    openDialogOffices(): void {
-  
-  
-      const dialogRef = this.dialog.open(OfficesComponent, {
-        width: '90%',
-        
-        data: {}
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.officeCoord = result;
-        console.log(this.officeCoord)
-        this.coordinateArray.push(this.officeCoord)
-        console.log(this.coordinateArray)
-        return this.officeCoord;
-        
-      });
-    }
-  
-  
-    openDialogProduction1() {
-      const dialogRef = this.dialog.open(Production1Component, {
-        width: '90%',
-        data: {},
-  
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.production1Coord = result;
-        console.log(this.production1Coord)
-        return this.production1Coord;
-      });
-    }
-  
-    openDialogProduction2(): void {
-      const dialogRef = this.dialog.open(Production2Component, {
-        width: '90%',
-        data: {}
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.production2Coord = result;
-        console.log(this.production2Coord)
-        return this.production2Coord;
-      });
-    }
-    openDialogShipping(): void {
-      const dialogRef = this.dialog.open(ShippingComponent, {
-        width: '90%',
-        data: {}
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.shippingCoord = result;
-        console.log(this.shippingCoord)
-        return this.shippingCoord;
-      });
-    }
-  */
-
   getLocation(e) {
     this.coordinate = (e.target.id).toUpperCase();
 
   }
-
-  // $('#ab2').css({'border': '7px solid red'});
-
-  //   $(function() {
-  //     $('.map').maphilight();
-  // });
-
 
 }

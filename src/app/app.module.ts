@@ -129,7 +129,7 @@ import { ChangepinComponent } from './pin/changepin/changepin.component';
   ],
   entryComponents:[MapComponent, OfficesComponent, Production1Component,Production2Component, ShippingComponent, KeypadComponent,ChangepinComponent],
   exports: [MatButtonModule, MatCheckboxModule, MatCardModule,MatTableModule],
-  providers: [ChangepinComponent, ExportComponent, PinComponent, DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
+  providers: [AppComponent, ChangepinComponent, ExportComponent, PinComponent, DatePipe, CookieService, FirestoreService, AddComponent, MapComponent,QueueComponent ,Production1Component,{provide: MatDialogRef, useValue: {}}, { provide: MAT_DIALOG_DATA, useValue: {} }, Globals, KeypadComponent],
   bootstrap: [AppComponent ]
 })
 export class AppModule { }

@@ -11,7 +11,11 @@ import * as firebase from 'firebase';
   styleUrls: ['./add.component.css'],
   encapsulation: ViewEncapsulation.None //for the css file to see elements added later than load time
 })
-
+/*
+ Add component is just for adding items into the inventory. It has the functions in it for adding new text boxes
+ to the adding page, and then attatching an event listener on the appropriate boxes. Also contains the stuff for finding
+ and making the next ID for inventory entries.  
+ */
 export class AddComponent implements AfterViewInit {
 
   constructor(private Firestore: FirestoreService, private afs: AngularFirestore) {

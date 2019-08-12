@@ -1,3 +1,4 @@
+import { AppComponent } from './../app.component';
 import { ChangepinComponent } from './changepin/changepin.component';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,9 +11,12 @@ import { AngularFirestore } from 'angularfire2/firestore';
   templateUrl: './pin.component.html',
   styleUrls: ['./pin.component.css']
 })
+/**
+ * This is the component that checks the pins entered in the keypad, and then approves or re-prompts the pin
+ */
 export class PinComponent implements OnInit {
-
-  constructor(private queue: QueueComponent, private dialog: MatDialog, private dialogRef: MatDialogRef<PinComponent>, @Inject(MAT_DIALOG_DATA) data, private cookie: CookieService, private db: AngularFirestore) {
+  constructor(private queue: QueueComponent, private dialog: MatDialog, private dialogRef: MatDialogRef<PinComponent>, @Inject(MAT_DIALOG_DATA) data,
+   private cookie: CookieService, private db: AngularFirestore, private app: AppComponent) {
   }
   pins = [];//approved pins
   users = [];// users, their index is the same as their pin
@@ -51,6 +55,7 @@ export class PinComponent implements OnInit {
       if (this.enteredPin == this.pins[ind]) { //if the current entered pin is in the array
         this.cookie.set('User', this.users[ind], 1)
         this.queue.ngOnInit() // reloads tables so it shows user name in them
+        this.app.ngOnInit()
         this.approved = true;
         break;
       }

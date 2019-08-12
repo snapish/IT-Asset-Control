@@ -14,6 +14,9 @@ import * as firebase from 'firebase';
   templateUrl: './manage.component.html',
   styleUrls: ['./manage.component.css']
 })
+/**
+ * Here be yee olde code for sending things to inventory, decom, and changing things like location and general edit things like other components have
+ */
 export class ManageComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   myDate = new Date();
@@ -40,12 +43,14 @@ export class ManageComponent implements OnInit {
    */
   inventory(item) {
     var url = ""
+    var qty = ""
     var matchID = ""
     let invRef = this.db.collection('Inventory'); //from the inventory
     let qry2 = invRef.ref.get().then(snapshot => {
       snapshot.forEach(doc => {
         if (item.Name == doc.data().Name) {
           matchID = doc.id;//used later when looking for id
+          qty = doc.data().Quantity
           url = doc.data().OrderURL
         }
       })
@@ -55,20 +60,22 @@ export class ManageComponent implements OnInit {
         let qry = colRef.ref.get().then(snapshot => {
           snapshot.forEach(doc => {
             if (item.ID == doc.data().ID) { //match the document
-              invRef.ref.get().then(invdoc => {
-                invdoc.forEach(invEntry => {
-                  var n: number = parseInt(invEntry.data().Quantity) + parseInt(item.Quantity);
+            invRef.ref.get().then(invdoc => { 
+              invdoc.forEach(invEntry => { //for each inventory entry
                   this.db.collection('Inventory').doc(matchID).update({
                     Name: item.Name,
-                    Quantity: n,
+                    Quantity: parseInt(qty) + 1 ,
                     Description: invEntry.data().Description,
                     LastRestock: invEntry.data().LastRestock,
                     LastRestockQuantity: invEntry.data().LastRestockQuantity,
                     OrderURL: invEntry.data().OrderURL,
                     Serial: invEntry.data().Serial
                   })
+                
                 })
               })
+          
+          
               if(doc.data().Quantity > 1){
                 doc.ref.update({
                   Quantity: parseInt(doc.data().Quantity) -1

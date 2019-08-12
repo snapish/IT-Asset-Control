@@ -19,7 +19,10 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './queue.component.html',
   styleUrls: ['./queue.component.css']
 })
-
+/**
+ * checks every 3 seconds if the user is logged in, if the cookie expires it will reprompt wihtin 3 seconds. Also sends things to the manage/deployed table. 
+ * requires things to be filled out and has some regex thingies
+ */
 export class QueueComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   coords;

@@ -22,7 +22,10 @@ import * as firebase from 'firebase';
   styleUrls: ['./inventory.component.css'],
 
 })
-
+/**
+ * Does all the inventory things. Scales color in qty, mass delete code's here, send to queue and decom,
+ * restock button code. 
+ */
 export class InventoryComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   items: Items[];

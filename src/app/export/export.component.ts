@@ -7,6 +7,10 @@ import { Timestamp } from 'rxjs/internal/operators/timestamp';
   templateUrl: './export.component.html',
   styleUrls: ['./export.component.css']
 })
+/**
+ * Contains all the code for converting table data into a JSON or CSV object and then downloading it. 
+ * There is a method for converting and one for exporting/downloading for each format
+ */
 export class ExportComponent implements OnInit {
 
   constructor(private db: AngularFirestore) { }

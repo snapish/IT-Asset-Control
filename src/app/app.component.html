@@ -1,7 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <body>
       <div class="body">
-          <app-pin></app-pin>
+        
+        <div *ngIf="User != '' "> 
+          Signed in as {{User}} &nbsp;
+          <button (click) = "logOut()"> Log out</button>
+        </div>
+               
     <!-- -->
     <mat-tab-group [selectedIndex] = "selectedIndex" mat-stretch-tabs (selectedTabChange) = "addFirstBoxes($event)" style="background-color: rgb(16, 112, 208); ">
       <!-- tab icons https://material.io/tools/icons/?style=baseline -->

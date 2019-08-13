@@ -7,6 +7,7 @@ If you want to pull this and run it you will need to do an `npm install` and mov
 
 After that do an `ng s` in the console and once it runs use the PIN 1234 in the keypad when you get prompted.
 
+If a button isn't working try doing a ctrl + click , some require this as a really small security thingy
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.1.
 

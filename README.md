@@ -1,6 +1,10 @@
 # ITAssetControl
-#Elliot's Notes: 
+# Elliot's Notes: 
+
+
 If you want to pull this and run it you will need to do an `npm install` and move the file `jquery.maphilight.min.js` to ./node_modules/jquery/dist/
+
+
 After that do an `ng s` in the console and once it runs use the PIN 1234 in the keypad when you get prompted.
 
 
